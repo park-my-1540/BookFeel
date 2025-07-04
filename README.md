@@ -1,87 +1,43 @@
-# Welcome to React Router!
+# 📚 Bookfeel
 
-A modern, production-ready template for building full-stack React applications using React Router.
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
-
-## Features
-
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
-
-## Getting Started
-
-### Installation
-
-Install the dependencies:
-
-```bash
-npm install
-```
-
-### Development
-
-Start the development server with HMR:
-
-```bash
-npm run dev
-```
-
-Your application will be available at `http://localhost:5173`.
-
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+무드에 어울리는 책을 추천해주는 감성 독서 플랫폼
 
 ---
 
-Built with ❤️ using React Router.
+## ✨ 주요 기능
+
+1. **도서 구매 및 찜하기**
+   - 장바구니 및 결제 페이지
+   - 유저 후기 작성
+   - TossPayments 연동 (또는 가상 결제)
+
+2. **도서 리스트 및 인기 순위**
+   - 전체 도서 목록, 필터/정렬
+   - 주간 인기 리스트, 태그 기반 검색
+
+3. **🎵 감성 플레이리스트**
+   - 유저가 직접 등록한 유튜브 플레이리스트
+   - 도서와 어울리는 배경 음악 함께 감상
+
+4. **🧠 GPT 추천**
+   - 현재 기분 선택 → GPT가 감정 기반 도서 추천
+
+---
+
+## 🛠 기술 스택
+
+- **Next.js (App Router)**
+- **TailwindCSS + shadcn/ui**
+- **TypeScript**
+- **OpenAI GPT API**
+- **(선택) TossPayments 결제 연동**
+
+---
+
+## 🧪 로컬 실행 방법
+
+```bash
+git clone https://github.com/your-username/bookfeel.git
+cd bookfeel
+npm install
+npm run dev
