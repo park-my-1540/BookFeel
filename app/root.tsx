@@ -43,7 +43,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <div className='h-screen'>
+    <div className='h-screen w-screen'>
       <Navigation />
       <Outlet />
     </div>

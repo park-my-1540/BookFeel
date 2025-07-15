@@ -6,7 +6,9 @@ import {
   CarouselPrevious,
 } from "~/components/ui/carousel";
 import type { Route } from "./+types/home-page";
+import { redirect } from "react-router";
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
+import BookSearch from "@/features/search/components/SearchBarContainer";
 
 export function meta() {
   return [
@@ -15,44 +17,29 @@ export function meta() {
   ];
 }
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
-  return null;
+export const action = async ({ request }: Route.ActionArgs) => {
+  const formData = await request.formData();
+  const keyword = formData.get("search");
+  const target = formData.get("options") ?? "title";
+
+  if (keyword) {
+    return redirect(
+      `/books?q=${encodeURIComponent(keyword as string)}&target=${encodeURIComponent(target as string)}`
+    );
+  }
 };
 
 export default function HomePage() {
   return (
-    <div className='h-full'>
-      <div className='flex flex-col items-center h-[calc(100%-40px)] justify-between bg-blue-500'>
+    <div className='h-full mt-10'>
+      <div className='flex flex-col items-center  justify-between border'>
         <div className='px-16 h-full space-y-10'>
           <h1 className='text-7xl font-bold text-primary-foreground text-right'>
             Match Your <br />
             Mood to a Book
           </h1>
           <div className='w-full h-3/4 relative'>
-            <Carousel className='h-full'>
-              <CarouselContent className='h-full'>
-                <CarouselItem>
-                  <div className='size-full'>
-                    <img
-                      src='https://i.pinimg.com/736x/42/fe/11/42fe1147e2f23b5c376751762663cc0c.jpg'
-                      alt='book'
-                      className='h-full object-contain'
-                    />
-                  </div>
-                </CarouselItem>
-                <CarouselItem>
-                  <div className='size-full'>
-                    <img
-                      src='https://i.pinimg.com/736x/42/fe/11/42fe1147e2f23b5c376751762663cc0c.jpg'
-                      alt='book'
-                      className='h-full object-contain'
-                    />
-                  </div>
-                </CarouselItem>
-              </CarouselContent>
-              <CarouselPrevious className='absolute left-10 top-1/2 size-15' />
-              <CarouselNext className='absolute right-10 top-1/2 size-15' />
-            </Carousel>
+            <BookSearch />
           </div>
         </div>
       </div>
@@ -200,7 +187,7 @@ export default function HomePage() {
           </Carousel>
         </div>
       </div>
-      <div className='flex flex-col items-center justify-center border-2 bg-blue-500 h-[50%]'>
+      <div className='flex flex-col items-center justify-center border-2 h-[50%]'>
         <div>이미지</div>
         <h1 className='text-4xl font-bold'>
           <span className='text-primary'>GPT 감정 기반 추천</span>

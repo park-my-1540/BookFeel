@@ -15,7 +15,13 @@
     "rootDirs": [".", "./.react-router/types"],
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "@/*": ["./app/*"],
+      "@components/*": ["./app/components/*"],
+      "@features/*": ["./app/features/*"],
+      "@book/*": ["app/features/books/*"],         // book 하위 폴더 import 쉽게
+      "@book/wishlist/*": ["app/features/books/wishlist/*"],
+      "@search/*": ["./app/features/search/*"],
     },
     "esModuleInterop": true,
     "verbatimModuleSyntax": true,
