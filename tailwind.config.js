@@ -74,6 +74,9 @@ const config: Config = {
           ring: "hsl(var(--sidebar-ring))",
         },
       },
+      fontFamily: {
+        winky: ["Winky", "serif"],
+      },
       keyframes: {
         marquee: {
           from: {

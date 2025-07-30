@@ -115,7 +115,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
       </div>
       <div className='flex flex-col items-center justify-center h-[85%]'>
         <div className='flex flex-col items-start justify-center h-full space-y-10'>
-          <h1 className='text-4xl font-bold text-center block w-full'>
+          <h1 className='text-4xl font-bold font-winky text-center block w-full'>
             Our Recomandations
           </h1>
           <Carousel className='overflow-x-auto'>
