@@ -1,7 +1,6 @@
 import {
   Carousel,
   CarouselContent,
-  CarouselItem,
   CarouselNext,
   CarouselPrevious,
 } from "~/components/ui/carousel";
@@ -9,6 +8,8 @@ import type { Route } from "./+types/home-page";
 import { redirect } from "react-router";
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
 import BookSearch from "@/features/search/components/SearchBarContainer";
+import { rankedBooks } from "~/features/books/services/fetchBooks";
+import { BestSellerCard } from "~/features/books/components/BestSellerCard/bestseller-card";
 
 export function meta() {
   return [
@@ -29,7 +30,20 @@ export const action = async ({ request }: Route.ActionArgs) => {
   }
 };
 
-export default function HomePage() {
+export const loader = async () => {
+  /**
+   * 가장 인기있는 책 알라딘 Open API
+   */
+  try {
+    const res = await rankedBooks();
+    return { books: Array.isArray(res.item) ? res.item : [] };
+  } catch (e) {
+    console.error("서버에서 책 가져오기 실패", e);
+    return { books: [] };
+  }
+};
+
+export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
     <div className='h-full mt-10'>
       <div className='flex flex-col items-center  justify-between border'>
@@ -157,33 +171,25 @@ export default function HomePage() {
         </div>
       </div>
       <div className='flex flex-col items-center justify-center h-[85%]'>
-        <div className='flex flex-col items-start justify-center px-16 h-full space-y-10'>
+        <div className='flex flex-col items-start justify-center h-full space-y-10'>
           <h1 className='text-4xl font-bold'>
             <span className='text-primary'>지금 인기 있는 책</span>
           </h1>
           <Carousel className='overflow-x-auto'>
-            <CarouselContent className='flex gap-6 px-4'>
-              {[...Array(5)].map((_, index) => (
-                <CarouselItem key={index} className='flex-shrink-0 basis-[28%]'>
-                  <Card className='bg-transparent border-none shadow-none'>
-                    <CardContent>
-                      <div className='w-full aspect-[2/3]'>
-                        <img
-                          src='https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788936439743.jpg'
-                          alt='book'
-                          className='w-full h-full object-cover rounded-xl'
-                        />
-                      </div>
-                    </CardContent>
-                    <CardFooter className='text-center'>
-                      <p>Card Footer</p>
-                    </CardFooter>
-                  </Card>
-                </CarouselItem>
+            <CarouselContent className='flex px-16'>
+              {loaderData.books.map((book) => (
+                <BestSellerCard
+                  itemId={book.itemId}
+                  cover={book.cover}
+                  author={book.author}
+                  link={book.link}
+                  title={book.title}
+                  bestRank={book.bestRank}
+                />
               ))}
             </CarouselContent>
-            <CarouselPrevious className='absolute left-10 top-1/2 -translate-y-1/2 size-15 bg-primary text-primary-foreground' />
-            <CarouselNext className='absolute right-0 top-1/2 -translate-y-1/2 size-15 bg-primary text-primary-foreground' />
+            <CarouselPrevious className='absolute left-5 top-1/2 -translate-y-1/2 size-11 bg-primary text-primary-foreground' />
+            <CarouselNext className='absolute right-5 top-1/2 -translate-y-1/2 size-11 bg-primary text-primary-foreground' />
           </Carousel>
         </div>
       </div>

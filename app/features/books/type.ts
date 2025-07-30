@@ -39,3 +39,18 @@ export type BookSummary = Pick<
   "id" | "title" | "authors" | "price" | "sale_price" | "thumbnail" | "url"
 >;
 export type BookDetail = BookSummary & Pick<BookItemResponse, "contents">;
+
+/**
+ * BestSeller
+ */
+export type BookRankingResponse = {
+  item: BestSellerItem;
+};
+export type BestSellerItem = {
+  itemId: string;
+  cover: string;
+  title: string;
+  bestRank: string;
+  author: string;
+  link: string;
+};
