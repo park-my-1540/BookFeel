@@ -5,6 +5,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from "react-router";
 import Navigation from "./components/navigation";
 import type { Route } from "./+types/root";
@@ -42,9 +43,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const { pathname } = useLocation();
   return (
     <div className='h-screen w-full'>
-      <Navigation />
+      {pathname.includes("/auth") ? null : <Navigation />}
       <Outlet />
     </div>
   );

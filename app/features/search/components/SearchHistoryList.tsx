@@ -60,7 +60,7 @@ function SearchHistoryList({ list, onRemove }: Props) {
   );
 
   return (
-    <div className='absolute top-[50px] rounded-b-3xl left-0 w-full py-5 pr-5 pl-[60px] space-y-2 dropdown-container bg-lightGray '>
+    <div className='absolute top-[50px] rounded-b-3xl left-0 w-full py-5 pr-5 pl-[60px] space-y-2 dropdown-container bg-lightGray shadow-md'>
       {list.map((keyword, index) => (
         <div key={keyword} className='flex items-center justify-between'>
           <KeywordItem
