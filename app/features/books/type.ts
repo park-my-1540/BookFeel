@@ -44,9 +44,9 @@ export type BookDetail = BookSummary & Pick<BookItemResponse, "contents">;
  * BestSeller
  */
 export type BookRankingResponse = {
-  item: BestSellerItem;
+  item: BookCardItem;
 };
-export type BestSellerItem = {
+export type BookCardItem = {
   itemId: string;
   cover: string;
   title: string;

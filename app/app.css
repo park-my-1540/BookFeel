@@ -142,3 +142,14 @@
   border: 18px solid transparent;
   border-bottom-color: rgb(242 244 246 / var(--tw-bg-opacity));
 }
+.grid-layout {
+  display: grid;
+  grid-template-areas:
+    "a a c"
+    "b b c";
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+.a { grid-area: a;}
+.b { grid-area: b;}
+.c { grid-area: c;}

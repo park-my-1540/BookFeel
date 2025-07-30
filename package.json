@@ -7,9 +7,9 @@
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
-    "db:generate": "drizzle-kit generate", // 스키마 변경사항을 반영하여 새로운 마이그레이션 파일 생성
-    "db:migrate": "drizzle-kit migrate", // 마이그레이션 파일을 실행하여 데이터베이스 업데이트
-    "db:studio": "drizzle-kit studio" // 데이터베이스 스키마 브라우저 인터페이스 제공 수퍼베이스로 대체!
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@google/genai": "^1.11.0",
