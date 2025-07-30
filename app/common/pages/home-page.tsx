@@ -172,7 +172,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
       </div>
       <div className='flex flex-col items-center justify-center h-[85%]'>
         <div className='flex flex-col items-start justify-center h-full space-y-10'>
-          <h1 className='text-4xl font-bold'>
+          <h1 className='text-4xl font-bold px-16'>
             <span className='text-primary'>지금 인기 있는 책</span>
           </h1>
           <Carousel className='overflow-x-auto'>
@@ -196,8 +196,10 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
       <div className='flex flex-col items-center justify-center border-2 h-[50%]'>
         <div>이미지</div>
         <h1 className='text-4xl font-bold'>
-          <span className='text-primary'>GPT 감정 기반 추천</span>
-          <span className='text-primary'>[😊 장마] [😞 오싹] [😤 화나요]</span>
+          <span className='text-primary'>
+            Gemini가 추천해주는 여름 테마별 도서
+          </span>
+          <span className='text-primary'>[🌧 장마] [🔥 무더위] [😱 오싹] </span>
         </h1>
       </div>
     </div>

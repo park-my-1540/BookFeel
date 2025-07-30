@@ -32,7 +32,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className='w-full'>
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -43,7 +43,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <div className='h-screen w-screen'>
+    <div className='h-screen w-full'>
       <Navigation />
       <Outlet />
     </div>
