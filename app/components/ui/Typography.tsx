@@ -8,19 +8,21 @@ type TextProps = {
 };
 
 export const Title1 = ({ children, className }: TextProps) => (
-  <h1 className={clsx("text-2xl font-bold text-textPrimary", className)}>
+  <h1 className={clsx("text-2xl font-mangoBold text-textPrimary", className)}>
     {children}
   </h1>
 );
 
 export const Title2 = ({ children, className }: TextProps) => (
-  <h2 className={clsx("text-titleLg font-bold text-textPrimary", className)}>
+  <h2
+    className={clsx("text-titleLg font-mangoBold text-textPrimary", className)}
+  >
     {children}
   </h2>
 );
 
 export const Title3 = ({ children, className }: TextProps) => (
-  <h3 className={clsx("text-lg font-bold text-textPrimary", className)}>
+  <h3 className={clsx("text-lg font-mangoBold text-textPrimary", className)}>
     {children}
   </h3>
 );

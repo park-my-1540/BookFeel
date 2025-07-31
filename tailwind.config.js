@@ -76,6 +76,7 @@ const config: Config = {
       },
       fontFamily: {
         winky: ["Winky", "serif"],
+        mangoBold: ["MangoBold", "serif"],
       },
       keyframes: {
         marquee: {

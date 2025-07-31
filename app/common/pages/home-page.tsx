@@ -11,6 +11,9 @@ import { Card, CardContent } from "~/components/ui/card";
 import { rankedBooks } from "~/features/books/services/fetchBooks";
 import { Caption, Title1 } from "~/components/ui/Typography";
 import { BookCard } from "~/features/books/components/BestPreviewCard/BookCard";
+import { makeSSRClient } from "~/supa-client";
+import { getPlaylists } from "~/features/playlist/queries";
+import { PlaylistCard } from "~/features/playlist/components/PlaylistCard";
 
 export function meta() {
   return [
@@ -31,13 +34,15 @@ export const action = async ({ request }: Route.ActionArgs) => {
   }
 };
 
-export const loader = async () => {
-  /**
-   * 가장 인기있는 책 알라딘 Open API
-   */
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request);
   try {
-    const res = await rankedBooks();
-    return { books: Array.isArray(res.item) ? res.item : [] };
+    const [res, playlists] = await Promise.all([
+      rankedBooks(),
+      getPlaylists(client),
+    ]);
+
+    return { books: Array.isArray(res.item) ? res.item : [], playlists };
   } catch (e) {
     console.error("서버에서 책 가져오기 실패", e);
     return { books: [] };
@@ -143,70 +148,19 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
       </div>
       <div className='bg-dark h-[70%]'>
         <div className='flex flex-col items-start justify-center px-10 h-full space-y-10'>
-          <h1 className='text-4xl font-bold text-primary-foreground'>
-            유저들이 고른 플레이리스트
+          <h1 className='text-4xl font-bold text-primary-foreground font-winky'>
+            Curated Vibes
           </h1>
           <div className='grid grid-cols-3 gap-4 w-full'>
-            <Card>
-              <CardContent>
-                <div className='flex flex-row'>
-                  <div className='w-full relative pb-[56.25%]'>
-                    <iframe
-                      src='https://www.youtube.com/embed/TSGkOliZNQ8?si=s2vf7a3RshEu-4R0'
-                      title='YouTube video player'
-                      allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                      referrerPolicy='strict-origin-when-cross-origin'
-                      allowFullScreen
-                      className='absolute top-0 left-0 w-full h-full'
-                    ></iframe>
-                  </div>
-                </div>
-                <div className='pt-5'>
-                  <Title1>혼모노</Title1>
-                  <Caption>성해은</Caption>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent>
-                <div className='flex flex-row'>
-                  <div className='w-full relative pb-[56.25%]'>
-                    <iframe
-                      src='https://www.youtube.com/embed/TSGkOliZNQ8?si=s2vf7a3RshEu-4R0'
-                      title='YouTube video player'
-                      allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                      referrerPolicy='strict-origin-when-cross-origin'
-                      allowFullScreen
-                      className='absolute top-0 left-0 w-full h-full'
-                    ></iframe>
-                  </div>
-                </div>
-                <div className='pt-5'>
-                  <Title1>혼모노</Title1>
-                  <Caption>성해은</Caption>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent>
-                <div className='flex flex-row'>
-                  <div className='w-full relative pb-[56.25%]'>
-                    <iframe
-                      src='https://www.youtube.com/embed/TSGkOliZNQ8?si=s2vf7a3RshEu-4R0'
-                      title='YouTube video player'
-                      allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                      referrerPolicy='strict-origin-when-cross-origin'
-                      allowFullScreen
-                      className='absolute top-0 left-0 w-full h-full'
-                    ></iframe>
-                  </div>
-                </div>
-                <div className='pt-5'>
-                  <Title1>혼모노</Title1>
-                  <Caption>성해은</Caption>
-                </div>
-              </CardContent>
-            </Card>
+            {loaderData.playlists.map((playlist) => (
+              <PlaylistCard
+                key={playlist.playlist_id}
+                url={playlist.url}
+                upvotes={playlist.upvotes}
+                title={playlist.title}
+                author={playlist.author}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -221,6 +175,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <div className='grid grid-cols-5 gap-8'>
               {loaderData.books.slice(0, 5).map((book) => (
                 <BookCard
+                  key={book.itemId}
                   itemId={book.itemId}
                   cover={book.cover}
                   author={book.author}
@@ -241,6 +196,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <div className='grid grid-cols-5 gap-8'>
               {loaderData.books.slice(0, 5).map((book) => (
                 <BookCard
+                  key={book.itemId}
                   itemId={book.itemId}
                   cover={book.cover}
                   author={book.author}
@@ -264,6 +220,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
               {loaderData.books.slice(0, 5).map((book) => (
                 <BookCard
                   direction='row'
+                  key={book.itemId}
                   itemId={book.itemId}
                   cover={book.cover}
                   author={book.author}
