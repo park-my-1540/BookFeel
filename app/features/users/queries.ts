@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { redirect } from "react-router";
 
 export const getUserProfileById = async (
   client: SupabaseClient,
@@ -14,4 +15,12 @@ export const getUserProfileById = async (
     .single();
   if (error) throw error;
   return data;
+};
+
+export const getLoggedInUserId = async (client: SupabaseClient) => {
+  const { data, error } = await client.auth.getUser();
+  if (error || data.user === null) {
+    throw redirect("/auth/login");
+  }
+  return data.user.id;
 };

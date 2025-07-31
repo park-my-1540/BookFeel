@@ -6,6 +6,10 @@ export default [
     index("features/books/pages/list-page.tsx"),
     route("/generate", "features/books/api/generate-idea-page.tsx"),
   ]),
+  ...prefix("playlists", [
+    index("features/playlist/pages/playlist-page.tsx"),
+    route("/submit", "features/playlist/pages/submit-playlist-page.tsx"),
+  ]),
   ...prefix("auth", [
     layout("features/auth/layouts/auth-layout.tsx", [
       route("/login", "features/auth/pages/login-page.tsx"),

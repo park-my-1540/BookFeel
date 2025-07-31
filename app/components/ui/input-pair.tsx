@@ -18,7 +18,7 @@ export default function InputPair({
         <small className='text-muted-foreground'>{description}</small>
       </label>
       {textArea ? (
-        <textarea rows={4} className='resize-none' {...rest} />
+        <textarea rows={4} className='resize-none p-3' {...rest} />
       ) : (
         <input className='p-3' {...rest} />
       )}

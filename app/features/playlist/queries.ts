@@ -7,3 +7,26 @@ export const getPlaylists = async (client: SupabaseClient) => {
   if (error) throw error;
   return data;
 };
+
+export const createPlaylist = async (
+  client: SupabaseClient,
+  {
+    title,
+    author,
+    url,
+    reason,
+  }: {
+    title: string;
+    author: string;
+    url: string;
+    reason: string;
+  }
+) => {
+  const { error } = await client.from("playlists").insert({
+    title,
+    author,
+    url,
+    reason,
+  });
+  if (error) throw error;
+};
