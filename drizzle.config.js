@@ -1,6 +1,7 @@
 // drizzle kit이 정보를 확인할 때 참조하는 파일
 
 import { defineConfig } from "drizzle-kit";
+import "dotenv/config";
 
 export default defineConfig({
   schema: "./app/features/**/schema.ts", // 이 폴더 안에 있는 모든 파일을 참조 분할 방식
