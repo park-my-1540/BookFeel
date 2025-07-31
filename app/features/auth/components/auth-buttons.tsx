@@ -23,16 +23,7 @@ export default function AuthButtons() {
           </Link>
         </Button>
         <Button variant='outline' className='w-full' asChild>
-          <Link to='/auth/social/github/start'>
-            <GithubIcon className='w-4 h-4' />
-            Github으로 로그인
-          </Link>
-        </Button>
-        <Button variant='outline' className='w-full' asChild>
-          <Link to='/auth/otp/start'>
-            <LockIcon className='w-4 h-4' />
-            OTP로 로그인
-          </Link>
+          <Link to='/auth/social/google/start'>Google로 로그인</Link>
         </Button>
       </div>
     </div>

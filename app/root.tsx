@@ -6,10 +6,13 @@ import {
   Scripts,
   ScrollRestoration,
   useLocation,
+  useNavigation,
 } from "react-router";
 import Navigation from "./components/navigation";
 import type { Route } from "./+types/root";
 import "./app.css";
+import { makeSSRClient } from "./supa-client";
+import { getUserProfileById } from "./features/users/queries";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -41,12 +44,43 @@ export function Layout({ children }: { children: React.ReactNode }) {
     </html>
   );
 }
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request);
 
-export default function App() {
+  const {
+    data: { user },
+  } = await client.auth.getUser();
+  if (user && user.id) {
+    const profile = await getUserProfileById(client, { id: user.id });
+    if (!profile) {
+      // 💡 프로필이 없음 = 탈퇴했거나 권한 없음
+      await client.auth.signOut(); // 로그아웃
+      return;
+    }
+    return { user, profile };
+  }
+  return {
+    user: null,
+    profile: null,
+  };
+};
+
+export default function App({ loaderData }: Route.ComponentProps) {
   const { pathname } = useLocation();
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "loading";
+  const isLoggedIn = loaderData.user !== null;
+
   return (
     <div className='h-screen w-full'>
-      {pathname.includes("/auth") ? null : <Navigation />}
+      {pathname.includes("/auth") ? null : (
+        <Navigation
+          username={loaderData.profile?.username}
+          avatar={loaderData.profile?.avatar}
+          name={loaderData.profile?.name}
+          isLoggedIn={isLoggedIn}
+        />
+      )}
       <Outlet />
     </div>
   );
