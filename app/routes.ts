@@ -7,8 +7,11 @@ export default [
     route("/generate", "features/books/api/generate-idea-page.tsx"),
   ]),
   ...prefix("playlists", [
-    index("features/playlist/pages/playlist-page.tsx"),
-    route("/submit", "features/playlist/pages/submit-playlist-page.tsx"),
+    index("features/playlists/pages/playlist-page.tsx"),
+    route("/submit", "features/playlists/pages/submit-playlist-page.tsx"),
+    ...prefix("/:playlistId", [
+      route("/upvote", "features/playlists/pages/playlist-upvote-page.tsx"),
+    ]),
   ]),
   ...prefix("auth", [
     layout("features/auth/layouts/auth-layout.tsx", [

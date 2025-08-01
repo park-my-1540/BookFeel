@@ -12,8 +12,8 @@ import { rankedBooks } from "~/features/books/services/fetchBooks";
 import { Caption, Title1 } from "~/components/ui/Typography";
 import { BookCard } from "~/features/books/components/BestPreviewCard/BookCard";
 import { makeSSRClient } from "~/supa-client";
-import { getPlaylists } from "~/features/playlist/queries";
-import { PlaylistCard } from "~/features/playlist/components/PlaylistCard";
+import { getPlaylists } from "~/features/playlists/queries";
+import { PlaylistCard } from "~/features/playlists/components/PlaylistCard";
 
 export function meta() {
   return [
@@ -41,7 +41,6 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       rankedBooks(),
       getPlaylists(client),
     ]);
-
     return { books: Array.isArray(res.item) ? res.item : [], playlists };
   } catch (e) {
     console.error("서버에서 책 가져오기 실패", e);
@@ -155,7 +154,9 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             {loaderData.playlists.map((playlist) => (
               <PlaylistCard
                 key={playlist.playlist_id}
+                id={playlist.playlist_id}
                 url={playlist.url}
+                isUpvoted={playlist.is_upvoted}
                 upvotes={playlist.upvotes}
                 title={playlist.title}
                 author={playlist.author}
