@@ -51,13 +51,38 @@ export const rankedBooks = async (): Promise<BookRankingResponse> => {
     SearchTarget: "Book",
     output: "js",
     Version: "20131101",
+    Cover: "Big",
+    CategoryId: 1,
   };
   try {
     const { data } = await axios.get<BookRankingResponse>(
       "https://www.aladin.co.kr/ttb/api/ItemList.aspx?",
       { params }
     );
-    return data;
+    return data.item;
+  } catch (error) {
+    console.error("fetchBooks error:", error);
+    throw error;
+  }
+};
+export const choicesBooks = async (): Promise<BookRankingResponse> => {
+  const params = {
+    ttbkey: process.env.NEXT_PUBLIC_ALADIN_API_KEY!,
+    QueryType: "ItemNewSpecial",
+    MaxResults: 10,
+    Start: 1,
+    SearchTarget: "Book",
+    Output: "JS",
+    Version: "20131101",
+    Cover: "Big",
+    CategoryId: 1,
+  };
+  try {
+    const { data } = await axios.get<BookRankingResponse>(
+      "https://www.aladin.co.kr/ttb/api/ItemList.aspx?",
+      { params }
+    );
+    return data.item;
   } catch (error) {
     console.error("fetchBooks error:", error);
     throw error;

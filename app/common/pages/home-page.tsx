@@ -3,12 +3,16 @@ import {
   CarouselContent,
   CarouselItem,
   CarouselNext,
+  CarouselDots,
   CarouselPrevious,
 } from "~/components/ui/carousel";
 import type { Route } from "./+types/home-page";
 import { redirect } from "react-router";
 import { Card, CardContent } from "~/components/ui/card";
-import { rankedBooks } from "~/features/books/services/fetchBooks";
+import {
+  choicesBooks,
+  rankedBooks,
+} from "~/features/books/services/fetchBooks";
 import { Caption, Title1 } from "~/components/ui/Typography";
 import { BookCard } from "~/features/books/components/BestPreviewCard/BookCard";
 import { makeSSRClient } from "~/supa-client";
@@ -37,11 +41,16 @@ export const action = async ({ request }: Route.ActionArgs) => {
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { client } = makeSSRClient(request);
   try {
-    const [res, playlists] = await Promise.all([
+    const [books, choices, playlists] = await Promise.all([
       rankedBooks(),
+      choicesBooks(),
       getPlaylists(client),
     ]);
-    return { books: Array.isArray(res.item) ? res.item : [], playlists };
+    return {
+      books,
+      choices,
+      playlists,
+    };
   } catch (e) {
     console.error("서버에서 책 가져오기 실패", e);
     return { books: [] };
@@ -51,7 +60,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
     <div className='h-full'>
-      <div className='bg-dark h-[50%]'>
+      <div className='bg-dark h-[45vh]'>
         <div className='flex flex-col items-start justify-center px-10 h-full space-y-10'>
           <div className='grid grid-cols-3 gap-4 w-full'>
             <Card>
@@ -117,51 +126,53 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
           </div>
         </div>
       </div>
-      <div className='flex flex-col items-center justify-center h-[85%]'>
-        <div className='flex flex-col items-start justify-center h-full space-y-10'>
-          <h1 className='text-4xl font-bold font-winky text-center block w-full'>
-            Our Recomandations
-          </h1>
-          <Carousel className='overflow-x-auto'>
-            <CarouselContent className='flex px-10'>
-              {loaderData.books.map((book) => (
-                <CarouselItem
-                  key={book.itemId}
-                  className='flex-shrink-0 basis-[18%]'
-                >
-                  <BookCard
-                    itemId={book.itemId}
-                    cover={book.cover}
-                    author={book.author}
-                    link={book.link}
-                    title={book.title}
-                    bestRank={book.bestRank}
-                  />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className='absolute left-5 top-1/2 -translate-y-1/2 size-11 bg-primary text-primary-foreground' />
-            <CarouselNext className='absolute right-5 top-1/2 -translate-y-1/2 size-11 bg-primary text-primary-foreground' />
-          </Carousel>
-        </div>
+      <div className='flex flex-col items-center justify-center h-[65vh]'>
+        <h1 className='text-4xl font-bold font-winky text-center block w-full'>
+          Our Recomandations
+        </h1>
+        <Carousel className='overflow-x-auto px-20'>
+          <CarouselContent className='flex px-10 gap-8'>
+            {loaderData.choices.map((book) => (
+              <CarouselItem key={book.itemId} className='basis-[14%]'>
+                <BookCard
+                  itemId={book.itemId}
+                  cover={book.cover}
+                  author={book.author}
+                  link={book.link}
+                  title={book.title}
+                  bestRank={book.bestRank}
+                />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className='absolute left-5 top-1/2 -translate-y-1/2 size-11 bg-dark text-primary-foreground' />
+          <CarouselNext className='absolute right-5 top-1/2 -translate-y-1/2 size-11 bg-dark text-primary-foreground' />
+        </Carousel>
       </div>
-      <div className='bg-dark h-[70%]'>
+      <div className='bg-dark h-[65vh]'>
         <div className='flex flex-col items-start justify-center px-10 h-full space-y-10'>
           <h1 className='text-4xl font-bold text-primary-foreground font-winky'>
             Curated Vibes
           </h1>
-          <div className='grid grid-cols-3 gap-4 w-full'>
-            {loaderData.playlists.map((playlist) => (
-              <PlaylistCard
-                key={playlist.playlist_id}
-                id={playlist.playlist_id}
-                url={playlist.url}
-                isUpvoted={playlist.is_upvoted}
-                upvotes={playlist.upvotes}
-                title={playlist.title}
-                author={playlist.author}
-              />
-            ))}
+          <div className='gap-4 w-full'>
+            <Carousel className='pb-10'>
+              <CarouselContent>
+                {loaderData.playlists.map((playlist) => (
+                  <CarouselItem className='basis-1/3'>
+                    <PlaylistCard
+                      key={playlist.playlist_id}
+                      id={playlist.playlist_id}
+                      url={playlist.url}
+                      isUpvoted={playlist.is_upvoted}
+                      upvotes={playlist.upvotes}
+                      title={playlist.title}
+                      author={playlist.author}
+                    />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselDots />
+            </Carousel>
           </div>
         </div>
       </div>

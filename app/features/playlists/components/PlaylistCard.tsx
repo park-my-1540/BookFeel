@@ -44,23 +44,21 @@ export function PlaylistCard({
   return (
     <Card>
       <CardContent>
-        <div className='flex flex-row'>
-          <div className='w-full relative pb-[56.25%]'>
-            <iframe
-              src={url}
-              title={title}
-              allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-              referrerPolicy='strict-origin-when-cross-origin'
-              allowFullScreen
-              className='absolute top-0 left-0 w-full h-full'
-            ></iframe>
+        <div className='w-full relative pb-[56.25%]'>
+          <iframe
+            src={url}
+            title={title}
+            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+            referrerPolicy='strict-origin-when-cross-origin'
+            allowFullScreen
+            className='absolute top-0 left-0 w-full h-full'
+          ></iframe>
+        </div>
+        <div className='pt-5 flex flex-row justify-between'>
+          <div>
+            <Title1>{title}</Title1>
+            <Caption>{author}</Caption>
           </div>
-        </div>
-        <div className='pt-5'>
-          <Title1>{title}</Title1>
-          <Caption>{author}</Caption>
-        </div>
-        <div>
           <Button
             onClick={absorbClick}
             variant='outline'

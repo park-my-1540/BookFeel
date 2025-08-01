@@ -32,7 +32,7 @@ function ColCard(props: BookCardItem) {
 function RowCard(props: BookCardItem) {
   return (
     <a href={props.link} target='_blank' className='block relative'>
-      <Card className='bg-transparent border-none shadow-none py-4 relative'>
+      <Card className='bg-transparent border-none shadow-none py-2 relative'>
         <div className='flex flex-row gap-4 items-center'>
           <div className='w-28 max-w-28 min-w-28'>
             <img
