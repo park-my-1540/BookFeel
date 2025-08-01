@@ -52,3 +52,14 @@ export const Caption = ({ children, className }: TextProps) => (
 export const Small = ({ children, className }: TextProps) => (
   <p className={clsx("text-xs text-textSecondary", className)}>{children}</p>
 );
+
+export const Heading1 = ({ children, className }: TextProps) => (
+  <h1 className={clsx("text-2xl font-WinkyBold text-textPrimary", className)}>
+    {children}
+  </h1>
+);
+export const Heading2 = ({ children, className }: TextProps) => (
+  <h2 className={clsx("text-4xl font-WinkyBold text-textPrimary", className)}>
+    {children}
+  </h2>
+);

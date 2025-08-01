@@ -11,11 +11,13 @@ export const getPlaylists = async (client: SupabaseClient) => {
 export const createPlaylist = async (
   client: SupabaseClient,
   {
+    userId,
     title,
     author,
     url,
     reason,
   }: {
+    userId: string;
     title: string;
     author: string;
     url: string;
@@ -23,6 +25,7 @@ export const createPlaylist = async (
   }
 ) => {
   const { error } = await client.from("playlists").insert({
+    profile_id: userId,
     title,
     author,
     url,

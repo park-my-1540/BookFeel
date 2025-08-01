@@ -79,9 +79,7 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
           {actionData &&
             "formErrors" in actionData &&
             actionData.formErrors?.email && (
-              <p className='text-sm text-red-500'>
-                {actionData.formErrors.email}
-              </p>
+              <p className='text-sm text-red'>{actionData.formErrors.email}</p>
             )}
           <InputPair
             id='password'
@@ -95,7 +93,7 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
           {actionData &&
             "formErrors" in actionData &&
             actionData.formErrors?.password && (
-              <p className='text-sm text-red-500'>
+              <p className='text-sm text-red'>
                 {actionData.formErrors.password}
               </p>
             )}

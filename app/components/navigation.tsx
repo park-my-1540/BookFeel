@@ -6,7 +6,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "~/components/ui/navigation-menu";
-import { Title1 } from "@/components/ui/Typography";
+import { Heading1, Title1 } from "@/components/ui/Typography";
 import BookSearch from "@/features/search/components/SearchBarContainer";
 import { Button } from "./ui/button";
 import { Link } from "react-router";
@@ -36,7 +36,10 @@ export default function Navigation({
   return (
     <div className='flex justify-center items-center h-15 border-b'>
       <div className='w-11/12 flex justify-between items-center'>
-        <Title1 className='font-winky'>BookFeel</Title1>
+        <Link to='/'>
+          <Heading1 className='font-WinkyBold'>BookFeel</Heading1>
+        </Link>
+
         <div className='w-2/3 h-3/4 relative'>
           <BookSearch />
         </div>

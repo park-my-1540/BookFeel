@@ -18,7 +18,12 @@ export const meta: Route.MetaFunction = () => {
 const formSchema = z.object({
   title: z.string().min(1),
   author: z.string().min(1),
-  url: z.string().min(1),
+  url: z
+    .string()
+    .min(1)
+    .regex(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//, {
+      message: "유효한 YouTube 링크를 입력해주세요.",
+    }),
   description: z.string().min(1),
 });
 
@@ -29,17 +34,18 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const { client } = makeSSRClient(request);
-  await getLoggedInUserId(client);
+  const userId = await getLoggedInUserId(client);
   const formData = await request.formData();
   const { success, data, error } = formSchema.safeParse(
     Object.fromEntries(formData)
   );
   if (!success) {
     return {
-      fieldErrors: error.flatten().fieldErrors,
+      formErrors: error.flatten().fieldErrors,
     };
   }
   await createPlaylist(client, {
+    userId,
     title: data.title,
     author: data.author,
     url: data.url,
@@ -54,7 +60,7 @@ export default function SubmitPage({ actionData }: Route.ComponentProps) {
     navigation.state === "submitting" || navigation.state === "loading";
 
   return (
-    <div className=''>
+    <div className='pb-32'>
       <Form
         className='mt-16 mx-auto  w-[600px]'
         encType='multipart/form-data'
@@ -73,7 +79,7 @@ export default function SubmitPage({ actionData }: Route.ComponentProps) {
           {actionData &&
             "formErrors" in actionData &&
             actionData.formErrors.title && (
-              <p className='text-red-500'>{actionData.formErrors.title}</p>
+              <p className='text-red'>{actionData.formErrors.title}</p>
             )}
           <InputPair
             label='저자명'
@@ -87,11 +93,13 @@ export default function SubmitPage({ actionData }: Route.ComponentProps) {
           {actionData &&
             "formErrors" in actionData &&
             actionData?.formErrors?.author && (
-              <p className='text-red-500'>{actionData.formErrors.author}</p>
+              <p className='text-red'>{actionData.formErrors.author}</p>
             )}
+
+          <img className='w-1/2' src='/public/img/desc.png' />
           <InputPair
             label='URL'
-            description='공유 옵션 목록에서 퍼가기를 클릭하여 붙여넣어주세요.'
+            description='공유 옵션 목록에서 동영상 퍼가기에 src를 붙여넣어주세요.'
             name='url'
             type='text'
             id='url'
@@ -101,7 +109,7 @@ export default function SubmitPage({ actionData }: Route.ComponentProps) {
           {actionData &&
             "formErrors" in actionData &&
             actionData?.formErrors?.url && (
-              <p className='text-red-500'>{actionData.formErrors.url}</p>
+              <p className='text-red'>{actionData.formErrors.url}</p>
             )}
           <InputPair
             textArea
@@ -116,12 +124,10 @@ export default function SubmitPage({ actionData }: Route.ComponentProps) {
           {actionData &&
             "formErrors" in actionData &&
             actionData?.formErrors?.description && (
-              <p className='text-red-500'>
-                {actionData.formErrors.description}
-              </p>
+              <p className='text-red'>{actionData.formErrors.description}</p>
             )}
         </div>
-        <div className='w-full flex justify-center mt-16'>
+        <div className='w-full flex justify-center mt-12'>
           <Button className='w-full' type='submit' disabled={isSubmitting}>
             {isSubmitting ? (
               <Loader2 className='w-4 h-4 animate-spin' />

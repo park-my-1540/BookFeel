@@ -124,10 +124,17 @@
 }
 
 @font-face {
-  font-family: 'Winky';
+  font-family: 'WinkyBold';
   src: url('/fonts/WinkyRough-Medium.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
+}
+
+@font-face {
+  font-family: 'WinkyItalic';
+  src: url('/fonts/WinkyRough-LightItalic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
 }
 
 @font-face {
@@ -148,13 +155,6 @@
   src: url('/fonts/Pretendard-Bold.otf') format('truetype');
   font-weight: 700;
   font-style: normal;
-}
-
-@font-face {
-  font-family: 'Winky';
-  src: url('/fonts/WinkyRough-LightItalic.ttf') format('truetype');
-  font-weight: 400;
-  font-style: italic;
 }
 
 /* 필요 시 Medium, SemiBold 등도 추가 */

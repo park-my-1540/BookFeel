@@ -87,9 +87,7 @@ export default function JoinPage({ actionData }: Route.ComponentProps) {
             required
           />
           {actionData && "formErrors" in actionData && (
-            <p className='text-red-500 text-sm'>
-              {actionData?.formErrors?.name}
-            </p>
+            <p className='text-red text-sm'>{actionData?.formErrors?.name}</p>
           )}
           <InputPair
             id='username'
@@ -101,7 +99,7 @@ export default function JoinPage({ actionData }: Route.ComponentProps) {
             required
           />
           {actionData && "formErrors" in actionData && (
-            <p className='text-red-500 text-sm'>
+            <p className='text-red text-sm'>
               {actionData?.formErrors?.username}
             </p>
           )}
@@ -114,9 +112,7 @@ export default function JoinPage({ actionData }: Route.ComponentProps) {
             placeholder='ex) wemake@gmail.com'
           />
           {actionData && "formErrors" in actionData && (
-            <p className='text-red-500 text-sm'>
-              {actionData?.formErrors?.email}
-            </p>
+            <p className='text-red text-sm'>{actionData?.formErrors?.email}</p>
           )}
           <InputPair
             id='password'
@@ -128,7 +124,7 @@ export default function JoinPage({ actionData }: Route.ComponentProps) {
             required
           />
           {actionData && "formErrors" in actionData && (
-            <p className='text-red-500 text-sm'>
+            <p className='text-red text-sm'>
               {actionData?.formErrors?.password}
             </p>
           )}
