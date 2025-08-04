@@ -7,7 +7,7 @@ import {
   CarouselPrevious,
 } from "~/components/ui/carousel";
 import type { Route } from "./+types/home-page";
-import { redirect } from "react-router";
+import { Form, Link, redirect, useSearchParams } from "react-router";
 import { Card, CardContent } from "~/components/ui/card";
 import {
   choicesBooks,
@@ -18,6 +18,11 @@ import { BookCard } from "~/features/books/components/BestPreviewCard/BookCard";
 import { makeSSRClient } from "~/supa-client";
 import { getPlaylists } from "~/features/playlists/queries";
 import { PlaylistCard } from "~/features/playlists/components/PlaylistCard";
+import { Button } from "~/components/ui/button";
+import z from "zod";
+import { cn } from "~/lib/utils";
+import { useState } from "react";
+import { getCategories, getGeminiBooks } from "~/features/ideas/queries";
 
 export function meta() {
   return [
@@ -26,29 +31,55 @@ export function meta() {
   ];
 }
 
+export const keywordSchema = z
+  .string()
+  .min(1, "1자 이상 입력해주세요.")
+  .max(5, "5자 이내로 입력해주세요.")
+  .regex(/^\S+$/, "띄어쓰기 없이 한 단어로 입력해주세요.");
+
 export const action = async ({ request }: Route.ActionArgs) => {
   const formData = await request.formData();
-  const keyword = formData.get("search");
+  const search = formData.get("search");
   const target = formData.get("options") ?? "title";
-
+  const keyword = formData.get("keyword");
   if (keyword) {
     return redirect(
-      `/books?q=${encodeURIComponent(keyword as string)}&target=${encodeURIComponent(target as string)}`
+      `/books/generate/userCustom?keyword=${encodeURIComponent(keyword as string)}&target=userCustom`
+    );
+  }
+
+  if (search) {
+    return redirect(
+      `/books?q=${encodeURIComponent(search as string)}&target=${encodeURIComponent(target as string)}`
     );
   }
 };
 
+const searchParamsSchema = z.object({
+  keyword: z.string().optional().default("장마"),
+});
+
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { client } = makeSSRClient(request);
+  const url = new URL(request.url);
+  const { success, data: parsedData } = searchParamsSchema.safeParse(
+    Object.fromEntries(url.searchParams)
+  );
   try {
-    const [books, choices, playlists] = await Promise.all([
-      rankedBooks(),
-      choicesBooks(),
-      getPlaylists(client),
-    ]);
+    const [books, choices, geminiBooks, search_keyword, playlists] =
+      await Promise.all([
+        rankedBooks(),
+        choicesBooks(),
+        getGeminiBooks(client, parsedData?.keyword),
+        getCategories(client),
+        getPlaylists(client),
+      ]);
+
     return {
       books,
       choices,
+      search_keyword,
+      geminiBooks,
       playlists,
     };
   } catch (e) {
@@ -58,6 +89,12 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
+  const SEARCH_KEYWORD = loaderData.search_keyword;
+  const [searchParams, setSearchParams] = useSearchParams(); // 쿼리 파라미터를 관리하는 훅
+  const [toggle, setToggle] = useState(
+    searchParams.get("keyword") === "userCustom"
+  );
+
   return (
     <div className='h-full'>
       <div className='bg-dark h-[45vh]'>
@@ -181,36 +218,62 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
           <section className='a p-9 pb-0 bg-white'>
             <div className='flex items-center justify-between mb-4'>
               <h2 className='text-xl font-bold'>
-                Gemeni가 추천해주는 장마 키워드 도서
+                Gemeni가 추천해주는 감성 키워드 도서
               </h2>
             </div>
-            <div className='grid grid-cols-5 gap-8'>
-              {loaderData.books.slice(0, 5).map((book) => (
-                <BookCard
-                  key={book.itemId}
-                  itemId={book.itemId}
-                  cover={book.cover}
-                  author={book.author}
-                  link={book.link}
-                  title={book.title}
-                  bestRank={book.bestRank}
-                />
+            <div className='flex gap-3'>
+              {SEARCH_KEYWORD.map(({ keyword, category_id }) => (
+                <Button
+                  key={category_id}
+                  variant={"outline"}
+                  className={cn(
+                    searchParams.get("keyword") === keyword && "bg-accent"
+                  )}
+                >
+                  <Link
+                    to={`?keyword=${keyword}`}
+                    preventScrollReset
+                    onClick={() => setToggle(false)}
+                  >
+                    # {keyword}
+                  </Link>
+                </Button>
               ))}
+              <Button
+                variant={"outline"}
+                className={cn(toggle && "bg-accent")}
+                onClick={() => {
+                  setSearchParams(
+                    { keyword: "userCustom" },
+                    { preventScrollReset: true }
+                  );
+                  setToggle(true);
+                }}
+              >
+                # 직접 입력하기
+              </Button>
             </div>
-          </section>
-
-          <section className='b p-9 pb-0 bg-white'>
-            <div className='flex items-center justify-between mb-4'>
-              <h2 className='text-xl font-bold'>
-                Gemeni가 추천해주는 무더위 키워드 도서
-              </h2>
-            </div>
+            {toggle ? (
+              <Form method='post' action='/'>
+                <div className='flex w-[350px] items-center pt-2'>
+                  <input
+                    type='text'
+                    name='keyword'
+                    pattern='^\S{1,10}$'
+                    className='w-full p-3'
+                    placeholder='키워드를 5자 이내 한 단어로 입력해주세요.'
+                    maxLength={5}
+                  />
+                  <Button type='submit'>검색</Button>
+                </div>
+              </Form>
+            ) : null}
             <div className='grid grid-cols-5 gap-8'>
-              {loaderData.books.slice(0, 5).map((book) => (
+              {loaderData.geminiBooks.map((book) => (
                 <BookCard
                   key={book.itemId}
                   itemId={book.itemId}
-                  cover={book.cover}
+                  cover={book.cover_url}
                   author={book.author}
                   link={book.link}
                   title={book.title}

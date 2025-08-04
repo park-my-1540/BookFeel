@@ -4,7 +4,10 @@ export default [
   route("/", "common/pages/home-page.tsx"),
   ...prefix("books", [
     index("features/books/pages/list-page.tsx"),
-    route("/generate", "features/books/api/generate-idea-page.tsx"),
+    ...prefix("generate", [
+      index("features/books/api/generate-idea-page.tsx"),
+      route("/userCustom", "features/books/api/generate-user-idea-page.tsx"),
+    ]),
   ]),
   ...prefix("playlists", [
     index("features/playlists/pages/playlist-page.tsx"),

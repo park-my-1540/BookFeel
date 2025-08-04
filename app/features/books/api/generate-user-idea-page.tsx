@@ -2,7 +2,7 @@ import type { Route } from "../../../+types/root";
 import { keywordPrompt } from "../prompts";
 import { adminClient } from "~/supa-client";
 import { booksByKeyword } from "../services/fetchBooks";
-import { insertIdeas } from "~/features/ideas/mutaions";
+import { insertIdeasByUser } from "~/features/ideas/mutaions";
 
 const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const MODEL_NAME = "gemini-1.5-flash-8b-latest"; // 또는 gemini-pro 등
@@ -20,8 +20,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   // }
 
   const url = new URL(request.url);
-  const keyword = url.searchParams.get("keyword") ?? "장마";
-  const userCustom = url.searchParams.get("target") ?? null;
+  const keyword = url.searchParams.get("keyword") ?? "";
 
   const prompt = keywordPrompt(keyword);
   if (!prompt) {
@@ -50,18 +49,17 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   if (!text) {
     return Response.json({ error: "No response from Gemini" }, { status: 400 });
   }
-
   const books = await booksByKeyword(JSON.parse(text));
 
   const booksWithKeyword = books.map((book) => {
     return {
-      keyword: userCustom ? "userCustom" : keyword,
+      keyword: "userCustom",
       title: book.title,
       author: book.author,
       cover_url: book.cover,
     };
   });
 
-  await insertIdeas(adminClient, booksWithKeyword);
+  await insertIdeasByUser(adminClient, booksWithKeyword);
   return Response.json({ ok: true });
 };
