@@ -10,683 +10,86 @@ export type Database = {
   // Allows to automatically instanciate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+    PostgrestVersion: "12.2.12 (cd3cf9e)"
   }
   public: {
     Tables: {
-      categories: {
+      category: {
         Row: {
           category_id: number
-          created_at: string
-          description: string
-          name: string
-          updated_at: string
+          keyword: string
         }
         Insert: {
           category_id?: never
-          created_at?: string
-          description: string
-          name: string
-          updated_at?: string
+          keyword: string
         }
         Update: {
           category_id?: never
-          created_at?: string
-          description?: string
-          name?: string
-          updated_at?: string
+          keyword?: string
         }
         Relationships: []
       }
-      events: {
+      gemini_ideas: {
         Row: {
-          created_at: string | null
-          event_data: Json | null
-          event_id: string
-          event_type: Database["public"]["Enums"]["event_type"] | null
-        }
-        Insert: {
-          created_at?: string | null
-          event_data?: Json | null
-          event_id?: string
-          event_type?: Database["public"]["Enums"]["event_type"] | null
-        }
-        Update: {
-          created_at?: string | null
-          event_data?: Json | null
-          event_id?: string
-          event_type?: Database["public"]["Enums"]["event_type"] | null
-        }
-        Relationships: []
-      }
-      follows: {
-        Row: {
+          author: string
+          cover: string
           created_at: string
-          follower_id: string | null
-          following_id: string | null
-        }
-        Insert: {
-          created_at?: string
-          follower_id?: string | null
-          following_id?: string | null
-        }
-        Update: {
-          created_at?: string
-          follower_id?: string | null
-          following_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "follows_follower_id_profiles_profile_id_fk"
-            columns: ["follower_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "follows_following_id_profiles_profile_id_fk"
-            columns: ["following_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-        ]
-      }
-      gpt_ideas: {
-        Row: {
-          claimed_at: string | null
-          claimed_by: string | null
-          created_at: string
-          gpt_idea_id: number
-          idea: string
-          views: number
-        }
-        Insert: {
-          claimed_at?: string | null
-          claimed_by?: string | null
-          created_at?: string
-          gpt_idea_id?: never
-          idea: string
-          views?: number
-        }
-        Update: {
-          claimed_at?: string | null
-          claimed_by?: string | null
-          created_at?: string
-          gpt_idea_id?: never
-          idea?: string
-          views?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "gpt_ideas_claimed_by_profiles_profile_id_fk"
-            columns: ["claimed_by"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-        ]
-      }
-      gpt_ideas_likes: {
-        Row: {
-          gpt_idea_id: number
-          profile_id: string
-        }
-        Insert: {
-          gpt_idea_id: number
-          profile_id: string
-        }
-        Update: {
-          gpt_idea_id?: number
-          profile_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "gpt_ideas_likes_gpt_idea_id_gpt_ideas_gpt_idea_id_fk"
-            columns: ["gpt_idea_id"]
-            isOneToOne: false
-            referencedRelation: "gpt_ideas"
-            referencedColumns: ["gpt_idea_id"]
-          },
-          {
-            foreignKeyName: "gpt_ideas_likes_gpt_idea_id_gpt_ideas_gpt_idea_id_fk"
-            columns: ["gpt_idea_id"]
-            isOneToOne: false
-            referencedRelation: "gpt_ideas_view"
-            referencedColumns: ["gpt_idea_id"]
-          },
-          {
-            foreignKeyName: "gpt_ideas_likes_profile_id_profiles_profile_id_fk"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-        ]
-      }
-      jobs: {
-        Row: {
-          benefits: string
-          company_location: string
-          company_logo: string
-          company_name: string
-          company_url: string
-          created_at: string
-          job_id: number
-          job_location: Database["public"]["Enums"]["job_locations"]
-          job_type: Database["public"]["Enums"]["job_types"]
-          overview: string
-          position: string
-          qualifications: string
-          responsibilities: string
-          salary_range: Database["public"]["Enums"]["salary_ranges"]
-          skills: string
-          updated_at: string
-        }
-        Insert: {
-          benefits: string
-          company_location: string
-          company_logo: string
-          company_name: string
-          company_url: string
-          created_at?: string
-          job_id?: never
-          job_location: Database["public"]["Enums"]["job_locations"]
-          job_type: Database["public"]["Enums"]["job_types"]
-          overview: string
-          position: string
-          qualifications: string
-          responsibilities: string
-          salary_range: Database["public"]["Enums"]["salary_ranges"]
-          skills: string
-          updated_at?: string
-        }
-        Update: {
-          benefits?: string
-          company_location?: string
-          company_logo?: string
-          company_name?: string
-          company_url?: string
-          created_at?: string
-          job_id?: never
-          job_location?: Database["public"]["Enums"]["job_locations"]
-          job_type?: Database["public"]["Enums"]["job_types"]
-          overview?: string
-          position?: string
-          qualifications?: string
-          responsibilities?: string
-          salary_range?: Database["public"]["Enums"]["salary_ranges"]
-          skills?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      message_rooms: {
-        Row: {
-          created_at: string
-          message_room_id: number
-        }
-        Insert: {
-          created_at?: string
-          message_room_id?: number
-        }
-        Update: {
-          created_at?: string
-          message_room_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "message_rooms_message_room_id_fkey"
-            columns: ["message_room_id"]
-            isOneToOne: true
-            referencedRelation: "message_rooms"
-            referencedColumns: ["message_room_id"]
-          },
-        ]
-      }
-      messages: {
-        Row: {
-          content: string
-          created_at: string
-          message_id: number
-          message_room_id: number | null
-          sender_id: string | null
-        }
-        Insert: {
-          content: string
-          created_at?: string
-          message_id?: never
-          message_room_id?: number | null
-          sender_id?: string | null
-        }
-        Update: {
-          content?: string
-          created_at?: string
-          message_id?: never
-          message_room_id?: number | null
-          sender_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "messages_message_room_id_message_rooms_message_room_id_fk"
-            columns: ["message_room_id"]
-            isOneToOne: false
-            referencedRelation: "message_rooms"
-            referencedColumns: ["message_room_id"]
-          },
-          {
-            foreignKeyName: "messages_sender_id_profiles_profile_id_fk"
-            columns: ["sender_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-        ]
-      }
-      messages_room_members: {
-        Row: {
-          created_at: string
-          message_room_id: number
-          profile_id: string
-        }
-        Insert: {
-          created_at?: string
-          message_room_id: number
-          profile_id: string
-        }
-        Update: {
-          created_at?: string
-          message_room_id?: number
-          profile_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "messages_room_members_message_room_id_fkey"
-            columns: ["message_room_id"]
-            isOneToOne: false
-            referencedRelation: "message_rooms"
-            referencedColumns: ["message_room_id"]
-          },
-          {
-            foreignKeyName: "messages_room_members_profile_id_profiles_profile_id_fk"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-        ]
-      }
-      notifications: {
-        Row: {
-          created_at: string
-          notification_id: number
-          post_id: number | null
-          product_id: number | null
-          seen: boolean
-          source_id: string | null
-          target_id: string
-          type: Database["public"]["Enums"]["notification_type"]
-        }
-        Insert: {
-          created_at?: string
-          notification_id?: never
-          post_id?: number | null
-          product_id?: number | null
-          seen?: boolean
-          source_id?: string | null
-          target_id: string
-          type: Database["public"]["Enums"]["notification_type"]
-        }
-        Update: {
-          created_at?: string
-          notification_id?: never
-          post_id?: number | null
-          product_id?: number | null
-          seen?: boolean
-          source_id?: string | null
-          target_id?: string
-          type?: Database["public"]["Enums"]["notification_type"]
-        }
-        Relationships: [
-          {
-            foreignKeyName: "notifications_post_id_posts_post_id_fk"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "community_post_detail"
-            referencedColumns: ["post_id"]
-          },
-          {
-            foreignKeyName: "notifications_post_id_posts_post_id_fk"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "community_post_list_view"
-            referencedColumns: ["post_id"]
-          },
-          {
-            foreignKeyName: "notifications_post_id_posts_post_id_fk"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "posts"
-            referencedColumns: ["post_id"]
-          },
-          {
-            foreignKeyName: "notifications_product_id_products_product_id_fk"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "product_list_view"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "notifications_product_id_products_product_id_fk"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "product_overview_view"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "notifications_product_id_products_product_id_fk"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "notifications_source_id_profiles_profile_id_fk"
-            columns: ["source_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "notifications_target_id_profiles_profile_id_fk"
-            columns: ["target_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-        ]
-      }
-      post_replies: {
-        Row: {
-          created_at: string
-          parent_id: number | null
-          post_id: number | null
-          post_reply_id: number
-          profile_id: string
-          reply: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          parent_id?: number | null
-          post_id?: number | null
-          post_reply_id?: never
-          profile_id: string
-          reply: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          parent_id?: number | null
-          post_id?: number | null
-          post_reply_id?: never
-          profile_id?: string
-          reply?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "post_replies_parent_id_post_replies_post_reply_id_fk"
-            columns: ["parent_id"]
-            isOneToOne: false
-            referencedRelation: "post_replies"
-            referencedColumns: ["post_reply_id"]
-          },
-          {
-            foreignKeyName: "post_replies_post_id_posts_post_id_fk"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "community_post_detail"
-            referencedColumns: ["post_id"]
-          },
-          {
-            foreignKeyName: "post_replies_post_id_posts_post_id_fk"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "community_post_list_view"
-            referencedColumns: ["post_id"]
-          },
-          {
-            foreignKeyName: "post_replies_post_id_posts_post_id_fk"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "posts"
-            referencedColumns: ["post_id"]
-          },
-          {
-            foreignKeyName: "post_replies_profile_id_profiles_profile_id_fk"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-        ]
-      }
-      post_upvotes: {
-        Row: {
-          post_id: number
-          profile_id: string
-        }
-        Insert: {
-          post_id: number
-          profile_id: string
-        }
-        Update: {
-          post_id?: number
-          profile_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "post_upvotes_post_id_posts_post_id_fk"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "community_post_detail"
-            referencedColumns: ["post_id"]
-          },
-          {
-            foreignKeyName: "post_upvotes_post_id_posts_post_id_fk"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "community_post_list_view"
-            referencedColumns: ["post_id"]
-          },
-          {
-            foreignKeyName: "post_upvotes_post_id_posts_post_id_fk"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "posts"
-            referencedColumns: ["post_id"]
-          },
-          {
-            foreignKeyName: "post_upvotes_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-        ]
-      }
-      posts: {
-        Row: {
-          content: string
-          created_at: string
-          post_id: number
-          profile_id: string | null
+          gemini_idea_id: number
+          keyword: string
           title: string
-          topic_id: number | null
-          updated_at: string
-          upvotes: number | null
         }
         Insert: {
-          content: string
+          author: string
+          cover: string
           created_at?: string
-          post_id?: never
-          profile_id?: string | null
+          gemini_idea_id?: never
+          keyword: string
           title: string
-          topic_id?: number | null
-          updated_at?: string
-          upvotes?: number | null
         }
         Update: {
-          content?: string
+          author?: string
+          cover?: string
           created_at?: string
-          post_id?: never
-          profile_id?: string | null
+          gemini_idea_id?: never
+          keyword?: string
           title?: string
-          topic_id?: number | null
-          updated_at?: string
-          upvotes?: number | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "posts_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "posts_topic_id_topics_topic_id_fk"
-            columns: ["topic_id"]
-            isOneToOne: false
-            referencedRelation: "community_post_detail"
-            referencedColumns: ["topic_id"]
-          },
-          {
-            foreignKeyName: "posts_topic_id_topics_topic_id_fk"
-            columns: ["topic_id"]
-            isOneToOne: false
-            referencedRelation: "topics"
-            referencedColumns: ["topic_id"]
-          },
-        ]
+        Relationships: []
       }
-      product_upvotes: {
+      playlists: {
         Row: {
-          id: string
-          product_id: number
-        }
-        Insert: {
-          id: string
-          product_id: number
-        }
-        Update: {
-          id?: string
-          product_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "product_upvotes_id_fkey"
-            columns: ["id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "product_upvotes_product_id_products_product_id_fk"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "product_list_view"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "product_upvotes_product_id_products_product_id_fk"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "product_overview_view"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "product_upvotes_product_id_products_product_id_fk"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["product_id"]
-          },
-        ]
-      }
-      products: {
-        Row: {
-          category_id: number | null
+          author: string
           created_at: string
-          description: string
-          how_it_works: string
-          icon: string
-          id: string | null
-          is_promoted: boolean
-          name: string
-          product_id: number
-          profile_id: string
-          promoted_from: string | null
-          promoted_to: string | null
-          stats: Json
-          tagline: string
-          updated_at: string
+          playlist_id: number
+          profile_id: string | null
+          reason: string | null
+          title: string
+          upvotes: number | null
           url: string
         }
         Insert: {
-          category_id?: number | null
+          author: string
           created_at?: string
-          description: string
-          how_it_works: string
-          icon: string
-          id?: string | null
-          is_promoted?: boolean
-          name: string
-          product_id?: never
-          profile_id: string
-          promoted_from?: string | null
-          promoted_to?: string | null
-          stats?: Json
-          tagline?: string
-          updated_at?: string
+          playlist_id?: never
+          profile_id?: string | null
+          reason?: string | null
+          title: string
+          upvotes?: number | null
           url: string
         }
         Update: {
-          category_id?: number | null
+          author?: string
           created_at?: string
-          description?: string
-          how_it_works?: string
-          icon?: string
-          id?: string | null
-          is_promoted?: boolean
-          name?: string
-          product_id?: never
-          profile_id?: string
-          promoted_from?: string | null
-          promoted_to?: string | null
-          stats?: Json
-          tagline?: string
-          updated_at?: string
+          playlist_id?: never
+          profile_id?: string | null
+          reason?: string | null
+          title?: string
+          upvotes?: number | null
           url?: string
         }
         Relationships: [
           {
-            foreignKeyName: "products_category_id_categories_category_id_fk"
-            columns: ["category_id"]
-            isOneToOne: false
-            referencedRelation: "categories"
-            referencedColumns: ["category_id"]
-          },
-          {
-            foreignKeyName: "products_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "products_profile_id_fkey1"
+            foreignKeyName: "playlists_profile_id_profiles_profile_id_fk"
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -699,383 +102,154 @@ export type Database = {
           avatar: string | null
           bio: string | null
           created_at: string
-          headline: string | null
           name: string
           profile_id: string
-          role: Database["public"]["Enums"]["role"]
-          stats: Json | null
           updated_at: string
           username: string
-          views: Json | null
         }
         Insert: {
           avatar?: string | null
           bio?: string | null
           created_at?: string
-          headline?: string | null
           name: string
           profile_id: string
-          role?: Database["public"]["Enums"]["role"]
-          stats?: Json | null
           updated_at?: string
           username: string
-          views?: Json | null
         }
         Update: {
           avatar?: string | null
           bio?: string | null
           created_at?: string
-          headline?: string | null
           name?: string
           profile_id?: string
-          role?: Database["public"]["Enums"]["role"]
-          stats?: Json | null
           updated_at?: string
           username?: string
-          views?: Json | null
         }
         Relationships: []
       }
-      reviews: {
+      upvotes: {
         Row: {
-          created_at: string
-          id: string | null
-          product_id: number | null
-          rating: number
-          review: string
-          review_id: number
-          updated_at: string
+          playlist_id: number
+          profile_id: string
         }
         Insert: {
-          created_at?: string
-          id?: string | null
-          product_id?: number | null
-          rating: number
-          review: string
-          review_id?: never
-          updated_at?: string
+          playlist_id: number
+          profile_id: string
         }
         Update: {
-          created_at?: string
-          id?: string | null
-          product_id?: number | null
-          rating?: number
-          review?: string
-          review_id?: never
-          updated_at?: string
+          playlist_id?: number
+          profile_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "reviews_id_profiles_profile_id_fk"
-            columns: ["id"]
+            foreignKeyName: "upvotes_playlist_id_playlists_playlist_id_fk"
+            columns: ["playlist_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
+            referencedRelation: "playlist_list_view"
+            referencedColumns: ["playlist_id"]
           },
           {
-            foreignKeyName: "reviews_product_id_products_product_id_fk"
-            columns: ["product_id"]
+            foreignKeyName: "upvotes_playlist_id_playlists_playlist_id_fk"
+            columns: ["playlist_id"]
             isOneToOne: false
-            referencedRelation: "product_list_view"
-            referencedColumns: ["product_id"]
+            referencedRelation: "playlists"
+            referencedColumns: ["playlist_id"]
           },
           {
-            foreignKeyName: "reviews_product_id_products_product_id_fk"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "product_overview_view"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "reviews_product_id_products_product_id_fk"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["product_id"]
-          },
-        ]
-      }
-      team: {
-        Row: {
-          created_at: string
-          equity_split: number
-          product_description: string
-          product_name: string
-          product_stage: Database["public"]["Enums"]["product_stage"]
-          roles: string
-          team_id: number
-          team_leader_id: string
-          team_size: number
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          equity_split: number
-          product_description: string
-          product_name: string
-          product_stage: Database["public"]["Enums"]["product_stage"]
-          roles: string
-          team_id?: never
-          team_leader_id: string
-          team_size: number
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          equity_split?: number
-          product_description?: string
-          product_name?: string
-          product_stage?: Database["public"]["Enums"]["product_stage"]
-          roles?: string
-          team_id?: never
-          team_leader_id?: string
-          team_size?: number
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "team_team_leader_id_profiles_profile_id_fk"
-            columns: ["team_leader_id"]
+            foreignKeyName: "upvotes_profile_id_profiles_profile_id_fk"
+            columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["profile_id"]
           },
         ]
       }
-      topics: {
+      user_custom_keywords: {
         Row: {
+          author: string
+          cover: string
           created_at: string
-          name: string
-          slug: string
-          topic_id: number
+          gemini_idea_id: number
+          keyword: string
+          title: string
         }
         Insert: {
+          author: string
+          cover: string
           created_at?: string
-          name: string
-          slug: string
-          topic_id?: never
+          gemini_idea_id?: never
+          keyword: string
+          title: string
         }
         Update: {
+          author?: string
+          cover?: string
           created_at?: string
-          name?: string
-          slug?: string
-          topic_id?: never
+          gemini_idea_id?: never
+          keyword?: string
+          title?: string
         }
         Relationships: []
       }
     }
     Views: {
-      community_post_detail: {
-        Row: {
-          author_avatar: string | null
-          author_created_at: string | null
-          author_name: string | null
-          author_role: Database["public"]["Enums"]["role"] | null
-          content: string | null
-          created_at: string | null
-          is_upvoted: boolean | null
-          post_id: number | null
-          products: number | null
-          replies: number | null
-          title: string | null
-          topic_id: number | null
-          topic_name: string | null
-          topic_slug: string | null
-          upvotes: number | null
-        }
-        Relationships: []
-      }
-      community_post_list_view: {
+      all_gemini_ideas: {
         Row: {
           author: string | null
-          author_avatar: string | null
-          author_username: string | null
+          cover: string | null
           created_at: string | null
-          is_upvoted: boolean | null
-          post_id: number | null
+          keyword: string | null
           title: string | null
-          topic: string | null
-          topic_slug: string | null
-          upvotes: number | null
         }
         Relationships: []
       }
-      gpt_ideas_view: {
+      playlist_list_view: {
         Row: {
+          author: string | null
           created_at: string | null
-          gpt_idea_id: number | null
-          idea: string | null
-          is_claimed: boolean | null
-          likes: number | null
-          views: number | null
-        }
-        Relationships: []
-      }
-      messages_view: {
-        Row: {
-          avatar: string | null
-          last_message: string | null
-          message_room_id: number | null
-          name: string | null
-          other_profile_id: string | null
-          profile_id: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "messages_room_members_message_room_id_fkey"
-            columns: ["message_room_id"]
-            isOneToOne: false
-            referencedRelation: "message_rooms"
-            referencedColumns: ["message_room_id"]
-          },
-          {
-            foreignKeyName: "messages_room_members_profile_id_profiles_profile_id_fk"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "messages_room_members_profile_id_profiles_profile_id_fk"
-            columns: ["other_profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-        ]
-      }
-      product_list_view: {
-        Row: {
-          category_id: number | null
-          created_at: string | null
-          is_promoted: boolean | null
           is_upvoted: boolean | null
-          name: string | null
-          product_id: number | null
+          playlist_id: number | null
           profile_id: string | null
-          promoted_from: string | null
-          reviews: string | null
-          stats: Json | null
-          tagline: string | null
-          upvotes: string | null
-          views: string | null
+          title: string | null
+          upvotes: number | null
+          url: string | null
         }
         Insert: {
-          category_id?: number | null
+          author?: string | null
           created_at?: string | null
-          is_promoted?: boolean | null
           is_upvoted?: never
-          name?: string | null
-          product_id?: number | null
+          playlist_id?: number | null
           profile_id?: string | null
-          promoted_from?: string | null
-          reviews?: never
-          stats?: Json | null
-          tagline?: string | null
-          upvotes?: never
-          views?: never
+          title?: string | null
+          upvotes?: number | null
+          url?: string | null
         }
         Update: {
-          category_id?: number | null
+          author?: string | null
           created_at?: string | null
-          is_promoted?: boolean | null
           is_upvoted?: never
-          name?: string | null
-          product_id?: number | null
+          playlist_id?: number | null
           profile_id?: string | null
-          promoted_from?: string | null
-          reviews?: never
-          stats?: Json | null
-          tagline?: string | null
-          upvotes?: never
-          views?: never
+          title?: string | null
+          upvotes?: number | null
+          url?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "products_category_id_categories_category_id_fk"
-            columns: ["category_id"]
-            isOneToOne: false
-            referencedRelation: "categories"
-            referencedColumns: ["category_id"]
-          },
-          {
-            foreignKeyName: "products_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "products_profile_id_fkey1"
+            foreignKeyName: "playlists_profile_id_profiles_profile_id_fk"
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["profile_id"]
           },
         ]
-      }
-      product_overview_view: {
-        Row: {
-          average_rating: number | null
-          description: string | null
-          how_it_works: string | null
-          icon: string | null
-          name: string | null
-          product_id: number | null
-          reviews: string | null
-          tagline: string | null
-          upvotes: string | null
-          url: string | null
-          views: string | null
-        }
-        Relationships: []
       }
     }
     Functions: {
-      get_dashboard_stats: {
-        Args: { user_id: string }
-        Returns: {
-          views: number
-          month: string
-        }[]
-      }
-      get_product_stats: {
-        Args: { product_id: string }
-        Returns: {
-          product_views: number
-          product_visits: number
-          month: string
-        }[]
-      }
-      get_room: {
-        Args: { from_user_id: string; to_user_id: string }
-        Returns: {
-          message_room_id: number
-        }[]
-      }
-      track_event: {
-        Args: {
-          event_type: Database["public"]["Enums"]["event_type"]
-          event_data: Json
-        }
-        Returns: undefined
-      }
+      [_ in never]: never
     }
     Enums: {
-      event_type: "product_view" | "product_visit" | "profile_view"
-      job_locations: "remote" | "onsite" | "hybrid"
-      job_types: "full-time" | "part-time" | "contract" | "freelance"
-      notification_type: "follow" | "review" | "reply" | "mention"
-      product_stage: "idea" | "prototype" | "mvp" | "product"
-      role: "developer" | "designer" | "marketer" | "product-manager"
-      salary_ranges:
-        | "$0 - $50,000"
-        | "$50,000 - $100,000"
-        | "$100,000 - $150,000"
-        | "$150,000 - $200,000"
-        | "$200,000 - $250,000"
-        | "$250,000 - $300,000"
-        | "$300,000+"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1202,22 +376,6 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {
-      event_type: ["product_view", "product_visit", "profile_view"],
-      job_locations: ["remote", "onsite", "hybrid"],
-      job_types: ["full-time", "part-time", "contract", "freelance"],
-      notification_type: ["follow", "review", "reply", "mention"],
-      product_stage: ["idea", "prototype", "mvp", "product"],
-      role: ["developer", "designer", "marketer", "product-manager"],
-      salary_ranges: [
-        "$0 - $50,000",
-        "$50,000 - $100,000",
-        "$100,000 - $150,000",
-        "$150,000 - $200,000",
-        "$200,000 - $250,000",
-        "$250,000 - $300,000",
-        "$300,000+",
-      ],
-    },
+    Enums: {},
   },
 } as const

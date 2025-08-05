@@ -7,8 +7,8 @@ import {
 import { createClient } from "@supabase/supabase-js";
 
 export const browserClient = createBrowserClient<any>(
-  "https://qjoeryjpfwehhavniipi.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqb2VyeWpwZndlaGhhdm5paXBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUyOTY1MzIsImV4cCI6MjA2MDg3MjUzMn0.NWmMSU_swrc5LyVxlI3OWxjTkL54UAwI4XeUtPJxxIg"
+  "https://spmbavubrdyesqqcfeim.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwbWJhdnVicmR5ZXNxcWNmZWltIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1Mzg3Mzg4MCwiZXhwIjoyMDY5NDQ5ODgwfQ.c5_I9-WqlhZpz22PpPg1kX96OWYPhaad21Da8-5-2Uo"
 );
 
 export const makeSSRClient = (request: Request) => {
