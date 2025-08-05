@@ -13,7 +13,7 @@ export const gemini_ideas = pgTable("gemini_ideas", {
     .generatedAlwaysAsIdentity(),
   title: text().notNull(),
   author: text().notNull(),
-  cover_url: text().notNull(),
+  cover: text().notNull(),
   keyword: text().notNull(),
   created_at: timestamp().notNull().defaultNow(),
 });
@@ -24,7 +24,7 @@ export const user_custom_keywords = pgTable("user_custom_keywords", {
     .generatedAlwaysAsIdentity(),
   title: text().notNull(),
   author: text().notNull(),
-  cover_url: text().notNull(),
+  cover: text().notNull(),
   keyword: text().notNull(),
   created_at: timestamp().notNull().defaultNow(),
 });

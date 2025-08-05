@@ -58,7 +58,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       keyword: userCustom ? "userCustom" : keyword,
       title: book.title,
       author: book.author,
-      cover_url: book.cover,
+      cover: book.cover,
     };
   });
 

@@ -4,7 +4,7 @@ import { desc } from "drizzle-orm";
 interface booksWithKeyword {
   title: string;
   author: string;
-  cover_url: string;
+  cover: string;
   keyword: string;
 }
 
@@ -46,7 +46,7 @@ export const insertIdeas = async (
     booksWithKeyword.map((book) => ({
       title: book.title,
       author: book.author,
-      cover_url: book.cover_url,
+      cover: book.cover,
       keyword: book.keyword,
     }))
   );
