@@ -4,7 +4,7 @@ import { Title1, Caption } from "~/components/ui/Typography";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import { cn } from "~/lib/utils";
-interface PlaylistCardProps {
+export interface PlaylistCardProps {
   id: number;
   url: string;
   title: string;

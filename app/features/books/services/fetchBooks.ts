@@ -3,6 +3,7 @@ import type {
   BookRankingResponse,
   FetchBooksParams,
   FetchBooksResponse,
+  BookCardItem,
 } from "../type";
 import { generateId } from "@/util/util";
 /**
@@ -42,7 +43,7 @@ export const fetchBooks = async (
  *
  * @returns API 응답 데이터에 key값 추가하여 반환
  */
-export const rankedBooks = async (): Promise<BookRankingResponse> => {
+export const rankedBooks = async (): Promise<BookCardItem[]> => {
   const params = {
     ttbkey: process.env.NEXT_PUBLIC_ALADIN_API_KEY,
     QueryType: "Bestseller",
@@ -59,7 +60,7 @@ export const rankedBooks = async (): Promise<BookRankingResponse> => {
       "https://www.aladin.co.kr/ttb/api/ItemList.aspx?",
       { params }
     );
-    return data.item;
+    return data.item ?? [];
   } catch (error) {
     console.error("fetchBooks error:", error);
     throw error;
@@ -71,7 +72,7 @@ export const rankedBooks = async (): Promise<BookRankingResponse> => {
  *
  * @returns API 응답 데이터에 key값 추가하여 반환
  */
-export const choicesBooks = async (): Promise<BookRankingResponse> => {
+export const choicesBooks = async (): Promise<BookCardItem[]> => {
   const params = {
     ttbkey: process.env.NEXT_PUBLIC_ALADIN_API_KEY!,
     QueryType: "ItemNewSpecial",
@@ -88,7 +89,7 @@ export const choicesBooks = async (): Promise<BookRankingResponse> => {
       "https://www.aladin.co.kr/ttb/api/ItemList.aspx?",
       { params }
     );
-    return data.item;
+    return data.item ?? [];
   } catch (error) {
     console.error("fetchBooks error:", error);
     throw error;

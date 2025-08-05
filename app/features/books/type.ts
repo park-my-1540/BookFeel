@@ -44,13 +44,13 @@ export type BookDetail = BookSummary & Pick<BookItemResponse, "contents">;
  * BestSeller
  */
 export type BookRankingResponse = {
-  item: BookCardItem;
+  item?: BookCardItem[];
 };
 export type BookCardItem = {
   itemId: string;
   cover: string;
   title: string;
-  bestRank: string;
+  bestRank?: string;
   author: string;
   link: string;
 };
