@@ -41,7 +41,7 @@ export async function generateBooksByGemini(keyword: string) {
       keyword: "userCustom",
       title: book.title,
       author: book.author,
-      cover_url: book.cover,
+      cover: book.cover,
     };
   });
 
