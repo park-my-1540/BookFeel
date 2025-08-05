@@ -1,27 +1,12 @@
-import type { Route } from "../../../+types/root";
-import { keywordPrompt } from "../prompts";
-import { adminClient } from "~/supa-client";
-import { booksByKeyword } from "../services/fetchBooks";
+import { keywordPrompt } from "~/features/books/prompts";
+import { booksByKeyword } from "~/features/books/services/fetchBooks";
 import { insertIdeasByUser } from "~/features/ideas/mutaions";
+import { adminClient } from "~/supa-client";
 
 const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const MODEL_NAME = "gemini-1.5-flash-8b-latest"; // 또는 gemini-pro 등
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
-  //   endpoint 보호
-  // if (request.method !== "POST") {
-  //   return new Response(null, { status: 404 });
-  // }
-
-  // //   필요한 헤더 있는지
-  // const headers = request.headers.get("X-POTATO");
-  // if (!headers || headers !== "X-TOMATO") {
-  //   return new Response("Unauthorized", { status: 401 });
-  // }
-
-  const url = new URL(request.url);
-  const keyword = url.searchParams.get("keyword") ?? "";
-
+export async function generateBooksByGemini(keyword: string) {
   const prompt = keywordPrompt(keyword);
   if (!prompt) {
     return Response.json({ error: "Invalid keyword" }, { status: 400 });
@@ -62,4 +47,4 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
   await insertIdeasByUser(adminClient, booksWithKeyword);
   return Response.json({ ok: true });
-};
+}

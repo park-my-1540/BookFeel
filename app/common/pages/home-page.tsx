@@ -7,7 +7,13 @@ import {
   CarouselPrevious,
 } from "~/components/ui/carousel";
 import type { Route } from "./+types/home-page";
-import { Form, Link, redirect, useSearchParams } from "react-router";
+import {
+  Form,
+  Link,
+  redirect,
+  useNavigation,
+  useSearchParams,
+} from "react-router";
 import { Card, CardContent } from "~/components/ui/card";
 import {
   choicesBooks,
@@ -23,6 +29,8 @@ import z from "zod";
 import { cn } from "~/lib/utils";
 import { useState } from "react";
 import { getCategories, getGeminiBooks } from "~/features/ideas/queries";
+import { generateBooksByGemini } from "./generateBooksByGemeni";
+import { Loader2 } from "lucide-react";
 
 export function meta() {
   return [
@@ -37,15 +45,18 @@ export const keywordSchema = z
   .max(5, "5자 이내로 입력해주세요.")
   .regex(/^\S+$/, "띄어쓰기 없이 한 단어로 입력해주세요.");
 
+const searchParamsSchema = z.object({
+  keyword: z.string().optional().default("장마"),
+});
+
 export const action = async ({ request }: Route.ActionArgs) => {
   const formData = await request.formData();
   const search = formData.get("search");
   const target = formData.get("options") ?? "title";
   const keyword = formData.get("keyword");
   if (keyword) {
-    return redirect(
-      `/books/generate/userCustom?keyword=${encodeURIComponent(keyword as string)}&target=userCustom`
-    );
+    await generateBooksByGemini(keyword as string);
+    return redirect(`/?keyword=userCustom`);
   }
 
   if (search) {
@@ -54,10 +65,6 @@ export const action = async ({ request }: Route.ActionArgs) => {
     );
   }
 };
-
-const searchParamsSchema = z.object({
-  keyword: z.string().optional().default("장마"),
-});
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { client } = makeSSRClient(request);
@@ -70,11 +77,10 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       await Promise.all([
         rankedBooks(),
         choicesBooks(),
-        getGeminiBooks(client, parsedData?.keyword),
+        getGeminiBooks(client, parsedData?.keyword ?? ""),
         getCategories(client),
         getPlaylists(client),
       ]);
-
     return {
       books,
       choices,
@@ -94,6 +100,10 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
   const [toggle, setToggle] = useState(
     searchParams.get("keyword") === "userCustom"
   );
+
+  const navigation = useNavigation();
+  const isSubmitting =
+    navigation.state === "submitting" || navigation.state === "loading";
 
   return (
     <div className='h-full'>
@@ -222,7 +232,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
               </h2>
             </div>
             <div className='flex gap-3'>
-              {SEARCH_KEYWORD.map(({ keyword, category_id }) => (
+              {SEARCH_KEYWORD?.map(({ keyword, category_id }) => (
                 <Button
                   key={category_id}
                   variant={"outline"}
@@ -255,7 +265,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             </div>
             {toggle ? (
               <Form method='post' action='/'>
-                <div className='flex w-[350px] items-center pt-2'>
+                <div className='flex w-[350px] items-center pt-2 gap-2'>
                   <input
                     type='text'
                     name='keyword'
@@ -264,22 +274,39 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
                     placeholder='키워드를 5자 이내 한 단어로 입력해주세요.'
                     maxLength={5}
                   />
-                  <Button type='submit'>검색</Button>
+                  <Button type='submit' disabled={isSubmitting}>
+                    {isSubmitting ? (
+                      <div className='flex items-center gap-2'>
+                        <Loader2 className='w-4 h-4 animate-spin' />
+                        <span>로딩 중...</span>
+                      </div>
+                    ) : (
+                      "검색"
+                    )}
+                  </Button>
                 </div>
               </Form>
             ) : null}
-            <div className='grid grid-cols-5 gap-8'>
-              {loaderData.geminiBooks.map((book) => (
-                <BookCard
-                  key={book.itemId}
-                  itemId={book.itemId}
-                  cover={book.cover_url}
-                  author={book.author}
-                  link={book.link}
-                  title={book.title}
-                  bestRank={book.bestRank}
-                />
-              ))}
+            <div className='min-h-[400px]'>
+              {isSubmitting ? (
+                <div className='flex items-center justify-center w-full min-h-[500px]'>
+                  <Loader2 className='mr-2 h-10 w-10 animate-spin text-primary' />
+                </div>
+              ) : (
+                <div className='grid grid-cols-5 gap-8 min-h-[500px]'>
+                  {loaderData.geminiBooks?.map((book) => (
+                    <BookCard
+                      key={book.itemId}
+                      itemId={book.itemId}
+                      cover={book.cover_url}
+                      author={book.author}
+                      link={book.link}
+                      title={book.title}
+                      bestRank={book.bestRank}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </section>
 
@@ -292,18 +319,20 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
               </button>
             </div>
             <ol className='w-full'>
-              {loaderData.books.slice(0, 5).map((book) => (
-                <BookCard
-                  direction='row'
-                  key={book.itemId}
-                  itemId={book.itemId}
-                  cover={book.cover}
-                  author={book.author}
-                  link={book.link}
-                  title={book.title}
-                  bestRank={book.bestRank}
-                />
-              ))}
+              {loaderData.books
+                ?.slice(0, 5)
+                .map((book) => (
+                  <BookCard
+                    direction='row'
+                    key={book.itemId}
+                    itemId={book.itemId}
+                    cover={book.cover}
+                    author={book.author}
+                    link={book.link}
+                    title={book.title}
+                    bestRank={book.bestRank}
+                  />
+                ))}
             </ol>
           </div>
         </div>
