@@ -54,12 +54,22 @@ export const Small = ({ children, className }: TextProps) => (
 );
 
 export const Heading1 = ({ children, className }: TextProps) => (
-  <h1 className={clsx("text-2xl font-WinkyBold text-textPrimary", className)}>
+  <h1
+    className={clsx(
+      "text-2xl font-dmserif tracking-wider text-textPrimary",
+      className
+    )}
+  >
     {children}
   </h1>
 );
 export const Heading2 = ({ children, className }: TextProps) => (
-  <h2 className={clsx("text-4xl font-WinkyBold text-textPrimary", className)}>
+  <h2
+    className={clsx(
+      "text-4xl font-dmserif tracking-wide text-textPrimary py-md",
+      className
+    )}
+  >
     {children}
   </h2>
 );

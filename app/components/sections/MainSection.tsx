@@ -3,10 +3,10 @@ import { Caption, Title1 } from "~/components/ui/Typography";
 
 export default function MainSection() {
   return (
-    <div className='bg-dark h-[45vh]'>
-      <div className='flex flex-col items-start justify-center px-10 h-full space-y-10'>
-        <div className='grid grid-cols-3 gap-4 w-full'>
-          <Card>
+    <div className='bg-dark p-lg'>
+      <div className='flex flex-col items-start justify-center h-full space-y-10'>
+        <div className='grid grid-cols-3 gap-md w-full'>
+          <Card className='min-h-72'>
             <CardContent>
               <div className='flex flex-row'>
                 <div className='w-full relative pb-[56.25%]'>

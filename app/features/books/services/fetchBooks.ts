@@ -107,7 +107,7 @@ export type Book = {
 
 export const booksByKeyword = async (
   keywords: string[],
-  limit: number = 5
+  limit: number = 10
 ): Promise<Book[]> => {
   const allBooks: Book[] = [];
 
@@ -120,7 +120,7 @@ export const booksByKeyword = async (
           Query: keyword,
           QueryType: "Keyword",
           SearchTarget: "Book",
-          MaxResults: 3,
+          MaxResults: 4,
           Start: 1,
           Output: "JS",
           Version: "20131101",

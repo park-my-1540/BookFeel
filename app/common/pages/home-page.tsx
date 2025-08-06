@@ -129,24 +129,23 @@ export default function HomePage({
     <div className='h-full'>
       <MainSection />
       <RecommenDationSection books={loaderData.choices} />
-      <CurrentVibesSection playlists={loaderData.playlists ?? []} />
 
-      <div className='p-14'>
-        <div className='grid grid-layout gap-6'>
-          <GeminiBooksSection
-            searchKeyword={
-              loaderData.search_keyword ?? [{ keyword: "장마", category_id: 3 }]
-            }
-            books={loaderData.geminiBooks ?? []}
-            isSubmitting={isSubmitting}
-            toggle={toggle}
-            setToggle={setToggle}
-            searchParams={searchParams}
-            errorMessage={actionData?.message ?? null}
-          />
-          <BestSellerSection books={loaderData.books} />
-        </div>
+      <div className='grid grid-layout gap-6 px-lg pb-lg'>
+        <GeminiBooksSection
+          searchKeyword={
+            loaderData.search_keyword ?? [{ keyword: "장마", category_id: 3 }]
+          }
+          books={loaderData.geminiBooks ?? []}
+          isSubmitting={isSubmitting}
+          toggle={toggle}
+          setToggle={setToggle}
+          searchParams={searchParams}
+          errorMessage={actionData?.message ?? null}
+        />
+        <BestSellerSection books={loaderData.books} />
       </div>
+
+      <CurrentVibesSection playlists={loaderData.playlists ?? []} />
     </div>
   );
 }

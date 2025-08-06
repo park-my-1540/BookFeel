@@ -17,7 +17,7 @@ export const getGeminiBooks = async (
   const baseQuery = client
     .from("all_gemini_ideas")
     .select("*", { head: false, count: "exact" })
-    .limit(5);
+    .limit(10);
   if (keyword) {
     baseQuery.eq("keyword", keyword);
   }

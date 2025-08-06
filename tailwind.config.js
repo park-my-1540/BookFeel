@@ -11,6 +11,16 @@ const config: Config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      gap: {
+        lg: "var(--gap-lg)",
+        md: "var(--gap-md)",
+        sm: "var(--gap-sm)",
+      },
+      padding: {
+        lg: "var(--gap-lg)",
+        md: "var(--gap-md)",
+        sm: "var(--gap-sm)",
+      },
       colors: {
         main: '#DB6521',
   			red: '#E84118',
@@ -78,6 +88,7 @@ const config: Config = {
         winky: ["Winky", "serif"],
         WinkyBold: ["WinkyBold", "serif"],
         mangoBold: ["MangoBold", "serif"],
+        dmserif: ["DMSerif", "serif"],
       },
       keyframes: {
         marquee: {

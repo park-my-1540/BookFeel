@@ -16,7 +16,7 @@ function ColCard(props: BookCardItem) {
     <a href={props.link} target='_blank' className='block relative'>
       <Card className='bg-transparent border-none shadow-none relative'>
         <div className='flex flex-col gap-4'>
-          <div className='w-full aspect-[2/3]'>
+          <div className='w-full aspect-[2/3] shadow'>
             <img src={props.cover} alt={props.title} className='w-full' />
           </div>
           <div>

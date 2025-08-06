@@ -37,7 +37,7 @@ export default function Navigation({
     <div className='flex justify-center items-center h-15 border-b'>
       <div className='w-11/12 flex justify-between items-center'>
         <Link to='/'>
-          <Heading1 className='font-WinkyBold'>BookFeel</Heading1>
+          <Heading1>BookFeel</Heading1>
         </Link>
 
         <div className='w-2/3 h-3/4 relative'>
