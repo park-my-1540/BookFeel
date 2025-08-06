@@ -34,7 +34,7 @@ function RowCard(props: BookCardItem) {
     <a href={props.link} target='_blank' className='block relative'>
       <Card className='bg-transparent border-none shadow-none py-2 relative'>
         <div className='flex flex-row gap-4 items-center'>
-          <div className='w-28 max-w-28 min-w-28'>
+          <div className='w-28 max-w-28 min-w-28 shadow'>
             <img
               src={props.cover}
               alt={props.title}

@@ -35,7 +35,7 @@ export default function GeminiBooksSection({
     }
   };
   return (
-    <section className='a p-md bg-white'>
+    <section className='a p-md bg-white shadow-sm'>
       <div className='flex items-center flex-wrap justify-between mb-4'>
         <h2 className='text-xl font-bold'>
           Gemini가 추천해주는 감성 키워드 도서

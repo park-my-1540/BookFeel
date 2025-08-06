@@ -176,24 +176,7 @@ body {
   -webkit-mask-clip:padding-box,border-box;
   /* mask-clip:padding-box,border-box; */
 }
-.dropdown-container::after {
-  content: "";
-  position: absolute;
-  top: -25px;
-  left: 0;
-  transform: rotate(90deg);
-  border: 18px solid transparent;
-  border-bottom-color: rgb(242 244 246 / var(--tw-bg-opacity));
-}
-.dropdown-container::before {
-  content: "";
-  position: absolute;
-  top: -25px;
-  right: 0;
-  transform: rotate(-90deg);
-  border: 18px solid transparent;
-  border-bottom-color: rgb(242 244 246 / var(--tw-bg-opacity));
-}
+
 .grid-layout {
   display: grid;
   gap: 1rem;

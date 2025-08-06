@@ -4,9 +4,11 @@ import {
   CarouselItem,
   CarouselDots,
 } from "~/components/ui/carousel";
-import { Heading2 } from "../ui/Typography";
+import { Heading2, Title1 } from "../ui/Typography";
 import { PlaylistCard } from "~/features/playlists/components/PlaylistCard";
 import type { Database } from "database.types";
+import { Link } from "react-router";
+import { Button } from "../ui/button";
 export default function CurrentVibesSection({
   playlists,
 }: {
@@ -15,7 +17,12 @@ export default function CurrentVibesSection({
   return (
     <div className='bg-dark p-lg'>
       <div className='flex flex-col items-center justify-center h-full space-y-10'>
-        <Heading2 className='text-white'>Curated Vibes</Heading2>
+        <div className='flex justify-between items-center w-full'>
+          <Heading2 className='text-white'>Curated Vibes</Heading2>
+          <Button variant='link' asChild className='text-lg p-0'>
+            <Link to={"/playlists"}>더 보러가기 &rarr;</Link>
+          </Button>
+        </div>
         <div className='gap-4 w-full'>
           <Carousel className='pb-10'>
             <CarouselContent>

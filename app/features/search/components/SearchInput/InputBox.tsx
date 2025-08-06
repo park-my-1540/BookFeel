@@ -1,5 +1,4 @@
 import React from "react";
-import { isEmpty } from "@/util/util";
 import { useSearchSubmit } from "@search/hooks/useSearchSubmit";
 import { useSearchOpen } from "@search/hooks/useSearchOpen";
 
@@ -12,14 +11,14 @@ export default function InputBox() {
   };
 
   return (
-    <div className='flex flex-row items-center gap-2 px-1 bg-lightGray rounded-full w-full cursor-text'>
+    <div className='flex flex-row items-center gap-2 px-1 bg-gray w-full cursor-text'>
       <input
         value={word}
         type='text'
         name='search'
-        placeholder='검색어를 입력하세요'
+        placeholder='도서를 검색해주세요.'
         autoComplete='off'
-        className='bg-transparent w-full h-[50px] placeholder:text-textSubtitle pl-2'
+        className='bg-transparent w-full h-[50px] placeholder:text-textSubtitle pl-5'
         onChange={onChange}
         onFocus={() => setIsOpen(true)}
       />

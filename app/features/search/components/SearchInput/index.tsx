@@ -25,9 +25,8 @@ export default function SearchInput() {
     <Form
       method='post'
       action='/'
-      className='relative flex flex-row w-full items-center gap-2 px-7 bg-lightGray rounded-[100px]'
+      className='relative flex flex-row w-full items-center gap-2 bg-lightGray rounded-[100px]'
     >
-      <Search />
       <div className='w-full' ref={ref}>
         <InputBox />
         <ListBox />

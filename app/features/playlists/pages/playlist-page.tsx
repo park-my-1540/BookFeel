@@ -14,8 +14,8 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export default function ProductsHomePage({ loaderData }: Route.ComponentProps) {
   return (
-    <div className='container mx-auto py-8'>
-      <div className='flex justify-between mb-14'>
+    <div className='container mx-auto py-lg'>
+      <div className='flex justify-between items-center mb-14'>
         <Heading2>Featured Products</Heading2>
         <Button asChild>
           <Link to='/playlists/submit'>플레이리스트 생성하기</Link>
