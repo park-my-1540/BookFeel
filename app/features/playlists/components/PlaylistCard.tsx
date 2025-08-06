@@ -30,7 +30,7 @@ export function PlaylistCard({
   const absorbClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!isLoggedIn) {
-      alert("Please log in first!");
+      alert("로그인 해주세요.");
       navigate("/auth/login");
       return;
     }

@@ -1,5 +1,4 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { desc } from "drizzle-orm";
 
 export const getCategories = async (client: SupabaseClient) => {
   const { data, error } = await client
@@ -27,4 +26,21 @@ export const getGeminiBooks = async (
 
   if (error) throw new Error(error.message);
   return data;
+};
+
+export const canUseGemini = async (
+  client: SupabaseClient,
+  profileId: string,
+  dailyLimit = 2
+): Promise<boolean> => {
+  const { data, error } = await client
+    .from("user_gemini_usage")
+    .select("used_count")
+    .eq("profile_id", profileId)
+    .single();
+  if (error) {
+    throw error;
+  }
+
+  return data.used_count < dailyLimit;
 };

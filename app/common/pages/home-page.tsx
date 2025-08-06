@@ -6,12 +6,13 @@ import {
   rankedBooks,
 } from "~/features/books/services/fetchBooks";
 import { makeSSRClient } from "~/supa-client";
-import { getPlaylists } from "~/features/playlists/queries";
 import z from "zod";
 import { useState } from "react";
+import { getPlaylists } from "~/features/playlists/queries";
 import { getCategories, getGeminiBooks } from "~/features/ideas/queries";
+import { submitKeywordToGemini } from "../services/generateBooksByGemeni";
+import { getLoggedInUserId } from "~/features/users/queries";
 import GeminiBooksSection from "~/components/sections/GeminiBooksSection";
-import { generateBooksByGemini } from "../services/generateBooksByGemeni";
 import BestSellerSection from "~/components/sections/BestSellerSection";
 import CurrentVibesSection from "~/components/sections/CurrentVibesSection";
 import MainSection from "~/components/sections/MainSection";
@@ -39,8 +40,25 @@ export const action = async ({ request }: Route.ActionArgs) => {
   const search = formData.get("search");
   const target = formData.get("options") ?? "title";
   const keyword = formData.get("keyword");
+
+  const { client } = makeSSRClient(request);
+  const userId = await getLoggedInUserId(client);
+
   if (keyword) {
-    await generateBooksByGemini(keyword as string);
+    const result = await submitKeywordToGemini(
+      client,
+      keyword as string,
+      userId
+    );
+    if (!result.success) {
+      return {
+        success: false,
+        message:
+          result.reason === "limit-exceeded"
+            ? "오늘의 감정 책 추천 횟수를 모두 사용하셨어요. 내일 다시 시도해보세요!"
+            : "추천 생성에 실패했어요. 다시 시도해주세요.",
+      };
+    }
     return redirect(`/?keyword=userCustom`);
   }
 
@@ -95,7 +113,10 @@ export const loader = async ({
   }
 };
 
-export default function HomePage({ loaderData }: Route.ComponentProps) {
+export default function HomePage({
+  loaderData,
+  actionData,
+}: Route.ComponentProps) {
   const [searchParams] = useSearchParams(); // 쿼리 파라미터를 관리하는 훅
   const [toggle, setToggle] = useState(
     searchParams.get("keyword") === "userCustom"
@@ -121,6 +142,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             toggle={toggle}
             setToggle={setToggle}
             searchParams={searchParams}
+            errorMessage={actionData?.message ?? null}
           />
           <BestSellerSection books={loaderData.books} />
         </div>

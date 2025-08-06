@@ -191,6 +191,32 @@ export type Database = {
         }
         Relationships: []
       }
+      user_gemini_usage: {
+        Row: {
+          last_used_at: string
+          profile_id: string
+          used_count: number | null
+        }
+        Insert: {
+          last_used_at?: string
+          profile_id: string
+          used_count?: number | null
+        }
+        Update: {
+          last_used_at?: string
+          profile_id?: string
+          used_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_gemini_usage_profile_id_profiles_profile_id_fk"
+            columns: ["profile_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["profile_id"]
+          },
+        ]
+      }
     }
     Views: {
       all_gemini_ideas: {

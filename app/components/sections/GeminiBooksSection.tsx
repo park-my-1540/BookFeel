@@ -1,4 +1,4 @@
-import { Form, Link } from "react-router";
+import { Form, Link, useNavigate, useOutletContext } from "react-router";
 import { BookCard } from "~/features/books/components/BestPreviewCard/BookCard";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
@@ -13,6 +13,7 @@ interface GeminiBooksSectionProps {
   toggle: boolean;
   setToggle: (toggle: boolean) => void;
   searchParams: URLSearchParams;
+  errorMessage: string | null;
 }
 
 export default function GeminiBooksSection({
@@ -22,7 +23,18 @@ export default function GeminiBooksSection({
   toggle,
   setToggle,
   searchParams,
+  errorMessage,
 }: GeminiBooksSectionProps) {
+  const { isLoggedIn } = useOutletContext<{ isLoggedIn: boolean }>();
+  const navigate = useNavigate();
+
+  const absorbClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!isLoggedIn) {
+      alert("로그인 해주세요.");
+      navigate("/auth/login");
+      return;
+    }
+  };
   return (
     <section className='a p-9 pb-0 bg-white'>
       <div className='flex items-center justify-between mb-4'>
@@ -48,16 +60,15 @@ export default function GeminiBooksSection({
             </Link>
           </Button>
         ))}
-        <LoadingButton
+        <Button
           variant='outline'
           className={cn(toggle && "bg-accent")}
-          isLoading={isSubmitting}
           onClick={() => setToggle(true)}
         >
           <Link to='?keyword=userCustom' preventScrollReset>
             # 직접 입력하기
           </Link>
-        </LoadingButton>
+        </Button>
       </div>
       {toggle ? (
         <Form method='post' action='/'>
@@ -70,7 +81,7 @@ export default function GeminiBooksSection({
               placeholder='키워드를 5자 이내 한 단어로 입력해주세요.'
               maxLength={5}
             />
-            <Button type='submit' disabled={isSubmitting}>
+            <Button type='submit' disabled={isSubmitting} onClick={absorbClick}>
               {isSubmitting ? (
                 <div className='flex items-center gap-2'>
                   <Loader2 className='w-4 h-4 animate-spin' />
@@ -81,6 +92,7 @@ export default function GeminiBooksSection({
               )}
             </Button>
           </div>
+          <span className='text-red text-lg mt-2'>{errorMessage}</span>
         </Form>
       ) : null}
       <div className='min-h-[400px]'>
