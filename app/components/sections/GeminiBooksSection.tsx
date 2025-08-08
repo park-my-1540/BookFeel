@@ -103,7 +103,7 @@ export default function GeminiBooksSection({
             <Loader2 className='mr-2 h-10 w-10 animate-spin text-primary' />
           </div>
         ) : (
-          <div className='grid grid-cols-2 lg:grid-cols-5 gap-4 min-h-[500px]'>
+          <div className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 min-h-[500px]'>
             {books?.map((book) => (
               <BookCard
                 key={book.itemId}

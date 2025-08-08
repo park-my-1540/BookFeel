@@ -67,17 +67,15 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export default function App({ loaderData }: Route.ComponentProps) {
   const { pathname } = useLocation();
-  const navigation = useNavigation();
-  const isLoading = navigation.state === "loading";
-  const isLoggedIn = loaderData.user !== null;
+  const isLoggedIn = loaderData?.user !== null;
 
   return (
     <div className='h-screen w-full'>
       {pathname.includes("/auth") ? null : (
         <Navigation
-          username={loaderData.profile?.username}
-          avatar={loaderData.profile?.avatar}
-          name={loaderData.profile?.name}
+          username={loaderData?.profile?.username}
+          avatar={loaderData?.profile?.avatar}
+          name={loaderData?.profile?.name}
           isLoggedIn={isLoggedIn}
         />
       )}

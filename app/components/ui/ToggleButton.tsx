@@ -16,7 +16,7 @@ export default function DetailToggleButton({
 }: Props) {
   return (
     <Button
-      variant='secondary'
+      variant='outline'
       onClick={onClick}
       className={cn("flex justify-center items-center gap-1 w-full", className)}
     >
