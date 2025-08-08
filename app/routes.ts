@@ -6,6 +6,13 @@ export default [
     index("features/books/pages/list-page.tsx"),
     ...prefix("generate", [index("features/books/api/generate-idea-page.tsx")]),
   ]),
+  ...prefix("shoppingcart", [
+    index("features/shoppingcart/pages/shoppingcart-page.tsx"),
+  ]),
+  ...prefix("payment", [
+    route("/success", "features/payment/pages/payment-success-page.tsx"),
+    route("/failure", "features/payment/pages/payment-failure-page.tsx"),
+  ]),
   route("/wishlist", "features/wishlist/pages/wishlist-page.tsx"),
   ...prefix("playlists", [
     index("features/playlists/pages/playlist-page.tsx"),

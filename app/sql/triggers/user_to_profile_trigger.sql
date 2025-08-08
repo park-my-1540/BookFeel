@@ -11,28 +11,30 @@ begin
       -- raw_app_meta_data칼럼을 가지고 있고 provider이 email이면 이메일로 계정이 생성되었을때
         if new.raw_app_meta_data ? 'provider' AND new.raw_app_meta_data ->> 'provider' = 'email' then
             if new.raw_user_meta_data ? 'name' and new.raw_user_meta_data ? 'username' then
-                insert into public.profiles (profile_id, name, username)
+                insert into public.profiles (profile_id, name, username, email)
                 values (new.id, new.raw_user_meta_data ->> 'name', new.raw_user_meta_data ->> 'username');
             else
-                insert into public.profiles (profile_id, name, username)
+                insert into public.profiles (profile_id, name, username, email)
                 values (new.id, 'Anonymous', 'mr.' || substr(md5(random()::text), 1, 8));
             end if;
         end if;
         -- 카카오
          if new.raw_app_meta_data ? 'provider' AND new.raw_app_meta_data ->> 'provider' = 'kakao' then
-            insert into public.profiles (profile_id, name, username, avatar)
+            insert into public.profiles (profile_id, name, username, email,avatar)
             values (new.id, 
                     new.raw_user_meta_data ->> 'name', 
                     new.raw_user_meta_data ->> 'preferred_username', 
+                    new.raw_user_meta_data ->> 'email', 
                     new.raw_user_meta_data ->> 'avatar_url');
         end if;
         -- 구글
          if new.raw_app_meta_data ? 'provider' AND new.raw_app_meta_data ->> 'provider' = 'google' then
-            insert into public.profiles (profile_id, name, username, avatar)
+            insert into public.profiles (profile_id, name, username, email,avatar)
             values (
                 new.id,
                 new.raw_user_meta_data ->> 'name',
                 new.raw_user_meta_data ->> 'full_name', 
+                new.raw_user_meta_data ->> 'email', 
                 new.raw_user_meta_data ->> 'avatar_url'
             );
         end if;
