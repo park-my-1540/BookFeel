@@ -26,6 +26,8 @@ export default function BestSellerSection({
             link={book.link}
             title={book.title}
             bestRank={book.bestRank}
+            priceSales={book.priceSales}
+            priceStandard={book.priceStandard}
           />
         ))}
       </ol>

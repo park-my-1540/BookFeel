@@ -53,4 +53,6 @@ export type BookCardItem = {
   bestRank?: string;
   author: string;
   link: string;
+  priceSales?: number;
+  priceStandard?: number;
 };

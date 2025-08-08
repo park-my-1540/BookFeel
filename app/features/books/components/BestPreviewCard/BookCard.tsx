@@ -1,6 +1,7 @@
 import { Title3, Caption } from "~/components/ui/Typography";
 import { Card } from "~/components/ui/card";
 import type { BookCardItem } from "../../type";
+import { Button } from "~/components/ui/button";
 
 type Props = BookCardItem & { direction?: "col" | "row" };
 
@@ -12,17 +13,23 @@ export function BookCard({ direction = "col", ...props }: Props) {
 }
 
 function ColCard(props: BookCardItem) {
+  const { link, cover, title, author, priceSales, priceStandard } = props;
+
   return (
-    <a href={props.link} target='_blank' className='block relative'>
+    <a href={link} target='_blank' className='block relative'>
       <Card className='bg-transparent border-none shadow-none relative'>
         <div className='flex flex-col gap-4'>
-          <div className='w-full aspect-[2/3] shadow'>
-            <img src={props.cover} alt={props.title} className='w-full' />
+          <div className='thumb'>
+            <img src={cover} alt={title} className='shadow-lg' />
+            <SaleBadge priceSales={priceSales} priceStandard={priceStandard} />
           </div>
+
           <div>
-            <Title3>{props.title}</Title3>
-            <Caption>{props.author}</Caption>
+            <Title3>{title}</Title3>
+            <Caption>{author}</Caption>
           </div>
+
+          <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
         </div>
       </Card>
     </a>
@@ -30,23 +37,83 @@ function ColCard(props: BookCardItem) {
 }
 
 function RowCard(props: BookCardItem) {
+  const { link, cover, title, author, priceSales, priceStandard } = props;
   return (
-    <a href={props.link} target='_blank' className='block relative'>
-      <Card className='bg-transparent border-none shadow-none py-2 relative'>
+    <a href={link} target='_blank' className='block relative'>
+      <Card className='bg-transparent border-none shadow-none py-2 relative w-full'>
         <div className='flex flex-row gap-4 items-center'>
           <div className='w-28 max-w-28 min-w-28 shadow'>
-            <img
-              src={props.cover}
-              alt={props.title}
-              className='w-full h-auto'
-            />
+            <img src={cover} alt={title} className='w-full h-auto' />
           </div>
-          <div>
-            <Title3>{props.title}</Title3>
-            <Caption>{props.author}</Caption>
+          <div className='w-full mt-4'>
+            <Title3>{title}</Title3>
+            <Caption>{author}</Caption>
+            <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
           </div>
         </div>
       </Card>
     </a>
+  );
+}
+
+function PriceTag({
+  priceSales,
+  priceStandard,
+}: {
+  priceSales?: number;
+  priceStandard?: number;
+}) {
+  if (typeof priceSales !== "number" && typeof priceStandard !== "number")
+    return null;
+
+  const isDiscount =
+    typeof priceSales === "number" &&
+    typeof priceStandard === "number" &&
+    priceSales < priceStandard;
+
+  return (
+    <div className='mt-1 flex justify-between flex-row'>
+      {isDiscount ? (
+        <div className='flex items-start gap-2'>
+          <Title3>{priceSales!.toLocaleString()}원</Title3>
+          {/* <span className='text-md text-gray-500 line-through'>
+            {priceStandard!.toLocaleString()}원
+          </span> */}
+        </div>
+      ) : (
+        <Title3>{(priceSales ?? priceStandard)?.toLocaleString()}원</Title3>
+      )}
+      <Button
+        className='bg-transparent rounded-full border-textPrimary hover:bg-white'
+        variant={"outline"}
+      >
+        Buy
+      </Button>
+    </div>
+  );
+}
+
+export function SaleBadge({
+  priceSales,
+  priceStandard,
+}: {
+  priceSales?: number;
+  priceStandard?: number;
+}) {
+  if (
+    typeof priceSales !== "number" ||
+    typeof priceStandard !== "number" ||
+    priceSales >= priceStandard
+  )
+    return null;
+
+  const discountRate = Math.round(
+    ((priceStandard - priceSales) / priceStandard) * 100
+  );
+
+  return (
+    <span className='absolute top-5 -right-2 bg-destructive text-white text-sm px-3 py-1'>
+      -{discountRate}%
+    </span>
   );
 }

@@ -216,3 +216,23 @@ body {
     --gap-lg:1rem;
   }
 }
+
+.thumb {
+  display: block;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 0;
+  margin-bottom: 21px;
+  padding-bottom: 140%;
+}
+
+.thumb img {
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  height: 100%;
+}

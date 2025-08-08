@@ -31,6 +31,8 @@ export default function RecommenDationSection({
                   link={book.link}
                   title={book.title}
                   bestRank={book.bestRank}
+                  priceSales={book.priceSales}
+                  priceStandard={book.priceStandard}
                 />
               </CarouselItem>
             ))}

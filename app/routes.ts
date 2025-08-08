@@ -6,6 +6,7 @@ export default [
     index("features/books/pages/list-page.tsx"),
     ...prefix("generate", [index("features/books/api/generate-idea-page.tsx")]),
   ]),
+  route("/wishlist", "features/wishlist/pages/wishlist-page.tsx"),
   ...prefix("playlists", [
     index("features/playlists/pages/playlist-page.tsx"),
     route("/submit", "features/playlists/pages/submit-playlist-page.tsx"),
