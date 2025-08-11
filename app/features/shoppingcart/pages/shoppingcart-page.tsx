@@ -1,174 +1,100 @@
-import { Trash } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { Button } from "~/components/ui/button";
-import PriceTag from "~/components/ui/pricetag";
-import {
-  Body1,
-  Caption,
-  Heading2,
-  Title1,
-  Title3,
-} from "~/components/ui/Typography";
+import { useEffect, useMemo, useState } from "react";
 import type { Route } from "./+types/shoppingcart-page";
-import {
-  loadTossPayments,
-  type TossPaymentsWidgets,
-} from "@tosspayments/tosspayments-sdk";
-import { makeSSRClient } from "~/supa-client";
-import {
-  getLoggedInUserId,
-  getUserProfileById,
-} from "~/features/users/queries";
+import type { BookCardItem } from "~/features/books/type";
+import { adminClient, makeSSRClient } from "~/supa-client";
+import { getUserProfileById } from "~/features/users/queries";
+import { useShoppingCart } from "../hooks/useShoppingCart";
+import { useOutletContext } from "react-router";
+import { useTossPayment } from "../hooks/useTossPayment";
+import { getCartLS } from "../services/cartStorage";
+import { insertItem } from "../mutaions";
+import PaymentSection from "../components/PaymentSection";
+import CartList from "../components/CartList";
+import { Heading2 } from "~/components/ui/Typography";
 
-const dummyItems = [
-  {
-    id: 1,
-    title: "혼모노",
-    author: "성해은",
-    priceSales: 24000,
-    priceStandard: 28000,
-    cover: "https://via.placeholder.com/100x150?text=Book1",
-  },
-  {
-    id: 2,
-    title: "광인",
-    author: "이혁진",
-    priceSales: 24000,
-    priceStandard: 28000,
-    cover: "https://via.placeholder.com/100x150?text=Book1",
-  },
-];
+export const action = async ({ request }: Route.ActionArgs) => {
+  const formData = await request.formData();
+  const bookRaw = formData.get("book");
+
+  if (typeof bookRaw !== "string") {
+    throw new Error("book 값이 비정상입니다.");
+  }
+  const book = JSON.parse(bookRaw);
+  await insertItem(adminClient, book);
+};
+
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { client } = makeSSRClient(request);
-  const userId = await getLoggedInUserId(client);
-  const profile = await getUserProfileById(client, { id: userId });
+  const { data, error } = await client.auth.getUser();
+  const user = !error && data?.user ? data.user : null;
+  const profile = user
+    ? await getUserProfileById(client, { id: user.id })
+    : null;
+
   return {
-    userId,
+    userId: user?.id ?? null,
     profile,
   };
 };
+
 export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
-  const widgets = useRef<TossPaymentsWidgets | null>(null);
-  useEffect(() => {
-    const initToss = async () => {
-      const toss = loadTossPayments("test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm");
-      widgets.current = (await toss).widgets({
-        customerKey: loaderData.userId,
-      });
-
-      await widgets.current.setAmount({
-        value: total,
-        currency: "KRW",
-      });
-
-      // render
-      await widgets.current.renderPaymentMethods({
-        selector: "#toss-payment-methods",
-      });
-      await widgets.current.renderAgreement({
-        selector: "#toss-payment-agreement",
-      });
-    };
-    initToss();
-  }, []);
+  const { removeFromCart } = useShoppingCart();
+  const { isLoggedIn } = useOutletContext<{ isLoggedIn: boolean }>();
+  const [cart, setCart] = useState<BookCardItem[]>([]);
 
   useEffect(() => {
-    const updateAmount = async () => {
-      if (widgets.current) {
-        await widgets.current.setAmount({
-          value: total,
-          currency: "KRW",
-        });
-      }
-    };
-    updateAmount();
-  }, [dummyItems]);
+    if (!isLoggedIn) {
+      setCart(getCartLS());
+    }
+  }, [isLoggedIn]);
 
-  const [items, setItems] = useState(dummyItems);
+  const total = useMemo(
+    () => cart.reduce((sum, item) => sum + (item.priceSales ?? 0), 0),
+    [cart]
+  );
 
-  const handleRemove = (id: number) => {
-    setItems(items.filter((item) => item.id !== id));
+  const { requestPay } = useTossPayment({
+    userId: loaderData.userId,
+    total,
+  });
+
+  const handleRemove = (id: string) => {
+    removeFromCart(id);
   };
 
   const handleSubmit = async () => {
-    const product = dummyItems;
+    if (!cart.length) {
+      alert("장바구니가 비었습니다.");
+      return;
+    }
+    const orderName =
+      cart.length === 1
+        ? cart[0].title
+        : `${cart[0].title} 외 ${cart.length - 1}권`;
 
-    if (!product) return;
-
-    await widgets.current?.requestPayment({
+    await requestPay({
       orderId: crypto.randomUUID(),
-      orderName: `${items[0].title} 외 ${items.length - 1}권`,
-      customerEmail: loaderData.profile.email,
-      customerName: loaderData.profile.name,
+      orderName,
+      customerEmail: loaderData.profile?.email ?? "guest@example.com",
+      customerName: loaderData.profile?.name ?? "Guest",
       successUrl: `${window.location.origin}/payment/success`,
       failUrl: `${window.location.origin}/payment/fail`,
       metadata: {
-        titles: items.map((i) => i.title).join(", "),
+        titles: cart.map((i) => i.title).join(", "),
         totalPrice: total,
       },
     });
   };
 
-  const total = items.reduce((sum, item) => sum + item.priceSales, 0);
-
   return (
     <div className='grid grid-cols-1 lg:grid-cols-5 gap-8'>
       <div className='lg:col-span-3 p-lg'>
         <Heading2>My shopping cart</Heading2>
-        {items.map((item) => (
-          <div
-            key={item.id}
-            className='flex items-center gap-8 py-4 border-b px-md'
-          >
-            <img src={item.cover} alt={item.title} className='w-24 h-auto' />
-            <div className='flex-1'>
-              <Title3>{item.title}</Title3>
-              <Caption>{item.author}</Caption>
-            </div>
-            <PriceTag
-              priceSales={item.priceSales}
-              priceStandard={item.priceStandard}
-            />
-            <div className='flex items-center gap-2'>
-              <button
-                onClick={() => handleRemove(item.id)}
-                className='text-textSubtitle hover:text-red-500'
-              >
-                <Trash className='text-textSubtitle' size={20} />
-              </button>
-            </div>
-          </div>
+        {cart.map((item) => (
+          <CartList item={item} handleRemove={handleRemove} />
         ))}
       </div>
-
-      <div className='col-span-2 p-lg bg-gray'>
-        <Heading2>My order</Heading2>
-        <ul className='mb-4'>
-          {items.map((item) => (
-            <li key={item.id} className='flex justify-between leading-9'>
-              <Body1>{item.title}</Body1>
-              <Body1>{item.priceSales}원</Body1>
-            </li>
-          ))}
-        </ul>
-
-        <div className='flex justify-between text-lg font-bold mb-4 py-sm border-borderGray border-t'>
-          <Title1>Total</Title1>
-          <Title1>{total.toLocaleString()} 원</Title1>
-        </div>
-        <aside className='col-span-3 mb-7'>
-          <div id='toss-payment-methods'></div>
-          <div id='toss-payment-agreement'></div>
-        </aside>
-
-        <Button
-          className='text-lg py-6 w-full'
-          size={"lg"}
-          onClick={() => handleSubmit()}
-        >
-          구매하기
-        </Button>
-      </div>
+      <PaymentSection cart={cart} handleSubmit={handleSubmit} total={total} />
     </div>
   );
 }

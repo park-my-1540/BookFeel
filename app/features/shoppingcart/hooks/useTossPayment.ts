@@ -1,0 +1,84 @@
+import { useEffect, useMemo, useRef, useCallback } from "react";
+import {
+  loadTossPayments,
+  type TossPaymentsWidgets,
+} from "@tosspayments/tosspayments-sdk";
+
+type Options = {
+  userId: string | null; // 로그인 사용자의 id (없으면 게스트)
+  total: number;
+};
+
+function sessionCustomerKey() {
+  const k = sessionStorage.getItem("anon_ck");
+  if (k) return k;
+  const n = `anonymous-${crypto.randomUUID()}`;
+  sessionStorage.setItem("anon_ck", n);
+  return n;
+}
+const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
+export function useTossPayment({ userId, total }: Options) {
+  const widgetsRef = useRef<TossPaymentsWidgets | null>(null);
+  const customerKey = useMemo(() => userId ?? sessionCustomerKey(), [userId]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      const toss = await loadTossPayments(clientKey);
+      if (cancelled) return;
+
+      const widgets = toss.widgets({ customerKey });
+      widgetsRef.current = widgets;
+      await widgets.setAmount({ value: total, currency: "KRW" });
+      await widgets.renderPaymentMethods({ selector: "#toss-payment-methods" });
+      await widgets.renderAgreement({ selector: "#toss-payment-agreement" });
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [customerKey]);
+
+  // 결제 요청 함수
+  const requestPay = useCallback(
+    async (args: {
+      orderId?: string;
+      orderName: string;
+      customerEmail?: string;
+      customerName?: string;
+      successUrl: string;
+      failUrl: string;
+      metadata?: Record<string, unknown>;
+    }) => {
+      if (!widgetsRef.current)
+        throw new Error("Toss 위젯이 아직 초기화되지 않았습니다.");
+
+      const {
+        orderId = crypto.randomUUID(),
+        orderName,
+        customerEmail,
+        customerName,
+        successUrl,
+        failUrl,
+        metadata,
+      } = args;
+      await widgetsRef.current.setAmount({ value: total, currency: "KRW" });
+      await widgetsRef.current.requestPayment({
+        orderId,
+        orderName,
+        customerEmail,
+        customerName,
+        successUrl,
+        failUrl,
+        metadata,
+      });
+    },
+    []
+  );
+
+  return {
+    widgets: widgetsRef, // 필요 시 직접 접근 가능
+    requestPay,
+  };
+}

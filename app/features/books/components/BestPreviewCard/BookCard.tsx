@@ -1,7 +1,7 @@
 import { Title3, Caption } from "~/components/ui/Typography";
 import { Card } from "~/components/ui/card";
 import type { BookCardItem } from "../../type";
-import { Button } from "~/components/ui/button";
+import ShoppingCartButton from "~/features/shoppingcart/components/ShoppingCartButton";
 
 type Props = BookCardItem & { direction?: "col" | "row" };
 
@@ -13,26 +13,26 @@ export function BookCard({ direction = "col", ...props }: Props) {
 }
 
 function ColCard(props: BookCardItem) {
-  const { link, cover, title, author, priceSales, priceStandard } = props;
+  const { cover, title, author, priceSales, priceStandard } = props;
 
   return (
-    <a href={link} target='_blank' className='block relative'>
-      <Card className='bg-transparent border-none shadow-none relative'>
-        <div className='flex flex-col gap-4'>
-          <div className='thumb'>
-            <img src={cover} alt={title} className='shadow-lg' />
-            <SaleBadge priceSales={priceSales} priceStandard={priceStandard} />
-          </div>
-
-          <div>
-            <Title3>{title}</Title3>
-            <Caption>{author}</Caption>
-          </div>
-
-          <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
+    <Card className='bg-transparent border-none shadow-none relative'>
+      <div className='flex flex-col gap-4'>
+        <div className='thumb'>
+          <img src={cover} alt={title} className='shadow-lg' />
+          <SaleBadge priceSales={priceSales} priceStandard={priceStandard} />
         </div>
-      </Card>
-    </a>
+
+        <div>
+          <Title3>{title}</Title3>
+          <Caption>{author}</Caption>
+        </div>
+        <div className='flex justify-between'>
+          <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
+          <ShoppingCartButton book={props} />
+        </div>
+      </div>
+    </Card>
   );
 }
 
@@ -48,7 +48,10 @@ function RowCard(props: BookCardItem) {
           <div className='w-full mt-4'>
             <Title3>{title}</Title3>
             <Caption>{author}</Caption>
-            <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
+            <div className='flex justify-between'>
+              <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
+              <ShoppingCartButton book={props} />
+            </div>
           </div>
         </div>
       </Card>
@@ -83,12 +86,6 @@ function PriceTag({
       ) : (
         <Title3>{(priceSales ?? priceStandard)?.toLocaleString()}원</Title3>
       )}
-      <Button
-        className='bg-transparent rounded-full border-textPrimary hover:bg-white'
-        variant={"outline"}
-      >
-        Buy
-      </Button>
     </div>
   );
 }

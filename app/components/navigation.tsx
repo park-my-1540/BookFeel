@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
+import { LogOutIcon, SettingsIcon, ShoppingCart, UserIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import Menu from "./layout/Menu";
 
@@ -38,7 +38,7 @@ export default function Navigation({
         </div>
 
         {isLoggedIn ? (
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-4'>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Avatar>
@@ -80,6 +80,12 @@ export default function Navigation({
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            <Button asChild variant='outline'>
+              <Link to='/shoppingcart'>
+                <ShoppingCart />
+                (2)
+              </Link>
+            </Button>
           </div>
         ) : (
           <div className='flex items-center gap-4'>
@@ -88,6 +94,12 @@ export default function Navigation({
             </Button>
             <Button asChild variant='default'>
               <Link to='/auth/join'>회원가입</Link>
+            </Button>
+            <Button asChild variant='outline'>
+              <Link to='/shoppingcart'>
+                <ShoppingCart />
+                (2)
+              </Link>
             </Button>
           </div>
         )}
