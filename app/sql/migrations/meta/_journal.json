@@ -57,6 +57,27 @@
       "when": 1754663739074,
       "tag": "0007_wonderful_bishop",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1754920293039,
+      "tag": "0008_glossy_callisto",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1754921885064,
+      "tag": "0009_open_moondragon",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1754921945647,
+      "tag": "0010_colorful_havok",
+      "breakpoints": true
     }
   ]
 }

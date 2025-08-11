@@ -1,0 +1,1 @@
+ALTER TABLE "shopping_cart" ALTER COLUMN "authors" SET DATA TYPE text;

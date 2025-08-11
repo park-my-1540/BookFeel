@@ -16,7 +16,8 @@ export type BookItemResponse = {
   thumbnail: string;
   price: number;
   sale_price: number;
-  contents: string;
+  contents?: string;
+  description?: string;
   datetime: Date;
   isbn: string;
   status: string;
@@ -55,4 +56,5 @@ export type BookCardItem = {
   link: string;
   priceSales?: number;
   priceStandard?: number;
+  contents?: string;
 };
