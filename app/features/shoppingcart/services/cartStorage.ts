@@ -19,13 +19,13 @@ export function getCartLS(): BookCardItem[] {
 export function addToCartLS(book: BookCardItem) {
   if (!isBrowser()) return;
   const cur = getCartLS();
-  if (cur.some((i) => i.id === book.id)) return;
+  if (cur.some((i) => i.itemId === book.itemId)) return;
   localStorage.setItem(STORAGE_KEY, JSON.stringify([...cur, book]));
 }
 
-export function removeFromCartLS(id: string) {
+export function removeFromCartLS(itemId: string) {
   if (!isBrowser()) return;
-  const cur = getCartLS().filter((i) => i.id !== id);
+  const cur = getCartLS().filter((i) => i.itemId !== itemId);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
 }
 

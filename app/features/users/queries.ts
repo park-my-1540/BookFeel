@@ -24,3 +24,9 @@ export const getLoggedInUserId = async (client: SupabaseClient) => {
   }
   return data.user.id;
 };
+
+export const getUserId = async (client: SupabaseClient) => {
+  const { data, error } = await client.auth.getUser();
+  const user = !error && data?.user ? data.user : null;
+  return user?.id ?? null;
+};

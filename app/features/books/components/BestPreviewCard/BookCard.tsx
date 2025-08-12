@@ -2,18 +2,33 @@ import { Title3, Caption } from "~/components/ui/Typography";
 import { Card } from "~/components/ui/card";
 import type { BookCardItem } from "../../type";
 import ShoppingCartButton from "~/features/shoppingcart/components/ShoppingCartButton";
+import { useShoppingCart } from "~/features/shoppingcart/hooks/useShoppingCart";
 
 type Props = BookCardItem & { direction?: "col" | "row" };
 
 export function BookCard({ direction = "col", ...props }: Props) {
+  const { addToCart } = useShoppingCart();
+
+  const onSubmit = async (book: BookCardItem) => {
+    try {
+      await addToCart(book); // 성공 시에만 실행
+      alert("장바구니에 추가되었습니다.");
+    } catch (error) {
+      console.log(error);
+      alert(error instanceof Error ? error.message : String(error));
+    }
+  };
+
   if (direction === "row") {
-    return <RowCard {...props} />;
+    return <RowCard {...props} onSubmit={onSubmit} />;
   }
-  return <ColCard {...props} />;
+  return <ColCard {...props} onSubmit={onSubmit} />;
 }
 
-function ColCard(props: BookCardItem) {
-  const { cover, title, author, priceSales, priceStandard } = props;
+function ColCard(
+  props: BookCardItem & { onSubmit?: (book: BookCardItem) => void }
+) {
+  const { cover, title, author, priceSales, priceStandard, onSubmit } = props;
 
   return (
     <Card className='bg-transparent border-none shadow-none relative'>
@@ -29,15 +44,18 @@ function ColCard(props: BookCardItem) {
         </div>
         <div className='flex justify-between'>
           <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
-          <ShoppingCartButton book={props} />
+          <ShoppingCartButton book={props} onSubmit={onSubmit} />
         </div>
       </div>
     </Card>
   );
 }
 
-function RowCard(props: BookCardItem) {
-  const { link, cover, title, author, priceSales, priceStandard } = props;
+function RowCard(
+  props: BookCardItem & { onSubmit?: (book: BookCardItem) => void }
+) {
+  const { link, cover, title, author, priceSales, priceStandard, onSubmit } =
+    props;
   return (
     <a href={link} target='_blank' className='block relative'>
       <Card className='bg-transparent border-none shadow-none py-2 relative w-full'>
@@ -50,7 +68,7 @@ function RowCard(props: BookCardItem) {
             <Caption>{author}</Caption>
             <div className='flex justify-between'>
               <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
-              <ShoppingCartButton book={props} />
+              <ShoppingCartButton book={props} onSubmit={onSubmit} />
             </div>
           </div>
         </div>

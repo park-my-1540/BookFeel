@@ -8,6 +8,7 @@ export default [
   ]),
   ...prefix("shoppingcart", [
     index("features/shoppingcart/pages/shoppingcart-page.tsx"),
+    route("/api", "features/shoppingcart/api/cart.tsx"),
   ]),
   ...prefix("payment", [
     route("/success", "features/payment/pages/payment-success-page.tsx"),

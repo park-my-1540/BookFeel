@@ -1,27 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
 import type { Route } from "./+types/shoppingcart-page";
-import type { BookCardItem } from "~/features/books/type";
-import { adminClient, makeSSRClient } from "~/supa-client";
+import { useMemo } from "react";
+import { makeSSRClient } from "~/supa-client";
 import { getUserProfileById } from "~/features/users/queries";
 import { useShoppingCart } from "../hooks/useShoppingCart";
-import { useOutletContext } from "react-router";
 import { useTossPayment } from "../hooks/useTossPayment";
-import { getCartLS } from "../services/cartStorage";
-import { insertItem } from "../mutaions";
 import PaymentSection from "../components/PaymentSection";
 import CartList from "../components/CartList";
 import { Heading2 } from "~/components/ui/Typography";
-
-export const action = async ({ request }: Route.ActionArgs) => {
-  const formData = await request.formData();
-  const bookRaw = formData.get("book");
-
-  if (typeof bookRaw !== "string") {
-    throw new Error("book 값이 비정상입니다.");
-  }
-  const book = JSON.parse(bookRaw);
-  await insertItem(adminClient, book);
-};
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { client } = makeSSRClient(request);
@@ -32,24 +17,17 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     : null;
 
   return {
+    client,
     userId: user?.id ?? null,
     profile,
   };
 };
 
 export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
-  const { removeFromCart } = useShoppingCart();
-  const { isLoggedIn } = useOutletContext<{ isLoggedIn: boolean }>();
-  const [cart, setCart] = useState<BookCardItem[]>([]);
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      setCart(getCartLS());
-    }
-  }, [isLoggedIn]);
+  const { items: cart, removeFromCart } = useShoppingCart();
 
   const total = useMemo(
-    () => cart.reduce((sum, item) => sum + (item.priceSales ?? 0), 0),
+    () => cart && cart.reduce((sum, item) => sum + (item.priceSales ?? 0), 0),
     [cart]
   );
 
@@ -90,8 +68,12 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
     <div className='grid grid-cols-1 lg:grid-cols-5 gap-8'>
       <div className='lg:col-span-3 p-lg'>
         <Heading2>My shopping cart</Heading2>
-        {cart.map((item) => (
-          <CartList item={item} handleRemove={handleRemove} />
+        {cart?.map((item) => (
+          <CartList
+            key={item.itemId}
+            item={item}
+            handleRemove={() => handleRemove(item.itemId)}
+          />
         ))}
       </div>
       <PaymentSection cart={cart} handleSubmit={handleSubmit} total={total} />

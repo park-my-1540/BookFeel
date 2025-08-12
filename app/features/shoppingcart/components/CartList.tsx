@@ -24,7 +24,7 @@ export default function CartList({ item, handleRemove }: CartListProps) {
       />
       <div className='flex items-center gap-2'>
         <button
-          onClick={() => handleRemove(item.id)}
+          onClick={() => handleRemove(item.itemId)}
           className='text-textSubtitle hover:text-red-500'
         >
           <Trash className='text-textSubtitle' size={20} />

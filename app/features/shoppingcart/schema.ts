@@ -5,7 +5,7 @@ export const shopping_cart = pgTable("shopping_cart", {
   profile_id: uuid().references(() => profiles.profile_id, {
     onDelete: "cascade",
   }),
-  id: text().notNull(),
+  itemId: text().notNull(),
   title: text().notNull(),
   author: text().notNull(),
   thumbnail: text().notNull(),

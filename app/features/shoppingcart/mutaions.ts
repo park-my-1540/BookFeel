@@ -1,29 +1,41 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import type { BookCardItem } from "../books/type";
 
-interface books {
-  title: string;
-  author: string;
-  cover: string;
-  keyword: string;
-}
-
-export const insertItem = async (client: SupabaseClient, books) => {
+export const insertItem = async (
+  client: SupabaseClient,
+  books: BookCardItem,
+  profile_id: string
+) => {
   const { error } = await client.from("shopping_cart").insert({
-    id: books.itemId,
+    itemId: books.itemId,
     title: books.title,
-    authors: books.author,
-    publisher: books.publisher,
+    author: books.author,
     thumbnail: books.cover,
     price: books.priceStandard,
     sale_price: books.priceSales,
     contents: books.contents,
+    profile_id,
   });
   if (error) {
     throw error;
   }
 };
 
-export const deleteItem = async (client: SupabaseClient, books) => {
+export const deleteItem = async (
+  client: SupabaseClient,
+  bookId: string,
+  userId: string
+) => {
+  const { error } = await client
+    .from("shopping_cart")
+    .delete()
+    .eq("id", bookId)
+    .eq("profile_id", userId);
+  if (error) {
+    throw error;
+  }
+};
+export const clearItem = async (client: SupabaseClient) => {
   const { error } = await client.from("shopping_cart").delete();
   if (error) {
     throw error;
