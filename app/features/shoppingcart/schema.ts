@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, timestamp, bigint } from "drizzle-orm/pg-core";
 import { profiles } from "../users/schema";
 
 export const shopping_cart = pgTable("shopping_cart", {
@@ -7,10 +7,10 @@ export const shopping_cart = pgTable("shopping_cart", {
   }),
   id: text().notNull(),
   title: text().notNull(),
-  authors: text().notNull(),
+  author: text().notNull(),
   thumbnail: text().notNull(),
-  price: text().notNull(),
-  sale_price: text().notNull(),
+  price: bigint({ mode: "number" }),
+  sale_price: bigint({ mode: "number" }),
   contents: text(),
   created_at: timestamp().notNull().defaultNow(),
   updated_at: timestamp().notNull().defaultNow(),

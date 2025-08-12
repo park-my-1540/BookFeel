@@ -102,6 +102,7 @@ export type Database = {
           avatar: string | null
           bio: string | null
           created_at: string
+          email: string | null
           name: string
           profile_id: string
           updated_at: string
@@ -111,6 +112,7 @@ export type Database = {
           avatar?: string | null
           bio?: string | null
           created_at?: string
+          email?: string | null
           name: string
           profile_id: string
           updated_at?: string
@@ -120,12 +122,60 @@ export type Database = {
           avatar?: string | null
           bio?: string | null
           created_at?: string
+          email?: string | null
           name?: string
           profile_id?: string
           updated_at?: string
           username?: string
         }
         Relationships: []
+      }
+      shopping_cart: {
+        Row: {
+          author: string
+          contents: string | null
+          created_at: string
+          id: string
+          price: number
+          profile_id: string | null
+          sale_price: number
+          thumbnail: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author: string
+          contents?: string | null
+          created_at?: string
+          id: string
+          price: number
+          profile_id?: string | null
+          sale_price: number
+          thumbnail: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author?: string
+          contents?: string | null
+          created_at?: string
+          id?: string
+          price?: number
+          profile_id?: string | null
+          sale_price?: number
+          thumbnail?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shopping_cart_profile_id_profiles_profile_id_fk"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["profile_id"]
+          },
+        ]
       }
       upvotes: {
         Row: {
@@ -272,7 +322,10 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      increment_used_count: {
+        Args: { uid: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

@@ -78,6 +78,20 @@
       "when": 1754921945647,
       "tag": "0010_colorful_havok",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1754997565297,
+      "tag": "0011_bright_yellow_claw",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1754998311131,
+      "tag": "0012_damp_arclight",
+      "breakpoints": true
     }
   ]
 }
