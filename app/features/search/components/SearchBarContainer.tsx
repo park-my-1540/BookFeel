@@ -26,9 +26,7 @@ function PopoverComponent() {
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
-        <Button variant='outline' size='sm'>
-          상세검색
-        </Button>
+        <Button variant='outline'>상세검색</Button>
       </PopoverTrigger>
       <PopoverContent
         className='py-10 px-5 space-y-5 w-[360px]'

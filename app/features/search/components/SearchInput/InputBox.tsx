@@ -11,14 +11,14 @@ export default function InputBox() {
   };
 
   return (
-    <div className='flex flex-row items-center gap-2 px-1 bg-gray w-full cursor-text'>
+    <div className='flex flex-row items-center gap-2 px-1 bg-gray w-full cursor-text rounded-lg'>
       <input
         value={word}
         type='text'
         name='search'
         placeholder='도서를 검색해주세요.'
         autoComplete='off'
-        className='bg-transparent w-full h-[50px] placeholder:text-textSubtitle pl-5'
+        className='bg-transparent w-full h-[50px] placeholder:text-textSubtitle pl-5 rounded-lg'
         onChange={onChange}
         onFocus={() => setIsOpen(true)}
       />

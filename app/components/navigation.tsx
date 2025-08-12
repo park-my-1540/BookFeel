@@ -97,10 +97,14 @@ export default function Navigation({
             <Button asChild variant='default'>
               <Link to='/auth/join'>회원가입</Link>
             </Button>
-            <Button asChild variant='outline'>
+            <Button
+              asChild
+              variant='outline'
+              className='bg-transparent border-main text-main text-md'
+            >
               <Link to='/shoppingcart'>
                 <ShoppingCart />
-                {count}
+                <span className='font-winky'>( {count} )</span>
               </Link>
             </Button>
           </div>
