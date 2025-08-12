@@ -1,0 +1,1 @@
+ALTER TABLE "shopping_cart" RENAME COLUMN "id" TO "itemId";

@@ -135,7 +135,7 @@ export type Database = {
           author: string
           contents: string | null
           created_at: string
-          id: string
+          itemId: string
           price: number
           profile_id: string | null
           sale_price: number
@@ -147,7 +147,7 @@ export type Database = {
           author: string
           contents?: string | null
           created_at?: string
-          id: string
+          itemId: string
           price: number
           profile_id?: string | null
           sale_price: number
@@ -159,7 +159,7 @@ export type Database = {
           author?: string
           contents?: string | null
           created_at?: string
-          id?: string
+          itemId?: string
           price?: number
           profile_id?: string | null
           sale_price?: number
