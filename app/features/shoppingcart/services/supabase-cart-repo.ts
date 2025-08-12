@@ -13,7 +13,7 @@ export class SupabaseCartRepo implements CartRepository {
       contents: item.contents,
       itemId: item.itemId,
       priceSales: item.sale_price,
-      priceStandard: item.price, // 오타 수정
+      priceStandard: item.price,
       title: item.title,
       cover: item.thumbnail,
     }));

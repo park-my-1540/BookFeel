@@ -14,6 +14,7 @@ import {
 import { LogOutIcon, SettingsIcon, ShoppingCart, UserIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import Menu from "./layout/Menu";
+import { useShoppingCart } from "~/features/shoppingcart/hooks/useShoppingCart";
 
 export default function Navigation({
   isLoggedIn,
@@ -26,6 +27,7 @@ export default function Navigation({
   avatar: string;
   name: string;
 }) {
+  const { count } = useShoppingCart({ _isLoggedIn: isLoggedIn });
   return (
     <div className='border-b'>
       <div className='px-lg w-full flex justify-between items-center'>
@@ -83,7 +85,7 @@ export default function Navigation({
             <Button asChild variant='outline'>
               <Link to='/shoppingcart'>
                 <ShoppingCart />
-                (2)
+                {count}
               </Link>
             </Button>
           </div>
@@ -98,7 +100,7 @@ export default function Navigation({
             <Button asChild variant='outline'>
               <Link to='/shoppingcart'>
                 <ShoppingCart />
-                (2)
+                {count}
               </Link>
             </Button>
           </div>

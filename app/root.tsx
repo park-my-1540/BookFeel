@@ -6,7 +6,6 @@ import {
   Scripts,
   ScrollRestoration,
   useLocation,
-  useNavigation,
 } from "react-router";
 import Navigation from "./components/navigation";
 import type { Route } from "./+types/root";

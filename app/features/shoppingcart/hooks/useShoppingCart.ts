@@ -8,19 +8,20 @@ import { SupabaseCartRepo } from "../services/supabase-cart-repo";
 import { useOutletContext } from "react-router";
 
 type Options = {
-  client?: SupabaseClient | null;
-  userId?: string | null; // 로그인 시 전달
+  _isLoggedIn?: boolean | null; // 로그인 시 전달
 };
 
-export function useShoppingCart({ client, userId }: Options = {}) {
-  const { isLoggedIn } = useOutletContext<{ isLoggedIn: boolean }>();
+export function useShoppingCart({ _isLoggedIn }: Options = {}) {
+  const outletCtx = useOutletContext<{ isLoggedIn: boolean } | null>();
+  const isLoggedIn = _isLoggedIn ?? outletCtx?.isLoggedIn ?? false;
 
   const repo: CartRepository = useMemo(() => {
     if (isLoggedIn) return new SupabaseCartRepo();
     return new LocalCartRepo();
-  }, [client, userId]);
+  }, []);
 
   const [items, setItems] = useState<BookCardItem[]>();
+  const [count, setCount] = useState<number>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,6 +29,7 @@ export function useShoppingCart({ client, userId }: Options = {}) {
     setLoading(true);
     try {
       const list = await repo.list();
+      setCount(list.length);
       setItems(list);
     } finally {
       setLoading(false);
@@ -123,6 +125,7 @@ export function useShoppingCart({ client, userId }: Options = {}) {
     })();
   }, [isLoggedIn, reload]);
   return {
+    count: count ?? 0,
     items: items ?? [],
     loading,
     addToCart,
