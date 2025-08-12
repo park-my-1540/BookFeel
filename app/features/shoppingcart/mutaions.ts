@@ -29,7 +29,7 @@ export const deleteItem = async (
   const { error } = await client
     .from("shopping_cart")
     .delete()
-    .eq("id", bookId)
+    .eq("itemId", bookId)
     .eq("profile_id", userId);
   if (error) {
     throw error;
