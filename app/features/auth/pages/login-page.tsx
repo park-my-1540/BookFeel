@@ -1,13 +1,14 @@
 import { Button } from "~/components/ui/button";
 import type { Route } from "./+types/join-page";
-import { Link, redirect, useNavigation } from "react-router";
+import { redirect, useNavigation } from "react-router";
 import { Form } from "react-router";
 
 import AuthButtons from "../components/auth-buttons";
 import { makeSSRClient } from "~/supa-client";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { z } from "zod";
 import InputPair from "~/components/ui/input-pair";
+import { HeadingXL } from "~/components/ui/Typography";
 export const meta: Route.MetaFunction = () => [{ title: "로그인" }];
 
 const formSchema = z.object({
@@ -61,51 +62,62 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
     navigation.state === "submitting" || navigation.state === "loading";
 
   return (
-    <div className='flex flex-col relative items-center justify-center h-full px-5'>
-      <Button variant={"ghost"} asChild className='absolute right-8 top-8 '>
-        <Link to='/auth/join'>Join</Link>
-      </Button>
-      <div className='flex items-center flex-col justify-center w-full max-w-md gap-10'>
-        <h1 className='text-2xl font-semibold'>Log in to your account</h1>
-        <Form className='w-full space-y-4' method='post'>
-          <InputPair
-            id='email'
-            label='Email'
-            description='이메일을 입력해주세요'
-            name='email'
-            type='email'
-            placeholder='ex) wemake@gmail.com'
-          />
-          {actionData &&
-            "formErrors" in actionData &&
-            actionData.formErrors?.email && (
-              <p className='text-sm text-red'>{actionData.formErrors.email}</p>
-            )}
-          <InputPair
-            id='password'
-            label='Password'
-            description='비밀번호를 입력해주세요'
-            name='password'
-            type='password'
-            placeholder='비밀번호를 입력해주세요'
-            required
-          />
-          {actionData &&
-            "formErrors" in actionData &&
-            actionData.formErrors?.password && (
-              <p className='text-sm text-red'>
-                {actionData.formErrors.password}
-              </p>
-            )}
-          <Button className='w-full' type='submit' disabled={isSubmitting}>
-            {isSubmitting ? (
-              <Loader2 className='w-4 h-4 animate-spin' />
-            ) : (
-              "로그인"
-            )}
-          </Button>
-        </Form>
+    <div className='form-container'>
+      <div className='flex items-center flex-col justify-center w-[50%] gap-10 p-lg'>
+        <HeadingXL>Login</HeadingXL>
         <AuthButtons />
+        <p className='text-sm text-muted-foreground font-medium'>
+          Or use your account
+        </p>
+        <Form className='w-full' method='post'>
+          <div className='space-y-4'>
+            <InputPair
+              className='bg-lightGray p-3'
+              id='email'
+              label='Email'
+              name='email'
+              type='email'
+              placeholder='이메일을 입력해주세요'
+            />
+            {actionData &&
+              "formErrors" in actionData &&
+              actionData.formErrors?.email && (
+                <p className='text-sm text-red'>
+                  {actionData.formErrors.email}
+                </p>
+              )}
+            <InputPair
+              className='bg-lightGray p-3'
+              id='password'
+              label='Password'
+              name='password'
+              type='password'
+              placeholder='비밀번호를 입력해주세요'
+              required
+            />
+            {actionData &&
+              "formErrors" in actionData &&
+              actionData.formErrors?.password && (
+                <p className='text-sm text-red'>
+                  {actionData.formErrors.password}
+                </p>
+              )}
+          </div>
+          <div className='text-center mt-20'>
+            <Button
+              variant={"sign"}
+              size={"xl"}
+              type='submit'
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <Loader2 className='w-4 h-4 animate-spin' />
+              ) : (
+                "LOGIN"
+              )}
+            </Button>
+          </div>
+        </Form>
       </div>
     </div>
   );

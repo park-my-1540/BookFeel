@@ -1,30 +1,22 @@
-import { MessageCircleIcon } from "lucide-react";
-import { GithubIcon } from "lucide-react";
-import { LockIcon } from "lucide-react";
 import { Link } from "react-router";
-import { Button } from "~/components/ui/button";
-import { Separator } from "~/components/ui/separator";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faKakaoTalk, faGooglePlusG } from "@fortawesome/free-brands-svg-icons";
 export default function AuthButtons() {
   return (
     <div className='w-full flex flex-col items-center gap-10'>
-      <div className='w-full flex flex-col items-center gap-2'>
-        <Separator className='w-full' />
-        <span className='text-xs text-muted-foreground uppercase font-medium'>
-          Or continue with
-        </span>
-        <Separator className='w-full' />
-      </div>
-      <div className='w-full flex flex-col gap-2'>
-        <Button variant='outline' className='w-full' asChild>
-          <Link to='/auth/social/kakao/start'>
-            <MessageCircleIcon className='w-4 h-4' />
-            카카오로 로그인
-          </Link>
-        </Button>
-        <Button variant='outline' className='w-full' asChild>
-          <Link to='/auth/social/google/start'>Google로 로그인</Link>
-        </Button>
+      <div className='w-full flex justify-center gap-4'>
+        <Link
+          to='/auth/social/kakao/start'
+          className='p-3 rounded-full border border-borderGray'
+        >
+          <FontAwesomeIcon icon={faKakaoTalk} size='lg' />
+        </Link>
+        <Link
+          to='/auth/social/google/start'
+          className='p-3 rounded-full border border-borderGray'
+        >
+          <FontAwesomeIcon icon={faGooglePlusG} size='lg' />
+        </Link>
       </div>
     </div>
   );

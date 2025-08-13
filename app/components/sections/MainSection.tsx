@@ -17,7 +17,7 @@ export default function MainSection() {
             <Card className='h-full'>
               <div className='flex h-full items-center justify-between px-md'>
                 <div className='w-[calc(100% - 500px)]'>
-                  <p className='text-4xl font-dmserif leading-snug'>STONER</p>
+                  <p className='text-4xl font-MontBold leading-snug'>STONER</p>
                   <p className='my-5 text-textSubtitle text-lg'>
                     John Williams
                   </p>
@@ -43,7 +43,7 @@ export default function MainSection() {
             <Card className='h-full'>
               <div className='flex h-full items-center justify-between px-md'>
                 <div className='w-[calc(100% - 500px)]'>
-                  <p className='text-4xl font-dmserif leading-snug'>1984</p>
+                  <p className='text-4xl font-MontBold leading-snug'>1984</p>
                   <p className='my-5 text-textSubtitle text-lg'>
                     George Orwell
                   </p>
@@ -81,7 +81,7 @@ export default function MainSection() {
                   </div>
                 </div>
                 <div className='pt-5'>
-                  <p className='text-4xl font-dmserif leading-snug'>
+                  <p className='text-4xl font-MontBold leading-snug'>
                     Project Hail Mary
                   </p>
                   <Caption>성해은</Caption>

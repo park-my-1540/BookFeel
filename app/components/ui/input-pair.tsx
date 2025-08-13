@@ -8,7 +8,7 @@ export default function InputPair({
   ...rest
 }: {
   label: string;
-  description: string;
+  description?: string;
   textArea?: boolean;
 } & InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement>) {
   return (

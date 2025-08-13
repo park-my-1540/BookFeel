@@ -24,6 +24,7 @@ const config: Config = {
       colors: {
         main: '#DB6521',
   			red: '#E84118',
+  			pink: '#FF416C',
   			gray: '#E8E8E1',
   			lightGray: '#F3F4F0',
   			white: '#FFFFFF',
@@ -89,6 +90,8 @@ const config: Config = {
         WinkyBold: ["WinkyBold", "serif"],
         mangoBold: ["MangoBold", "serif"],
         dmserif: ["DMSerif", "serif"],
+        MontBold: ["MontBold", "serif"],
+        Mont: ["Mont", "serif"],
       },
       keyframes: {
         marquee: {

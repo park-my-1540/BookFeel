@@ -6,9 +6,10 @@ import { z } from "zod";
 import { makeSSRClient } from "~/supa-client";
 import { checkUsernameExists } from "../queries";
 import AuthButtons from "../components/auth-buttons";
-import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
+import { Alert, AlertTitle } from "~/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
 import InputPair from "~/components/ui/input-pair";
+import { HeadingXL } from "~/components/ui/Typography";
 
 export const meta: Route.MetaFunction = () => [
   { title: "회원가입" },
@@ -73,68 +74,84 @@ export default function JoinPage({ actionData }: Route.ComponentProps) {
     navigation.state === "submitting" || navigation.state === "loading";
 
   return (
-    <div className='flex flex-col relative items-center justify-center h-full px-5'>
-      <div className='flex items-center flex-col justify-center w-full max-w-md gap-10'>
-        <h1 className='text-2xl font-semibold'>회원가입</h1>
-        <Form className='w-full space-y-4' method='post'>
-          <InputPair
-            id='name'
-            label='Name'
-            description='이름을 입력해주세요'
-            name='name'
-            type='text'
-            placeholder='이름을 입력해주세요'
-            required
-          />
-          {actionData && "formErrors" in actionData && (
-            <p className='text-red text-sm'>{actionData?.formErrors?.name}</p>
-          )}
-          <InputPair
-            id='username'
-            label='Username'
-            description='사용자 이름을 입력해주세요'
-            name='username'
-            type='text'
-            placeholder='ex) wemake'
-            required
-          />
-          {actionData && "formErrors" in actionData && (
-            <p className='text-red text-sm'>
-              {actionData?.formErrors?.username}
-            </p>
-          )}
-          <InputPair
-            id='email'
-            label='Email'
-            description='이메일을 입력해주세요'
-            name='email'
-            type='email'
-            placeholder='ex) wemake@gmail.com'
-          />
-          {actionData && "formErrors" in actionData && (
-            <p className='text-red text-sm'>{actionData?.formErrors?.email}</p>
-          )}
-          <InputPair
-            id='password'
-            label='Password'
-            description='비밀번호를 입력해주세요'
-            name='password'
-            type='password'
-            placeholder='비밀번호를 입력해주세요'
-            required
-          />
-          {actionData && "formErrors" in actionData && (
-            <p className='text-red text-sm'>
-              {actionData?.formErrors?.password}
-            </p>
-          )}
-          <Button className='w-full' type='submit' disabled={isSubmitting}>
-            {isSubmitting ? (
-              <Loader2 className='w-4 h-4 animate-spin' />
-            ) : (
-              "계정 만들기"
+    <div className='lef-0 w-[50%]'>
+      <div className='flex items-center flex-col justify-center w-full gap-5  p-lg'>
+        <HeadingXL>Join</HeadingXL>
+        <AuthButtons />
+        <p className='text-sm text-muted-foreground font-medium'>
+          or use your email for registration
+        </p>
+        <Form className='w-full' method='post'>
+          <div className='space-y-4'>
+            <InputPair
+              className='bg-lightGray p-3'
+              id='name'
+              label='Name'
+              name='name'
+              type='text'
+              placeholder='이름을 입력해주세요'
+              required
+            />
+            {actionData && "formErrors" in actionData && (
+              <p className='text-red text-sm'>{actionData?.formErrors?.name}</p>
             )}
-          </Button>
+            <InputPair
+              className='bg-lightGray p-3'
+              id='username'
+              label='Display Name'
+              description='ex) Bookie 123'
+              name='username'
+              type='text'
+              placeholder='사용하실 이름을 입력해주세요'
+              required
+            />
+            {actionData && "formErrors" in actionData && (
+              <p className='text-red text-sm'>
+                {actionData?.formErrors?.username}
+              </p>
+            )}
+            <InputPair
+              className='bg-lightGray p-3'
+              id='email'
+              label='Email'
+              name='email'
+              type='email'
+              placeholder='이메일을 입력해주세요'
+            />
+            {actionData && "formErrors" in actionData && (
+              <p className='text-red text-sm'>
+                {actionData?.formErrors?.email}
+              </p>
+            )}
+            <InputPair
+              className='bg-lightGray p-3'
+              id='password'
+              label='Password'
+              name='password'
+              type='password'
+              placeholder='비밀번호를 입력해주세요'
+              required
+            />
+            {actionData && "formErrors" in actionData && (
+              <p className='text-red text-sm'>
+                {actionData?.formErrors?.password}
+              </p>
+            )}
+          </div>
+          <div className='text-center mt-10'>
+            <Button
+              variant={"sign"}
+              size={"xl"}
+              type='submit'
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <Loader2 className='w-4 h-4 animate-spin' />
+              ) : (
+                "JOIN"
+              )}
+            </Button>
+          </div>
           {actionData && "signUpError" in actionData && (
             <Alert variant='destructive'>
               <AlertCircle className='h-4 w-4' />
@@ -142,7 +159,6 @@ export default function JoinPage({ actionData }: Route.ComponentProps) {
             </Alert>
           )}
         </Form>
-        <AuthButtons />
       </div>
     </div>
   );
