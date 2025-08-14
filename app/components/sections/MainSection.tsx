@@ -32,7 +32,7 @@ export default function MainSection() {
                 <div className='w-[200px] shadow border'>
                   <img
                     src='https://image.aladin.co.kr/product/36582/41/cover500/8925573555_2.jpg'
-                    alt='성해나'
+                    alt='스토너'
                     className='w-full'
                   />
                 </div>
@@ -58,7 +58,7 @@ export default function MainSection() {
                 <div className='w-[200px] shadow border'>
                   <img
                     src='https://image.aladin.co.kr/product/47/23/cover500/04515249ff_1.jpg'
-                    alt='성해나'
+                    alt='George Orwell'
                     className='w-full'
                   />
                 </div>
@@ -71,7 +71,7 @@ export default function MainSection() {
                 <div className='flex flex-row'>
                   <div className='w-full relative pb-[56.25%]'>
                     <iframe
-                      src='https://www.youtube.com/embed/TSGkOliZNQ8?si=s2vf7a3RshEu-4R0'
+                      src='https://www.youtube.com/embed/IPQ6nAefyMM?si=8qV2hJqgqj4hetTt'
                       title='YouTube video player'
                       allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
                       referrerPolicy='strict-origin-when-cross-origin'
@@ -84,7 +84,7 @@ export default function MainSection() {
                   <p className='text-4xl font-MontBold leading-snug'>
                     Project Hail Mary
                   </p>
-                  <Caption>성해은</Caption>
+                  <Caption>Andy Weir</Caption>
                 </div>
               </CardContent>
             </Card>

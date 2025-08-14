@@ -86,12 +86,12 @@ const config: Config = {
         },
       },
       fontFamily: {
-        winky: ["Winky", "serif"],
-        WinkyBold: ["WinkyBold", "serif"],
-        mangoBold: ["MangoBold", "serif"],
-        dmserif: ["DMSerif", "serif"],
-        MontBold: ["MontBold", "serif"],
-        Mont: ["Mont", "serif"],
+        winky: ["Winky", "Mango"],
+        WinkyBold: ["WinkyBold", "Mango"],
+        mangoBold: ["MangoBold", "sanserif"],
+        dmserif: ["DMSerif", "Mango"],
+        MontBold: ["MontBold", "MangoBold"],
+        Mont: ["Mont", "Mango"],
       },
       keyframes: {
         marquee: {

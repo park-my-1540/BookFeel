@@ -21,9 +21,9 @@ export function BookCard({ direction = "col", ...props }: Props) {
   };
 
   if (direction === "row") {
-    return <RowCard {...props} onSubmit={onSubmit} />;
+    return <RowCard {...props} onSubmit={() => onSubmit} />;
   }
-  return <ColCard {...props} onSubmit={onSubmit} />;
+  return <ColCard {...props} onSubmit={() => onSubmit} />;
 }
 
 function ColCard(
@@ -45,7 +45,9 @@ function ColCard(
         </div>
         <div className='flex justify-between'>
           <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
-          <ShoppingCartButton book={props} onSubmit={onSubmit} />
+          {priceStandard ? (
+            <ShoppingCartButton book={props} onSubmit={() => onSubmit} />
+          ) : null}
         </div>
       </div>
     </Card>
@@ -55,26 +57,25 @@ function ColCard(
 function RowCard(
   props: BookCardItem & { onSubmit?: (book: BookCardItem) => void }
 ) {
-  const { link, cover, title, author, priceSales, priceStandard, onSubmit } =
-    props;
+  const { cover, title, author, priceSales, priceStandard, onSubmit } = props;
   return (
-    <a href={link} target='_blank' className='block relative'>
-      <Card className='bg-transparent border-none shadow-none py-2 relative w-full'>
-        <div className='flex flex-row gap-4 items-center'>
-          <div className='w-28 max-w-28 min-w-28 shadow'>
-            <img src={cover} alt={title} className='w-full h-auto' />
-          </div>
-          <div className='w-full mt-4'>
-            <Title3>{title}</Title3>
-            <Caption>{author}</Caption>
-            <div className='flex justify-between'>
-              <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
-              <ShoppingCartButton book={props} onSubmit={onSubmit} />
-            </div>
+    <Card className='bg-transparent border-none shadow-none py-2 relative w-full'>
+      <div className='flex flex-row gap-4 items-center'>
+        <div className='w-28 max-w-28 min-w-28 shadow'>
+          <img src={cover} alt={title} className='w-full h-auto' />
+        </div>
+        <div className='w-full mt-4'>
+          <Title3>{title}</Title3>
+          <Caption>{author}</Caption>
+          <div className='flex justify-between'>
+            <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
+            {priceStandard ? (
+              <ShoppingCartButton book={props} onSubmit={() => onSubmit} />
+            ) : null}
           </div>
         </div>
-      </Card>
-    </a>
+      </div>
+    </Card>
   );
 }
 

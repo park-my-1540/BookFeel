@@ -1,10 +1,11 @@
-import type { BookItem } from "~/features/books/type";
+import type { BookCardItem } from "~/features/books/type";
 import { Button } from "../../../components/ui/button";
 import { ShoppingCart } from "lucide-react";
 
 type ShoppingCartButtonProps = {
-  book: BookItem;
+  book: BookCardItem;
   size?: "sm" | "lg";
+  onSubmit: (book: BookCardItem) => void;
 };
 
 export default function ShoppingCartButton({
