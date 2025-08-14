@@ -22,7 +22,7 @@ export const getUserPlaylists = async (
   const { data, error } = await client
     .from("playlist_list_view")
     .select(`*`)
-    .eq("profiles.profile_id", profile_id);
+    .eq("profile_id", profile_id);
   if (error) throw error;
   return data;
 };

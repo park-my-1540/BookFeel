@@ -11,8 +11,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { LogOutIcon, SettingsIcon, ShoppingCart, UserIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
 import Menu from "./layout/Menu";
 import { useShoppingCart } from "~/features/shoppingcart/hooks/useShoppingCart";
 
@@ -41,6 +44,12 @@ export default function Navigation({
 
         {isLoggedIn ? (
           <div className='flex items-center gap-4'>
+            <Button asChild variant='ghost' className='hover:text-main'>
+              <Link to='/shoppingcart'>
+                <FontAwesomeIcon icon={faCartShopping as IconProp} size='lg' />
+                {count}
+              </Link>
+            </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Avatar>
@@ -82,12 +91,6 @@ export default function Navigation({
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button asChild variant='outline'>
-              <Link to='/shoppingcart'>
-                <ShoppingCart />
-                {count}
-              </Link>
-            </Button>
           </div>
         ) : (
           <div className='flex items-center gap-4'>
@@ -103,7 +106,7 @@ export default function Navigation({
               className='bg-transparent border-main text-main text-md'
             >
               <Link to='/shoppingcart'>
-                <ShoppingCart />
+                <FontAwesomeIcon icon={faCartShopping as IconProp} size='lg' />
                 <span className='font-winky'>( {count} )</span>
               </Link>
             </Button>

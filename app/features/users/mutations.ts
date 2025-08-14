@@ -1,25 +1,26 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { redirect } from "react-router";
 
-export const getUserProfileById = async (
+export const updateUserAvatar = async (
   client: SupabaseClient,
-  { id }: { id: string }
+  { id, avatarUrl }: { id: string; avatarUrl: string }
+) => {
+  const { error } = await client
+    .from("profiles")
+    .update({ profile_id: id, avatar: avatarUrl })
+    .eq("profile_id", id);
+  if (error) throw error;
+};
+
+export const updateUser = async (
+  client: SupabaseClient,
+  { id, username, bio }: { id: string; username: string; bio: string }
 ) => {
   const { data, error } = await client
     .from("profiles")
-    .select(`profile_id, name, username, avatar, bio, email`)
-    .eq("profile_id", id)
-    .single();
+    .update({ profile_id: id, username, bio })
+    .eq("profile_id", id);
   if (error) throw error;
-  return data;
-};
-
-export const getLoggedInUserId = async (client: SupabaseClient) => {
-  const { data, error } = await client.auth.getUser();
-  if (error || data.user === null) {
-    throw redirect("/auth/login");
-  }
-  return data.user.id;
 };
 
 export const getUserId = async (client: SupabaseClient) => {

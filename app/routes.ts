@@ -33,4 +33,14 @@ export default [
       ]),
     ]),
   ]),
+  ...prefix("/my", [
+    route("/profile", "features/users/pages/my-profile-page.tsx"),
+    route("/settings", "features/users/pages/settings-page.tsx"),
+  ]),
+  ...prefix("/users/:username", [
+    layout("features/users/pages/profile-layout.tsx", [
+      index("features/users/pages/profile-page.tsx"),
+      route("/playlist", "features/users/pages/profile-playlist-page.tsx"),
+    ]),
+  ]),
 ];
