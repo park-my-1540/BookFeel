@@ -1,10 +1,16 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-export const getPlaylists = async (client: SupabaseClient) => {
-  const { data, error } = await client
-    .from("playlist_list_view")
-    .select(`*`)
-    .order("created_at", { ascending: false });
+export const getPlaylists = async (
+  client: SupabaseClient,
+  { sorting }: { sorting: "newest" | "popular" }
+) => {
+  const baseQuery = client.from("playlist_list_view").select(`*`);
+  if (sorting === "newest") {
+    baseQuery.order("created_at", { ascending: false });
+  } else {
+    baseQuery.order("upvotes", { ascending: false });
+  }
+  const { data, error } = await baseQuery;
   if (error) throw error;
   return data;
 };

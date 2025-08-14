@@ -14,7 +14,7 @@ import { submitKeywordToGemini } from "../services/generateBooksByGemeni";
 import { getLoggedInUserId } from "~/features/users/queries";
 import GeminiBooksSection from "~/components/sections/GeminiBooksSection";
 import BestSellerSection from "~/components/sections/BestSellerSection";
-import CurrentVibesSection from "~/components/sections/CurrentVibesSection";
+import CuratedVibesSection from "~/components/sections/CuratedVibesSection";
 import MainSection from "~/components/sections/MainSection";
 import RecommenDationSection from "~/components/sections/RecommenDationSection";
 
@@ -145,7 +145,7 @@ export default function HomePage({
         <BestSellerSection books={loaderData.books} />
       </div>
 
-      <CurrentVibesSection playlists={loaderData.playlists ?? []} />
+      <CuratedVibesSection playlists={loaderData.playlists ?? []} />
     </div>
   );
 }

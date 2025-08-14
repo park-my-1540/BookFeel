@@ -4,12 +4,12 @@ import {
   CarouselItem,
   CarouselDots,
 } from "~/components/ui/carousel";
-import { Heading2, Title1 } from "../ui/Typography";
+import { Heading2 } from "../ui/Typography";
 import { PlaylistCard } from "~/features/playlists/components/PlaylistCard";
 import type { Database } from "database.types";
 import { Link } from "react-router";
 import { Button } from "../ui/button";
-export default function CurrentVibesSection({
+export default function CuratedVibesSection({
   playlists,
 }: {
   playlists: Database["public"]["Views"]["playlist_list_view"]["Row"][];
