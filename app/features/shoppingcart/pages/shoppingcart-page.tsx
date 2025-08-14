@@ -7,6 +7,7 @@ import { useTossPayment } from "../hooks/useTossPayment";
 import PaymentSection from "../components/PaymentSection";
 import CartList from "../components/CartList";
 import { Heading2 } from "~/components/ui/Typography";
+import BookNoResult from "~/features/books/components/BookNoResult";
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { client } = makeSSRClient(request);
@@ -69,13 +70,19 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
       <div className='lg:col-span-3 p-lg'>
         <Heading2>My Shopping Cart</Heading2>
 
-        {cart?.map((item) => (
-          <CartList
-            key={item.itemId}
-            item={item}
-            handleRemove={() => handleRemove(item.itemId)}
-          />
-        ))}
+        {cart.length > 0 ? (
+          <>
+            {cart?.map((item) => (
+              <CartList
+                key={item.itemId}
+                item={item}
+                handleRemove={() => handleRemove(item.itemId)}
+              />
+            ))}
+          </>
+        ) : (
+          <BookNoResult message='장바구니가 비었습니다.' />
+        )}
       </div>
       <PaymentSection cart={cart} handleSubmit={handleSubmit} total={total} />
     </div>

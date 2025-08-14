@@ -26,7 +26,11 @@ export class SupabaseCartRepo implements CartRepository {
       body: JSON.stringify({ intent: "add", book }),
     });
     if (!res.ok) {
-      throw new Error("장바구니 추가 요청에 실패했습니다.");
+      const message =
+        res.status === 409
+          ? "이미 장바구니에 있는 상품입니다."
+          : "장바구니 추가 요청에 실패했습니다.";
+      throw new Error(message);
     }
   }
   async remove(itemId: string) {

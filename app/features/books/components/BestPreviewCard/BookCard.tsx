@@ -3,12 +3,13 @@ import { Card } from "~/components/ui/card";
 import type { BookCardItem } from "../../type";
 import ShoppingCartButton from "~/features/shoppingcart/components/ShoppingCartButton";
 import { useShoppingCart } from "~/features/shoppingcart/hooks/useShoppingCart";
+import { useOutletContext } from "react-router";
 
 type Props = BookCardItem & { direction?: "col" | "row" };
 
 export function BookCard({ direction = "col", ...props }: Props) {
-  const { addToCart } = useShoppingCart();
-
+  const { isLoggedIn } = useOutletContext<{ isLoggedIn: boolean }>();
+  const { addToCart } = useShoppingCart({ _isLoggedIn: isLoggedIn });
   const onSubmit = async (book: BookCardItem) => {
     try {
       await addToCart(book); // 성공 시에만 실행

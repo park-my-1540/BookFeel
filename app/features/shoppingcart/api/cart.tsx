@@ -42,29 +42,23 @@ export const action = async ({ request }: Route.ActionArgs) => {
         } as BookCardItem,
         userId
       );
-      return new Response(JSON.stringify({ ok: true }), {
-        status: 200,
-        headers,
-      });
     }
     if (intent === "remove") {
       await deleteItem(client, itemId, userId);
-      return new Response(JSON.stringify({ ok: true }), {
-        status: 200,
-        headers,
-      });
     }
     if (intent === "clear") {
       await clearItem(client);
-      return new Response(JSON.stringify({ ok: true }), {
-        status: 200,
-        headers,
-      });
     }
   } catch (err: any) {
-    const { code, message } = err;
-    throw new Error(code);
+    if (err.code === "23505") {
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          message: "이미 장바구니에 있는 상품입니다.",
+        }),
+        { status: 409, headers }
+      );
+    }
+    throw err;
   }
-
-  return new Response(JSON.stringify({ ok: false }), { status: 400, headers });
 };

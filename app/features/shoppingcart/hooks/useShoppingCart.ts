@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { BookCardItem } from "~/features/books/type";
-import type { SupabaseClient } from "@supabase/supabase-js";
 import type { CartRepository } from "../services/cart-repo";
 import { getCartLS, clearCartLS } from "../services/cartStorage";
 import { LocalCartRepo } from "../services/local-cart-repo";
@@ -18,7 +17,7 @@ export function useShoppingCart({ _isLoggedIn }: Options = {}) {
   const repo: CartRepository = useMemo(() => {
     if (isLoggedIn) return new SupabaseCartRepo();
     return new LocalCartRepo();
-  }, []);
+  }, [isLoggedIn]);
 
   const [items, setItems] = useState<BookCardItem[]>();
   const [count, setCount] = useState<number>();
@@ -36,11 +35,21 @@ export function useShoppingCart({ _isLoggedIn }: Options = {}) {
     }
   }, [repo]);
 
+  useEffect(() => {
+    const onCartChange = () => reload();
+    window.addEventListener("cart:changed", onCartChange);
+
+    return () => {
+      window.removeEventListener("cart:changed", onCartChange);
+    };
+  }, [reload]);
+
   const addToCart = useCallback(
     async (book: BookCardItem) => {
       setError(null);
       try {
         await repo.add(book);
+        window.dispatchEvent(new Event("cart:changed"));
         await reload();
       } catch (e) {
         if (e instanceof Error) {
@@ -58,6 +67,7 @@ export function useShoppingCart({ _isLoggedIn }: Options = {}) {
       setError(null);
       try {
         await repo.remove(itemId);
+        window.dispatchEvent(new Event("cart:changed"));
         await reload();
       } catch (e) {
         if (e instanceof Error) {
@@ -99,7 +109,6 @@ export function useShoppingCart({ _isLoggedIn }: Options = {}) {
 
   useEffect(() => {
     (async () => {
-      if (!client || !userId) return;
       const localItems = getCartLS();
       if (localItems.length === 0) {
         await reload();
