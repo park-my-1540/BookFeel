@@ -22,6 +22,7 @@ export default [
       route("/upvote", "features/playlists/pages/playlist-upvote-page.tsx"),
     ]),
   ]),
+  ...prefix("library", [index("features/library/pages/library-page.tsx")]),
   ...prefix("auth", [
     layout("features/auth/layouts/auth-layout.tsx", [
       route("/login", "features/auth/pages/login-page.tsx"),

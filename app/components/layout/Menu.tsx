@@ -46,6 +46,18 @@ const menus: menuType[] = [
       },
     ],
   },
+  {
+    name: "Library",
+    to: "/library",
+    icon: Youtube,
+    items: [
+      {
+        name: "상세",
+        description: "다양한 플레이리스트를 확인해보세요",
+        to: "/library",
+      },
+    ],
+  },
 ];
 
 export default function Menu() {

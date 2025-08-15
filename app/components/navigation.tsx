@@ -1,7 +1,7 @@
 import { Heading1 } from "@/components/ui/Typography";
 import BookSearch from "@/features/search/components/SearchBarContainer";
 import { Button } from "./ui/button";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,6 +31,7 @@ export default function Navigation({
   name: string;
 }) {
   const { count } = useShoppingCart({ _isLoggedIn: isLoggedIn });
+  const { pathname } = useLocation();
   return (
     <div className='border-b'>
       <div className='px-lg w-full flex justify-between items-center'>
@@ -38,9 +39,11 @@ export default function Navigation({
           <Heading1>BookFeel</Heading1>
         </Link>
 
-        <div className='relative w-3/6'>
-          <BookSearch />
-        </div>
+        {pathname === "/" ? (
+          <div className='relative w-3/6'>
+            <BookSearch />
+          </div>
+        ) : null}
 
         {isLoggedIn ? (
           <div className='flex items-center gap-4'>
