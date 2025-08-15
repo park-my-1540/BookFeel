@@ -25,12 +25,8 @@ export class SupabaseCartRepo implements CartRepository {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ intent: "add", book }),
     });
-    if (!res.ok) {
-      const message =
-        res.status === 409
-          ? "이미 장바구니에 있는 상품입니다."
-          : "장바구니 추가 요청에 실패했습니다.";
-      throw new Error(message);
+    if (res.status === 409) {
+      throw new Error("이미 장바구니에 있는 상품입니다.");
     }
   }
   async remove(itemId: string) {
@@ -39,10 +35,6 @@ export class SupabaseCartRepo implements CartRepository {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ intent: "remove", itemId }),
     });
-
-    if (!res.ok) {
-      throw new Error("장바구니 삭제 요청에 실패했습니다.");
-    }
   }
 
   async clear() {
@@ -51,9 +43,5 @@ export class SupabaseCartRepo implements CartRepository {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ intent: "clear" }),
     });
-
-    if (!res.ok) {
-      throw new Error("장바구니 비우기 요청에 실패했습니다.");
-    }
   }
 }

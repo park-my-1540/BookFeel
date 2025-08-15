@@ -15,15 +15,14 @@ export function BookCard({ direction = "col", ...props }: Props) {
       await addToCart(book); // 성공 시에만 실행
       alert("장바구니에 추가되었습니다.");
     } catch (error) {
-      console.log(error);
       alert(error instanceof Error ? error.message : String(error));
     }
   };
 
   if (direction === "row") {
-    return <RowCard {...props} onSubmit={() => onSubmit} />;
+    return <RowCard {...props} onSubmit={onSubmit} />;
   }
-  return <ColCard {...props} onSubmit={() => onSubmit} />;
+  return <ColCard {...props} onSubmit={onSubmit} />;
 }
 
 function ColCard(
@@ -46,7 +45,7 @@ function ColCard(
         <div className='flex justify-between'>
           <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
           {priceStandard ? (
-            <ShoppingCartButton book={props} onSubmit={() => onSubmit} />
+            <ShoppingCartButton book={props} onSubmit={onSubmit} />
           ) : null}
         </div>
       </div>
@@ -70,7 +69,7 @@ function RowCard(
           <div className='flex justify-between'>
             <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
             {priceStandard ? (
-              <ShoppingCartButton book={props} onSubmit={() => onSubmit} />
+              <ShoppingCartButton book={props} onSubmit={onSubmit} />
             ) : null}
           </div>
         </div>

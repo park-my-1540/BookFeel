@@ -92,7 +92,7 @@ export const loader = async ({
         choicesBooks(),
         getGeminiBooks(client, parsedData?.keyword ?? ""),
         getCategories(client),
-        getPlaylists(client),
+        getPlaylists(client, { sorting: "popular" }),
       ]);
     return {
       books,

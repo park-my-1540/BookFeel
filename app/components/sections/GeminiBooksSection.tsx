@@ -4,6 +4,7 @@ import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 import { Loader2 } from "lucide-react";
 import type { BookCardItem } from "~/features/books/type";
+import { Title1 } from "../ui/Typography";
 
 interface GeminiBooksSectionProps {
   searchKeyword: { keyword: string; category_id: string }[];
@@ -36,11 +37,7 @@ export default function GeminiBooksSection({
   };
   return (
     <section className='a p-md bg-white shadow-sm'>
-      <div className='flex items-center flex-wrap justify-between mb-4'>
-        <h2 className='text-xl font-bold'>
-          Gemini가 추천해주는 감성 키워드 도서
-        </h2>
-      </div>
+      <Title1 className='mb-3'>Gemini가 추천해주는 감성 키워드 도서</Title1>
       <div className='flex gap-3'>
         {searchKeyword?.map(({ keyword, category_id }) => (
           <Button

@@ -52,7 +52,7 @@ export default function Navigation({
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Avatar>
+                <Avatar className='cursor-pointer'>
                   {avatar ? (
                     <AvatarImage src={avatar} />
                   ) : (
