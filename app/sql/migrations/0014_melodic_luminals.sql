@@ -1,2 +1,0 @@
-ALTER TABLE "shopping_cart" ALTER COLUMN "profile_id" SET NOT NULL;--> statement-breakpoint
-ALTER TABLE "shopping_cart" ADD CONSTRAINT "shopping_cart_profile_id_itemId_pk" PRIMARY KEY("profile_id","itemId");
