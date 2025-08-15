@@ -4,20 +4,24 @@ import type { BookCardItem } from "../../type";
 import ShoppingCartButton from "~/features/shoppingcart/components/ShoppingCartButton";
 import { useShoppingCart } from "~/features/shoppingcart/hooks/useShoppingCart";
 import { useOutletContext } from "react-router";
+import { useCallback } from "react";
 
 type Props = BookCardItem & { direction?: "col" | "row" };
 
 export function BookCard({ direction = "col", ...props }: Props) {
   const { isLoggedIn } = useOutletContext<{ isLoggedIn: boolean }>();
   const { addToCart } = useShoppingCart({ _isLoggedIn: isLoggedIn });
-  const onSubmit = async (book: BookCardItem) => {
-    try {
-      await addToCart(book); // 성공 시에만 실행
-      alert("장바구니에 추가되었습니다.");
-    } catch (error) {
-      alert(error instanceof Error ? error.message : String(error));
-    }
-  };
+  const onSubmit = useCallback(
+    async (book: BookCardItem) => {
+      try {
+        await addToCart(book); // 성공 시에만 실행
+        alert("장바구니에 추가되었습니다.");
+      } catch (error) {
+        alert(error instanceof Error ? error.message : String(error));
+      }
+    },
+    [addToCart]
+  );
 
   if (direction === "row") {
     return <RowCard {...props} onSubmit={onSubmit} />;
@@ -26,7 +30,7 @@ export function BookCard({ direction = "col", ...props }: Props) {
 }
 
 function ColCard(
-  props: BookCardItem & { onSubmit?: (book: BookCardItem) => void }
+  props: BookCardItem & { onSubmit: (book: BookCardItem) => void }
 ) {
   const { cover, title, author, priceSales, priceStandard, onSubmit } = props;
 
@@ -44,7 +48,7 @@ function ColCard(
         </div>
         <div className='flex justify-between'>
           <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
-          {priceStandard ? (
+          {typeof priceStandard === "number" ? (
             <ShoppingCartButton book={props} onSubmit={onSubmit} />
           ) : null}
         </div>
@@ -54,7 +58,7 @@ function ColCard(
 }
 
 function RowCard(
-  props: BookCardItem & { onSubmit?: (book: BookCardItem) => void }
+  props: BookCardItem & { onSubmit: (book: BookCardItem) => void }
 ) {
   const { cover, title, author, priceSales, priceStandard, onSubmit } = props;
   return (
@@ -66,9 +70,9 @@ function RowCard(
         <div className='w-full mt-4'>
           <Title3>{title}</Title3>
           <Caption>{author}</Caption>
-          <div className='flex justify-between'>
+          <div className='flex justify-between pt-2'>
             <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
-            {priceStandard ? (
+            {typeof priceStandard === "number" ? (
               <ShoppingCartButton book={props} onSubmit={onSubmit} />
             ) : null}
           </div>
@@ -98,9 +102,6 @@ function PriceTag({
       {isDiscount ? (
         <div className='flex items-start gap-2'>
           <Title3>{priceSales!.toLocaleString()}원</Title3>
-          {/* <span className='text-md text-gray-500 line-through'>
-            {priceStandard!.toLocaleString()}원
-          </span> */}
         </div>
       ) : (
         <Title3>{(priceSales ?? priceStandard)?.toLocaleString()}원</Title3>

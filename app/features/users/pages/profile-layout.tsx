@@ -69,7 +69,8 @@ export default function ProfileLayout({
             className={({ isActive }) =>
               cn(
                 buttonVariants({ variant: "outline" }),
-                isActive && "text-white bg-main"
+                isActive &&
+                  "text-white bg-main hover:text-white hover:bg-main/90 "
               )
             }
             to={item.to}

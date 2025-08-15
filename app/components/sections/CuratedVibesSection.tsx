@@ -9,10 +9,12 @@ import { PlaylistCard } from "~/features/playlists/components/PlaylistCard";
 import type { Database } from "database.types";
 import { Link } from "react-router";
 import { Button } from "../ui/button";
+export type PlaylistsProps =
+  Database["public"]["Views"]["playlist_list_view"]["Row"][];
 export default function CuratedVibesSection({
   playlists,
 }: {
-  playlists: Database["public"]["Views"]["playlist_list_view"]["Row"][];
+  playlists: PlaylistsProps;
 }) {
   return (
     <div className='bg-dark p-lg'>

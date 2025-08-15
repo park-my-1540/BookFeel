@@ -8,7 +8,7 @@ import { adminClient } from "~/supa-client";
 const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const MODEL_NAME = "gemini-1.5-flash-8b-latest"; // 또는 gemini-pro 등
 
-export async function generateBooksByGemini(keyword: string) {
+export async function generateBooksByGemini(keyword: string, userId: string) {
   const prompt = keywordPrompt(keyword);
   if (!prompt) {
     return Response.json({ error: "Invalid keyword" }, { status: 400 });
@@ -47,7 +47,7 @@ export async function generateBooksByGemini(keyword: string) {
     };
   });
 
-  await insertIdeasByUser(adminClient, booksWithKeyword);
+  await insertIdeasByUser(adminClient, booksWithKeyword, userId);
   return Response.json({ ok: true });
 }
 
@@ -72,7 +72,7 @@ export async function submitKeywordToGemini(
       return { success: false, reason: "limit-exceeded" };
     }
 
-    await generateBooksByGemini(keyword);
+    await generateBooksByGemini(keyword, userId);
 
     const { data, error } = await client.rpc("increment_used_count", {
       uid: userId,

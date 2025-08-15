@@ -37,6 +37,9 @@ export const user_custom_keywords = pgTable("user_custom_keywords", {
   gemini_idea_id: bigint({ mode: "number" })
     .primaryKey()
     .generatedAlwaysAsIdentity(),
+  profile_id: uuid().references(() => profiles.profile_id, {
+    onDelete: "cascade",
+  }),
   title: text().notNull(),
   author: text().notNull(),
   cover: text().notNull(),

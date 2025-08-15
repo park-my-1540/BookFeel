@@ -50,7 +50,7 @@ const menus: menuType[] = [
 
 export default function Menu() {
   return (
-    <div className='flex justify-start items-center py-3 px-lg border border-borderGray'>
+    <div className='flex justify-start items-center py-3 px-lg border-t shadow-sm border-borderGray'>
       <NavigationMenu>
         <NavigationMenuList>
           {menus.map((menu) => (
@@ -100,7 +100,7 @@ const LinkMenu = ({
   const Icon = menu.icon;
 
   const content = (
-    <span className='flex gap-2 items-center text-lg font-medium leading-none py-2'>
+    <span className='flex gap-2 items-center text-lg font-medium leading-none py-2 hover:text-main'>
       {Icon && <Icon size={18} />}
       {menu.name}
     </span>

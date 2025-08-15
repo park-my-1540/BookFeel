@@ -11,10 +11,12 @@ import { useState } from "react";
 import { getPlaylists } from "~/features/playlists/queries";
 import { getCategories, getGeminiBooks } from "~/features/ideas/queries";
 import { submitKeywordToGemini } from "../services/generateBooksByGemeni";
-import { getLoggedInUserId } from "~/features/users/queries";
+import { getLoggedInUserId, getUserId } from "~/features/users/queries";
 import GeminiBooksSection from "~/components/sections/GeminiBooksSection";
 import BestSellerSection from "~/components/sections/BestSellerSection";
-import CuratedVibesSection from "~/components/sections/CuratedVibesSection";
+import CuratedVibesSection, {
+  type PlaylistsProps,
+} from "~/components/sections/CuratedVibesSection";
 import MainSection from "~/components/sections/MainSection";
 import RecommenDationSection from "~/components/sections/RecommenDationSection";
 
@@ -74,7 +76,7 @@ type LoaderData = {
   choices: BookCardItem[];
   geminiBooks: BookCardItem[];
   search_keyword: { keyword: string; category_id: string }[];
-  playlists: unknown;
+  playlists: PlaylistsProps;
 };
 
 export const loader = async ({
@@ -82,6 +84,8 @@ export const loader = async ({
 }: Route.LoaderArgs): Promise<LoaderData> => {
   const { client } = makeSSRClient(request);
   const url = new URL(request.url);
+  const userId = await getUserId(client);
+
   const { data: parsedData } = searchParamsSchema.safeParse(
     Object.fromEntries(url.searchParams)
   );
@@ -90,7 +94,7 @@ export const loader = async ({
       await Promise.all([
         rankedBooks(),
         choicesBooks(),
-        getGeminiBooks(client, parsedData?.keyword ?? ""),
+        getGeminiBooks(client, parsedData?.keyword ?? "장마", userId),
         getCategories(client),
         getPlaylists(client, { sorting: "popular" }),
       ]);
@@ -132,9 +136,7 @@ export default function HomePage({
 
       <div className='grid grid-layout gap-6 px-lg pb-lg'>
         <GeminiBooksSection
-          searchKeyword={
-            loaderData.search_keyword ?? [{ keyword: "장마", category_id: 3 }]
-          }
+          searchKeyword={loaderData.search_keyword}
           books={loaderData.geminiBooks ?? []}
           isSubmitting={isSubmitting}
           toggle={toggle}
@@ -145,7 +147,7 @@ export default function HomePage({
         <BestSellerSection books={loaderData.books} />
       </div>
 
-      <CuratedVibesSection playlists={loaderData.playlists ?? []} />
+      <CuratedVibesSection playlists={loaderData.playlists.slice(0, 3) ?? []} />
     </div>
   );
 }

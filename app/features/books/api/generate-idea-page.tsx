@@ -20,7 +20,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   // }
 
   const url = new URL(request.url);
-  const keyword = url.searchParams.get("keyword") ?? "장마";
+  const keyword = url.searchParams.get("keyword") ?? "";
   const userCustom = url.searchParams.get("target") ?? null;
 
   const prompt = keywordPrompt(keyword);

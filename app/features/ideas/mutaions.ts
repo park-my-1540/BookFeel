@@ -10,13 +10,15 @@ interface booksWithKeyword {
 
 export const insertIdeasByUser = async (
   client: SupabaseClient,
-  booksWithKeyword: booksWithKeyword[]
+  booksWithKeyword: booksWithKeyword[],
+  userId: string
 ) => {
   // 먼저 해당 유저의 userCustom 관련 데이터 삭제
   const { error: deleteError } = await client
     .from("user_custom_keywords")
     .delete()
-    .eq("keyword", "userCustom");
+    .eq("keyword", "userCustom")
+    .eq("profile_id", userId);
 
   if (deleteError) {
     console.error("삭제 실패:", deleteError);
@@ -24,15 +26,15 @@ export const insertIdeasByUser = async (
   }
 
   // 이후 새로운 데이터 삽입
-  const { error: insertError } = await client
+  const { data, error: insertError } = await client
     .from("user_custom_keywords")
     .insert(
       booksWithKeyword.map((book) => ({
         ...book,
         keyword: "userCustom",
+        profile_id: userId,
       }))
     );
-
   if (insertError) {
     console.error("삽입 실패:", insertError);
     throw insertError;

@@ -4,7 +4,7 @@ export const getCategories = async (client: SupabaseClient) => {
   const { data, error } = await client
     .from("category")
     .select(`*`)
-    .order("category_id", { ascending: false });
+    .order("category_id", { ascending: true });
 
   if (error) throw error;
   return data;
@@ -12,13 +12,18 @@ export const getCategories = async (client: SupabaseClient) => {
 
 export const getGeminiBooks = async (
   client: SupabaseClient,
-  keyword: string
+  keyword: string,
+  userId: string
 ) => {
   const baseQuery = client
     .from("all_gemini_ideas")
     .select("*", { head: false, count: "exact" })
     .limit(10);
-  if (keyword) {
+
+  if (keyword === "userCustom") {
+    baseQuery.eq("keyword", "userCustom");
+    baseQuery.eq("profile_id", userId);
+  } else {
     baseQuery.eq("keyword", keyword);
   }
 
@@ -37,10 +42,12 @@ export const canUseGemini = async (
     .from("user_gemini_usage")
     .select("used_count")
     .eq("profile_id", profileId)
-    .single();
+    .maybeSingle();
+
   if (error) {
     throw error;
   }
+  if (!data) return true;
 
   return data.used_count < dailyLimit;
 };

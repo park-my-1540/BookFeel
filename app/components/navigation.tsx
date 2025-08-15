@@ -44,7 +44,11 @@ export default function Navigation({
 
         {isLoggedIn ? (
           <div className='flex items-center gap-4'>
-            <Button asChild variant='ghost' className='hover:text-main'>
+            <Button
+              asChild
+              variant='outline'
+              className='font-Mont bg-transparent border-main text-main text-md hover:bg-main hover:text-white'
+            >
               <Link to='/shoppingcart'>
                 <FontAwesomeIcon icon={faCartShopping as IconProp} size='lg' />
                 {count}
@@ -93,21 +97,25 @@ export default function Navigation({
             </DropdownMenu>
           </div>
         ) : (
-          <div className='flex items-center gap-4'>
-            <Button asChild variant='outline'>
-              <Link to='/auth/login'>로그인</Link>
+          <div className='flex items-center gap-2'>
+            <Button asChild>
+              <Link to='/auth/login'>
+                <span className='font-Mont'>Login</span>
+              </Link>
             </Button>
-            <Button asChild variant='default'>
-              <Link to='/auth/join'>회원가입</Link>
+            <Button asChild variant='outline'>
+              <Link to='/auth/join'>
+                <span className='font-Mont'>Join</span>
+              </Link>
             </Button>
             <Button
               asChild
               variant='outline'
-              className='bg-transparent border-main text-main text-md'
+              className='font-Mont bg-transparent border-main text-main text-md hover:bg-main hover:text-white'
             >
               <Link to='/shoppingcart'>
                 <FontAwesomeIcon icon={faCartShopping as IconProp} size='lg' />
-                <span className='font-winky'>( {count} )</span>
+                {count}
               </Link>
             </Button>
           </div>

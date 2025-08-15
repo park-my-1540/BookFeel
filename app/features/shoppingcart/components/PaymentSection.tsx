@@ -19,7 +19,7 @@ export default function PaymentSection({
         {cart.map((item) => (
           <li key={item.itemId} className='flex justify-between leading-9'>
             <Body1>{item.title}</Body1>
-            <Body1>{item.priceSales}원</Body1>
+            <Body1>{item.priceSales!.toLocaleString()}원</Body1>
           </li>
         ))}
       </ul>

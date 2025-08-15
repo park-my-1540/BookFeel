@@ -109,6 +109,7 @@ export function useShoppingCart({ _isLoggedIn }: Options = {}) {
 
   useEffect(() => {
     (async () => {
+      if (!isLoggedIn) return;
       const localItems = getCartLS();
       if (localItems.length === 0) {
         await reload();

@@ -27,6 +27,8 @@ export default function GeminiBooksSection({
 }: GeminiBooksSectionProps) {
   const { isLoggedIn } = useOutletContext<{ isLoggedIn: boolean }>();
   const navigate = useNavigate();
+  const selectedKeyword =
+    searchParams.get("keyword") || searchKeyword[0].keyword;
 
   const absorbClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!isLoggedIn) {
@@ -44,7 +46,8 @@ export default function GeminiBooksSection({
             key={category_id}
             variant={"outline"}
             className={cn(
-              searchParams.get("keyword") === keyword && "bg-accent"
+              selectedKeyword === keyword &&
+                "bg-accent bg-main text-white hover:bg-main/90 hover:text-white"
             )}
           >
             <Link
@@ -59,7 +62,10 @@ export default function GeminiBooksSection({
         <div className='relative p-[1px] rounded-md bg-white bg-gradient-to-br from-red to-yellow-500'>
           <Button
             variant='outline'
-            className={(cn(toggle && "bg-accent"), "bg-white relative z-10")}
+            className={
+              (cn(selectedKeyword === "userCustom" && "bg-accent"),
+              "bg-white relative z-10")
+            }
             onClick={() => setToggle(true)}
           >
             <Link to='?keyword=userCustom' preventScrollReset>
