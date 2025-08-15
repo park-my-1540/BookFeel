@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { ChevronDownIcon } from "lucide-react";
+import { SORT_OPTIONS_MAP } from "~/features/contants";
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { client } = makeSSRClient(request);
@@ -23,12 +24,6 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   });
   return { playlists };
 };
-
-const SORT_OPTIONS_MAP = new Map([
-  ["newest", "최신순"],
-  ["popular", "인기순"],
-]);
-
 export default function ProductsHomePage({ loaderData }: Route.ComponentProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const sorting = searchParams.get("sorting") || "newest";

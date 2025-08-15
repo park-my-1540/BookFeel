@@ -3,10 +3,9 @@ import { Button } from "~/components/ui/button";
 import { makeSSRClient } from "~/supa-client";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
-import type { Route } from "./+types/submit-playlist-page";
 import { getLoggedInUserId } from "~/features/users/queries";
 import InputPair from "~/components/ui/input-pair";
-import { createPlaylist } from "../queries";
+import type { Route } from "./+types/post-page";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -44,13 +43,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
       formErrors: error.flatten().fieldErrors,
     };
   }
-  await createPlaylist(client, {
-    userId,
-    title: data.title,
-    author: data.author,
-    url: data.url,
-    reason: data.description,
-  });
+
   return redirect(`/playlists`);
 };
 

@@ -18,6 +18,7 @@ import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
 import Menu from "./layout/Menu";
 import { useShoppingCart } from "~/features/shoppingcart/hooks/useShoppingCart";
+import AvatarUser from "./common/AvatarUser";
 
 export default function Navigation({
   isLoggedIn,
@@ -59,13 +60,7 @@ export default function Navigation({
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Avatar className='cursor-pointer'>
-                  {avatar ? (
-                    <AvatarImage src={avatar} />
-                  ) : (
-                    <AvatarFallback>{name?.charAt(0)}</AvatarFallback>
-                  )}
-                </Avatar>
+                <AvatarUser avatar={avatar} />
               </DropdownMenuTrigger>
               <DropdownMenuContent className='w-56'>
                 <DropdownMenuLabel className='flex flex-col'>

@@ -22,6 +22,12 @@ export default [
       route("/upvote", "features/playlists/pages/playlist-upvote-page.tsx"),
     ]),
   ]),
+  ...prefix("/community", [
+    index("features/community/pages/community-page.tsx"),
+    route("/:postId", "features/community/pages/post-page.tsx"),
+    route("/:postId/upvote", "features/community/pages/upvote-post-page.tsx"),
+    route("/create", "features/community/pages/submit-post-page.tsx"),
+  ]),
   ...prefix("library", [index("features/library/pages/library-page.tsx")]),
   ...prefix("auth", [
     layout("features/auth/layouts/auth-layout.tsx", [

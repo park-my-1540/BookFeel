@@ -1,7 +1,4 @@
-import type { Route } from "./+types/playlist-page";
 import { makeSSRClient } from "~/supa-client";
-import { getPlaylists } from "../queries";
-import { PlaylistCard } from "../components/PlaylistCard";
 import { Button } from "~/components/ui/button";
 import { Link, useSearchParams } from "react-router";
 import { Heading2 } from "~/components/ui/Typography";
@@ -12,17 +9,10 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { ChevronDownIcon } from "lucide-react";
+import { PlaylistCard } from "~/features/playlists/components/PlaylistCard";
+import type { Route } from "./+types/post-page";
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
-  const { client } = makeSSRClient(request);
-  const url = new URL(request.url);
-  const sorting =
-    url.searchParams.get("sorting") === "popular" ? "popular" : "newest";
-  const playlists = await getPlaylists(client, {
-    sorting,
-  });
-  return { playlists };
-};
+export const loader = async ({ request }: Route.LoaderArgs) => {};
 
 const SORT_OPTIONS_MAP = new Map([
   ["newest", "최신순"],
@@ -34,7 +24,7 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
   const sorting = searchParams.get("sorting") || "newest";
   return (
     <div className='container mx-auto py-lg'>
-      <Heading2>Curated Vibes</Heading2>
+      <Heading2>Community</Heading2>
       <div className='flex justify-between items-center mb-14'>
         <DropdownMenu>
           <DropdownMenuTrigger className='flex items-center gap-2'>
