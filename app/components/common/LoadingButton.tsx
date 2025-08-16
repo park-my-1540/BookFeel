@@ -5,7 +5,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { Button } from "../ui/button";
 
 type LoadingButtonProps = {
-  variant:
+  variant?:
     | "default"
     | "outline"
     | "secondary"
@@ -19,7 +19,7 @@ type LoadingButtonProps = {
 
 export function LoadingButton({
   isLoading,
-  variant,
+  variant = "default",
   loadingText = "로딩 중...",
   children,
   className,

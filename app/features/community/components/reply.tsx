@@ -3,7 +3,7 @@ import { Form, Link, useActionData, useOutletContext } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useEffect, useState } from "react";
-import { Textarea } from "~/components/ui/textarea";
+// import { textarea } from "~/components/ui/textarea";
 import { DateTime } from "luxon";
 import { z } from "zod";
 import type { action } from "../pages/post-page";
@@ -100,7 +100,7 @@ export function Reply({
             {avatar ? <AvatarImage src={avatar} /> : null}
           </Avatar>
           <div className='w-full flex flex-col gap-5 items-end'>
-            <Textarea
+            <textarea
               name='reply'
               placeholder='댓글을 입력하세요.'
               className='resize-none w-full'

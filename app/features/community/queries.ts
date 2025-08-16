@@ -33,3 +33,17 @@ export const getTopics = async (client: SupabaseClient) => {
   if (error) throw new Error(error.message);
   return data;
 };
+
+export const getPostById = async (
+  client: SupabaseClient,
+  { postId }: { postId: number }
+) => {
+  const { data, error } = await client
+    .from("community_post_detail")
+    .select("*")
+    .eq("post_id", postId)
+    .single();
+
+  if (error) throw new Error(error.message);
+  return data;
+};

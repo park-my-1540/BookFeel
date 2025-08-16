@@ -1,11 +1,15 @@
-import { Form, redirect, useNavigation } from "react-router";
-import { Button } from "~/components/ui/button";
-import { makeSSRClient } from "~/supa-client";
-import { z } from "zod";
-import { Loader2 } from "lucide-react";
-import { getLoggedInUserId } from "~/features/users/queries";
-import InputPair from "~/components/ui/input-pair";
 import type { Route } from "./+types/post-page";
+import { z } from "zod";
+import { Form, redirect, useNavigation } from "react-router";
+import { Loader2 } from "lucide-react";
+import InputPair from "~/components/ui/input-pair";
+import { Button } from "~/components/ui/button";
+import { Heading1 } from "~/components/ui/Typography";
+import { createPost } from "../mutations";
+import { makeSSRClient } from "~/supa-client";
+import SelectPair from "~/components/common/SelectPair";
+import { getLoggedInUserId } from "~/features/users/queries";
+import { getTopics } from "../queries";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -15,20 +19,18 @@ export const meta: Route.MetaFunction = () => {
 };
 
 const formSchema = z.object({
-  title: z.string().min(1),
-  author: z.string().min(1),
-  url: z
-    .string()
-    .min(1)
-    .regex(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//, {
-      message: "유효한 YouTube 링크를 입력해주세요.",
-    }),
-  description: z.string().min(1),
+  title: z.string().min(1).max(40),
+  topic: z.string().min(1).max(100),
+  content: z.string().min(1).max(1000),
 });
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { client } = makeSSRClient(request);
   await getLoggedInUserId(client);
+  const topics = await getTopics(client);
+  return {
+    topics,
+  };
 };
 
 export const action = async ({ request }: Route.ActionArgs) => {
@@ -38,36 +40,56 @@ export const action = async ({ request }: Route.ActionArgs) => {
   const { success, data, error } = formSchema.safeParse(
     Object.fromEntries(formData)
   );
+
   if (!success) {
     return {
       formErrors: error.flatten().fieldErrors,
     };
   }
+  const { title, content, topic } = data;
+  const { post_id } = await createPost(client, {
+    title,
+    content,
+    topic,
+    profile_id: userId,
+  });
 
-  return redirect(`/playlists`);
+  return redirect(`/community/${post_id}`);
 };
 
-export default function SubmitPage({ actionData }: Route.ComponentProps) {
+export default function SubmitPage({
+  actionData,
+  loaderData,
+}: Route.ComponentProps) {
   const navigation = useNavigation();
   const isSubmitting =
     navigation.state === "submitting" || navigation.state === "loading";
 
   return (
-    <div className='pb-32'>
+    <div className='container'>
       <Form
-        className='mt-16 mx-auto  w-[600px]'
+        className='mt-16 mx-auto w-[600px]'
         encType='multipart/form-data'
         method='post'
       >
+        <Heading1 className='mb-10'>게시글 작성</Heading1>
         <div className='space-y-5'>
+          <SelectPair
+            label='카테고리'
+            name='topic'
+            placeholder='토픽을 선택하세요'
+            options={loaderData.topics.map((topic) => ({
+              label: topic.name,
+              value: topic.slug,
+            }))}
+          />
           <InputPair
-            label='도서명'
-            description='도서명을 입력해주세요.'
+            label='제목'
+            placeholder='제목을 입력해주세요.'
             name='title'
             type='text'
             id='title'
             required
-            placeholder='ex) 적산가옥의 유령'
           />
           {actionData &&
             "formErrors" in actionData &&
@@ -75,49 +97,18 @@ export default function SubmitPage({ actionData }: Route.ComponentProps) {
               <p className='text-red'>{actionData.formErrors.title}</p>
             )}
           <InputPair
-            label='저자명'
-            description='저자를 입력해주세요.'
-            name='author'
+            label='본문'
+            placeholder='내용을 입력해주세요.'
+            name='content'
             type='text'
-            id='author'
+            id='content'
             required
-            placeholder='ex) 조예은'
+            textArea={true}
           />
           {actionData &&
             "formErrors" in actionData &&
             actionData?.formErrors?.author && (
               <p className='text-red'>{actionData.formErrors.author}</p>
-            )}
-
-          <img className='w-1/2' src='/public/img/desc.png' />
-          <InputPair
-            label='URL'
-            description='공유 옵션 목록에서 동영상 퍼가기에 src를 붙여넣어주세요.'
-            name='url'
-            type='text'
-            id='url'
-            required
-            placeholder='ex) https://example.com'
-          />
-          {actionData &&
-            "formErrors" in actionData &&
-            actionData?.formErrors?.url && (
-              <p className='text-red'>{actionData.formErrors.url}</p>
-            )}
-          <InputPair
-            textArea
-            label='상세설명'
-            description='플레이리스트를 선택한 이유를 적어주세요.'
-            name='description'
-            type='text'
-            id='description'
-            required
-            placeholder='ex) 500자 이내에 입력해주세요..'
-          />
-          {actionData &&
-            "formErrors" in actionData &&
-            actionData?.formErrors?.description && (
-              <p className='text-red'>{actionData.formErrors.description}</p>
             )}
         </div>
         <div className='w-full flex justify-center mt-12'>

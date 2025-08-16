@@ -22,7 +22,7 @@ export default [
       route("/upvote", "features/playlists/pages/playlist-upvote-page.tsx"),
     ]),
   ]),
-  ...prefix("/community", [
+  ...prefix("community", [
     index("features/community/pages/community-page.tsx"),
     route("/:postId", "features/community/pages/post-page.tsx"),
     route("/:postId/upvote", "features/community/pages/upvote-post-page.tsx"),
@@ -40,11 +40,11 @@ export default [
       ]),
     ]),
   ]),
-  ...prefix("/my", [
+  ...prefix("my", [
     route("/profile", "features/users/pages/my-profile-page.tsx"),
     route("/settings", "features/users/pages/settings-page.tsx"),
   ]),
-  ...prefix("/users/:username", [
+  ...prefix("users/:username", [
     layout("features/users/pages/profile-layout.tsx", [
       index("features/users/pages/profile-page.tsx"),
       route("/playlist", "features/users/pages/profile-playlist-page.tsx"),

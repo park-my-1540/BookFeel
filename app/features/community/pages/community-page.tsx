@@ -59,7 +59,6 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const sorting = searchParams.get("sorting") || "newest";
 
-  console.log(loaderData);
   return (
     <div className='container mx-auto py-lg'>
       <Heading2>Community</Heading2>
@@ -103,7 +102,7 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
               </Form>
             </div>
             <Button asChild>
-              <Link to='/community/submit'>토론 생성하기</Link>
+              <Link to='/community/create'>토론 생성하기</Link>
             </Button>
           </div>
           <div className='space-y-5'>
