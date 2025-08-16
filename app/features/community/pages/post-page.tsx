@@ -1,6 +1,5 @@
-import type { Route } from "./+types/post-page";
+import { ChevronUpIcon, DotIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { Button } from "~/components/ui/button";
 import {
   Form,
   Link,
@@ -8,7 +7,6 @@ import {
   useNavigation,
   useOutletContext,
 } from "react-router";
-import { makeSSRClient } from "~/supa-client";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,18 +14,19 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
-import { ChevronUpIcon, DotIcon } from "lucide-react";
-import { Badge } from "~/components/ui/badge";
+import { Button } from "~/components/ui/button";
+import { Body1, Caption } from "~/components/ui/Typography";
 import { Reply } from "~/features/community/components/reply";
+import { makeSSRClient } from "~/supa-client";
+import type { Route } from "./+types/post-page";
 // import { getPostById, getReplies } from "../queries";
 import { DateTime } from "luxon";
-import { getLoggedInUserId } from "~/features/users/queries";
 import { z } from "zod";
-import { getPostById } from "../queries";
-import AsideInfo from "../components/AsideInfo";
 import AvatarUser from "~/components/common/AvatarUser";
 import { LoadingButton } from "~/components/common/LoadingButton";
-import { Body1, Body2, Caption } from "~/components/ui/Typography";
+import { getLoggedInUserId } from "~/features/users/queries";
+import AsideInfo from "../components/AsideInfo";
+import { getPostById } from "../queries";
 // import { createReply } from "~/features/teams/mutations";
 
 export const meta: Route.MetaFunction = ({ params }) => [
@@ -44,7 +43,7 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
   const userId = await getLoggedInUserId(client);
   const formData = await request.formData();
   const { success, error, data } = formSchema.safeParse(
-    Object.fromEntries(formData)
+    Object.fromEntries(formData),
   );
   if (!success) {
     return {
@@ -95,12 +94,12 @@ export default function PostPage({
   }, [actionData?.ok]);
 
   return (
-    <div className='container mx-auto py-lg'>
+    <div className="container mx-auto py-lg">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to='/community'>Community</Link>
+              <Link to="/community">Community</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
@@ -120,28 +119,28 @@ export default function PostPage({
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className='grid grid-cols-6 gap-40 items-start mt-10'>
-        <div className='col-span-4 space-y-10'>
-          <div className='flex w-full items-start gap-10'>
+      <div className="grid grid-cols-6 gap-40 items-start mt-10">
+        <div className="col-span-4 space-y-10">
+          <div className="flex w-full items-start gap-10">
             <fetcher.Form
-              method='post'
+              method="post"
               action={`/community/${loaderData.post.post_id}/upvote`}
             >
-              <Button variant='outline' className='flex flex-col h-14'>
-                <ChevronUpIcon className='size-4 shrink-0' />
+              <Button variant="outline" className="flex flex-col h-14">
+                <ChevronUpIcon className="size-4 shrink-0" />
                 <Caption>{loaderData.post.upvotes}</Caption>
               </Button>
             </fetcher.Form>
-            <div className='space-y-20 w-full'>
-              <div className='space-y-2'>
-                <h2 className='text-3xl font-bold'>{loaderData.post.title}</h2>
-                <div className='flex items-center gap-2 text-sm text-muted-foreground'>
+            <div className="space-y-20 w-full">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold">{loaderData.post.title}</h2>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Caption>{loaderData.post.author_name}</Caption>
-                  <DotIcon className='size-4 shrink-0' />
+                  <DotIcon className="size-4 shrink-0" />
                   <Caption>
                     {DateTime.fromISO(loaderData.post.created_at).toRelative()}
                   </Caption>
-                  <DotIcon className='size-4 shrink-0' />
+                  <DotIcon className="size-4 shrink-0" />
                   <Caption>{loaderData.post.replies}개의 댓글</Caption>
                 </div>
                 <Body1>{loaderData.post.content}</Body1>
@@ -150,16 +149,16 @@ export default function PostPage({
               {isLoggedIn ? (
                 <Form
                   ref={formRef}
-                  className='flex items-start gap-5 w-3/4'
-                  method='post'
+                  className="flex items-start gap-5 w-3/4"
+                  method="post"
                 >
                   <AvatarUser avatar={avatar} fallback={name?.[0]} />
 
-                  <div className='w-full flex flex-col gap-5 items-end'>
+                  <div className="w-full flex flex-col gap-5 items-end">
                     <textarea
-                      name='reply'
-                      placeholder='댓글을 입력하세요.'
-                      className='resize-none w-full p-3 bg-gray rounded-sm'
+                      name="reply"
+                      placeholder="댓글을 입력하세요."
+                      className="resize-none w-full p-3 bg-gray rounded-sm"
                       rows={5}
                     />
                     <LoadingButton isLoading={isSubmitting}>
@@ -171,9 +170,9 @@ export default function PostPage({
                 <Caption>댓글을 달려면 로그인하세요.</Caption>
               )}
 
-              <div className='space-y-10'>
+              <div className="space-y-10">
                 <Body1>{loaderData.post.replies}개의 댓글</Body1>
-                <div className='flex flex-col gap-5'>
+                <div className="flex flex-col gap-5">
                   {loaderData.replies.map((reply, index) => (
                     <Reply
                       key={index}

@@ -1,4 +1,3 @@
-import { Body2Bold } from "@components/ui/Typography";
 import {
   Select,
   SelectContent,
@@ -7,6 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Body2Bold } from "@components/ui/Typography";
 import { useState } from "react";
 import type { TargetParams } from "~/features/books/type";
 
