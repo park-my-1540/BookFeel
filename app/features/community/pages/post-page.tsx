@@ -26,7 +26,8 @@ import AvatarUser from "~/components/common/AvatarUser";
 import { LoadingButton } from "~/components/common/LoadingButton";
 import { getLoggedInUserId } from "~/features/users/queries";
 import AsideInfo from "../components/AsideInfo";
-import { getPostById } from "../queries";
+import { createReply } from "../mutations";
+import { getPostById, getReplies } from "../queries";
 // import { createReply } from "~/features/teams/mutations";
 
 export const meta: Route.MetaFunction = ({ params }) => [
@@ -52,12 +53,12 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
   }
 
   const { reply, topLevelId } = data;
-  // await createReply(client, {
-  //   postId: Number(params.postId),
-  //   reply,
-  //   userId,
-  //   topLevelId,
-  // });
+  await createReply(client, {
+    postId: Number(params.postId),
+    reply,
+    userId,
+    topLevelId: Number(topLevelId),
+  });
   return {
     ok: true,
   };
@@ -68,10 +69,10 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
 
   const [post, replies] = await Promise.all([
     getPostById(client, { postId: Number(params.postId) }),
-    // getReplies(client, { postId: params.postId }),
+    getReplies(client, { postId: Number(params.postId) }),
   ]);
 
-  return { post, replies: [] };
+  return { post, replies };
 };
 
 export default function PostPage({
