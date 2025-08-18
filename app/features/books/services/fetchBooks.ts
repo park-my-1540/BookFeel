@@ -1,39 +1,53 @@
 import axios from "axios";
-import type {
-  BookRankingResponse,
-  FetchBooksParams,
-  FetchBooksResponse,
-  BookCardItem,
-} from "../type";
-import { generateId } from "@/util/util";
+import { generateId } from "~/util/util";
+import type { BookCardItem, BookRankingResponse, TargetParams } from "../type";
 /**
  * 카카오 도서 API를 호출하여 도서 목록을 가져오는 함수
  *
  * @param params - 검색 조건 (query, target, page, size 등)
  * @returns API 응답 데이터에 key값 추가하여 반환
  */
-export const fetchBooks = async (
-  params: FetchBooksParams
-): Promise<FetchBooksResponse> => {
+export const fetchBooks = async ({
+  query,
+  target,
+}: {
+  query: string;
+  target: TargetParams;
+}) => {
+  const params = {
+    TTBKey: process.env.NEXT_PUBLIC_ALADIN_API_KEY,
+    Query: query,
+    QueryType: target,
+    SearchTarget: "Book",
+    Output: "JS",
+    Version: "20131101",
+    Start: 1,
+    Cover: "Big",
+    MaxResults: 10,
+  };
+
   try {
-    const { data } = await axios.get<FetchBooksResponse>(
-      "https://dapi.kakao.com/v3/search/book",
-      {
-        headers: {
-          Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_API_KEY}`,
-        },
-        params,
-      }
+    const { data } = await axios.get(
+      "https://www.aladin.co.kr/ttb/api/ItemSearch.aspx",
+      { params },
     );
-    return {
-      ...data,
-      documents: data.documents.map((book) => ({
-        ...book,
-        id: generateId(book),
-      })),
-    };
+
+    // data.item 배열 안에 책 리스트 있음
+    const books = (data.item ?? []).map((book: any) => ({
+      id: generateId(book),
+      title: book.title,
+      author: book.author,
+      publisher: book.publisher,
+      pubDate: book.pubDate,
+      isbn: book.isbn13,
+      cover: book.cover,
+      description: book.description,
+      link: book.link,
+    }));
+
+    return { ...data, documents: books };
   } catch (error) {
-    console.error("fetchBooks error: " + error);
+    console.error("fetchBooks error:", error);
     throw error;
   }
 };
@@ -58,7 +72,7 @@ export const rankedBooks = async (): Promise<BookCardItem[]> => {
   try {
     const { data } = await axios.get<BookRankingResponse>(
       "https://www.aladin.co.kr/ttb/api/ItemList.aspx?",
-      { params }
+      { params },
     );
     return data.item ?? [];
   } catch (error) {
@@ -87,7 +101,7 @@ export const choicesBooks = async (): Promise<BookCardItem[]> => {
   try {
     const { data } = await axios.get<BookRankingResponse>(
       "https://www.aladin.co.kr/ttb/api/ItemList.aspx?",
-      { params }
+      { params },
     );
     return data.item ?? [];
   } catch (error) {
@@ -107,7 +121,7 @@ export type Book = {
 
 export const booksByKeyword = async (
   keywords: string[],
-  limit: number = 10
+  limit: number = 10,
 ): Promise<Book[]> => {
   const allBooks: Book[] = [];
 
@@ -127,7 +141,7 @@ export const booksByKeyword = async (
           Cover: "Big",
           CategoryId: "1",
         },
-      }
+      },
     );
 
     const books = data.item.map((book: any) => ({

@@ -20,6 +20,6 @@ export function formatKrCurrency(amount: number | string): string {
 export function generateId(book: BookItemResponse): string {
   if (book.isbn) return book.isbn?.trim().split(" ")[0];
 
-  const raw = `${book.title}-${book.authors.join(",")}-${book.publisher}`;
+  const raw = `${book.title}-${book.author}-${book.publisher}`;
   return raw.replace(/\s+/g, "").toLowerCase();
 }

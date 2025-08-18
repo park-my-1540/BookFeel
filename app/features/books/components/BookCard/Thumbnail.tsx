@@ -1,4 +1,3 @@
-import LikeButton from "@/components/common/LikeButton";
 import type { BookItem } from "../../type";
 
 type BookThumbnailProps = {
@@ -18,15 +17,14 @@ export default function BookThumbnail({
   size = "sm",
 }: BookThumbnailProps) {
   return (
-    <div className='relative' style={{ maxWidth: width, maxHeight: height }}>
+    <div className="relative" style={{ maxWidth: width, maxHeight: height }}>
       <img
         width={width}
         height={height}
         alt={book.title}
-        className='size-full object-cover'
-        src={book.thumbnail === "" ? fallback : book.thumbnail}
+        className="size-full object-cover"
+        src={book.cover === "" ? fallback : book.cover}
       />
-      <LikeButton book={book} size={size} />
     </div>
   );
 }

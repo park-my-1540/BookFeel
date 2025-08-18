@@ -1,4 +1,4 @@
-import { prefix, index, route, layout } from "@react-router/dev/routes";
+import { index, layout, prefix, route } from "@react-router/dev/routes";
 
 export default [
   route("/", "common/pages/home-page.tsx"),

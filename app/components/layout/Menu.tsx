@@ -1,3 +1,4 @@
+import { House, Youtube, type LucideProps } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import {
   NavigationMenu,
@@ -8,7 +9,6 @@ import {
   NavigationMenuTrigger,
 } from "~/components/ui/navigation-menu";
 import { cn } from "~/lib/utils";
-import { House, Youtube, type LucideProps } from "lucide-react";
 
 interface menuType {
   name: string;
@@ -59,6 +59,18 @@ const menus: menuType[] = [
     ],
   },
   {
+    name: "자료검색",
+    to: "/books",
+    icon: Youtube,
+    items: [
+      {
+        name: "자료 검색",
+        description: "다양한 플레이리스트를 확인해보세요",
+        to: "/books",
+      },
+    ],
+  },
+  {
     name: "Community",
     to: "/community",
     icon: Youtube,
@@ -74,24 +86,24 @@ const menus: menuType[] = [
 
 export default function Menu() {
   return (
-    <div className='flex justify-start items-center py-3 px-lg border-t shadow-sm border-borderGray'>
+    <div className="flex justify-start items-center py-3 px-lg border-t shadow-sm border-borderGray">
       <NavigationMenu>
         <NavigationMenuList>
           {menus.map((menu) => (
-            <NavigationMenuItem key={menu.name} className='w-40'>
+            <NavigationMenuItem key={menu.name} className="w-40">
               {menu.items ? (
                 <>
                   <LinkMenu menu={menu} trigger={true} />
                   <NavigationMenuContent>
-                    <ul className='grid w-[400px] font-light gap-3 p-4 grid-cols-2'>
+                    <ul className="grid w-[400px] font-light gap-3 p-4 grid-cols-2">
                       {menu.items?.map((item) => (
                         <NavigationMenuItem key={item.name}>
                           <NavigationMenuLink asChild>
                             <Link to={item.to}>
-                              <span className='text-md font-medium leading-none'>
+                              <span className="text-md font-medium leading-none">
                                 {item.name}
                               </span>
-                              <p className='text-md text-muted-foreground'>
+                              <p className="text-md text-muted-foreground">
                                 {item.description}
                               </p>
                             </Link>
@@ -124,7 +136,7 @@ const LinkMenu = ({
   const Icon = menu.icon;
 
   const content = (
-    <span className='flex gap-2 items-center text-lg font-medium leading-none py-2 hover:text-main'>
+    <span className="flex gap-2 items-center text-lg font-medium leading-none py-2 hover:text-main">
       {Icon && <Icon size={18} />}
       {menu.name}
     </span>

@@ -1,24 +1,24 @@
-import type { Route } from "./+types/home-page";
-import type { BookCardItem } from "~/features/books/type";
-import { redirect, useNavigation, useSearchParams } from "react-router";
-import {
-  choicesBooks,
-  rankedBooks,
-} from "~/features/books/services/fetchBooks";
-import { makeSSRClient } from "~/supa-client";
-import z from "zod";
 import { useState } from "react";
-import { getPlaylists } from "~/features/playlists/queries";
-import { getCategories, getGeminiBooks } from "~/features/ideas/queries";
-import { submitKeywordToGemini } from "../services/generateBooksByGemeni";
-import { getLoggedInUserId, getUserId } from "~/features/users/queries";
-import GeminiBooksSection from "~/components/sections/GeminiBooksSection";
+import { redirect, useNavigation, useSearchParams } from "react-router";
+import z from "zod";
 import BestSellerSection from "~/components/sections/BestSellerSection";
 import CuratedVibesSection, {
   type PlaylistsProps,
 } from "~/components/sections/CuratedVibesSection";
+import GeminiBooksSection from "~/components/sections/GeminiBooksSection";
 import MainSection from "~/components/sections/MainSection";
 import RecommenDationSection from "~/components/sections/RecommenDationSection";
+import {
+  choicesBooks,
+  rankedBooks,
+} from "~/features/books/services/fetchBooks";
+import type { BookCardItem } from "~/features/books/type";
+import { getCategories, getGeminiBooks } from "~/features/ideas/queries";
+import { getPlaylists } from "~/features/playlists/queries";
+import { getLoggedInUserId, getUserId } from "~/features/users/queries";
+import { makeSSRClient } from "~/supa-client";
+import { submitKeywordToGemini } from "../services/generateBooksByGemeni";
+import type { Route } from "./+types/home-page";
 
 export function meta() {
   return [
@@ -44,13 +44,13 @@ export const action = async ({ request }: Route.ActionArgs) => {
   const keyword = formData.get("keyword");
 
   const { client } = makeSSRClient(request);
-  const userId = await getLoggedInUserId(client);
 
   if (keyword) {
+    const userId = await getLoggedInUserId(client);
     const result = await submitKeywordToGemini(
       client,
       keyword as string,
-      userId
+      userId,
     );
     if (!result.success) {
       return {
@@ -66,7 +66,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   if (search) {
     return redirect(
-      `/books?q=${encodeURIComponent(search as string)}&target=${encodeURIComponent(target as string)}`
+      `/books?q=${encodeURIComponent(search as string)}&target=${encodeURIComponent(target as string)}`,
     );
   }
 };
@@ -87,7 +87,7 @@ export const loader = async ({
   const userId = await getUserId(client);
 
   const { data: parsedData } = searchParamsSchema.safeParse(
-    Object.fromEntries(url.searchParams)
+    Object.fromEntries(url.searchParams),
   );
   try {
     const [books, choices, geminiBooks, search_keyword, playlists] =
@@ -123,18 +123,18 @@ export default function HomePage({
 }: Route.ComponentProps) {
   const [searchParams] = useSearchParams(); // 쿼리 파라미터를 관리하는 훅
   const [toggle, setToggle] = useState(
-    searchParams.get("keyword") === "userCustom"
+    searchParams.get("keyword") === "userCustom",
   );
 
   const navigation = useNavigation();
   const isSubmitting =
     navigation.state === "submitting" || navigation.state === "loading";
   return (
-    <div className='h-full'>
+    <div className="h-full">
       <MainSection />
       <RecommenDationSection books={loaderData.choices} />
 
-      <div className='grid grid-layout gap-6 px-lg pb-lg'>
+      <div className="grid grid-layout gap-6 px-lg pb-lg">
         <GeminiBooksSection
           searchKeyword={loaderData.search_keyword}
           books={loaderData.geminiBooks ?? []}

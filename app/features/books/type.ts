@@ -1,8 +1,6 @@
 export type TargetParams = "title" | "person" | "publisher";
 export type FetchBooksParams = {
   query: string;
-  page?: number;
-  size?: number;
   target?: TargetParams;
 };
 
@@ -11,9 +9,9 @@ export type BookItemResponse = {
   id: string;
   url: string;
   title: string;
-  authors: string[];
+  author: string;
   publisher: string;
-  thumbnail: string;
+  cover: string;
   price: number;
   sale_price: number;
   contents?: string;
@@ -37,7 +35,7 @@ export type BookItem = BookSummary | BookDetail;
 
 export type BookSummary = Pick<
   BookItemResponse,
-  "id" | "title" | "authors" | "price" | "sale_price" | "thumbnail" | "url"
+  "id" | "title" | "author" | "price" | "sale_price" | "cover" | "isbn"
 >;
 export type BookDetail = BookSummary & Pick<BookItemResponse, "contents">;
 
@@ -53,7 +51,6 @@ export type BookCardItem = {
   title: string;
   bestRank?: string;
   author: string;
-  link: string;
   priceSales?: number;
   priceStandard?: number;
   contents?: string;

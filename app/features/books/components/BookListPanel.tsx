@@ -11,14 +11,14 @@ interface Props {
 export default function BookListPanel({ subtitle, books, isFetching }: Props) {
   return (
     <>
-      <div className='text-textPrimary mb-2'>
-        {subtitle} 총 <span className='text-primary'>{books?.length}</span>건
+      <div className="text-textPrimary mb-2">
+        {subtitle} 총 <span className="text-primary">{books?.length}</span>건
       </div>
 
       {false ? (
         <div>로딩중입니다...</div>
       ) : !books?.length ? (
-        <BookNoResult message='검색된 결과가 없습니다.' />
+        <BookNoResult message="검색된 결과가 없습니다." />
       ) : (
         <>
           {books.map((book) => (
