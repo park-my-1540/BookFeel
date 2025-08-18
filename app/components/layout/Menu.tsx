@@ -1,4 +1,11 @@
-import { House, Youtube, type LucideProps } from "lucide-react";
+import {
+  Headphones,
+  House,
+  LibraryBig,
+  Rocket,
+  Search,
+  type LucideProps,
+} from "lucide-react";
 import { Link, useLocation } from "react-router";
 import {
   NavigationMenu,
@@ -30,54 +37,55 @@ const menus: menuType[] = [
     icon: House,
   },
   {
-    name: "Playlists",
-    to: "/playlists",
-    icon: Youtube,
+    name: "Search",
+    to: "/books",
+    icon: Search,
     items: [
       {
-        name: "상세",
-        description: "다양한 플레이리스트를 확인해보세요",
-        to: "/playlists",
-      },
-      {
-        name: "플레이리스트 등록",
-        description: "플레이리스트를 등록해보세요",
-        to: "/playlists/submit",
+        name: "도서 검색",
+        description: "읽고 싶은 책을 찾아보세요",
+        to: "/books",
       },
     ],
   },
   {
     name: "Library",
     to: "/library",
-    icon: Youtube,
+    icon: LibraryBig,
     items: [
       {
-        name: "상세",
-        description: "다양한 플레이리스트를 확인해보세요",
+        name: "도서관 찾기",
+        description: "책 소장 여부와 대출 가능 도서관을 확인해보세요",
         to: "/library",
       },
     ],
   },
   {
-    name: "자료검색",
-    to: "/books",
-    icon: Youtube,
+    name: "Playlists",
+    to: "/playlists",
+    icon: Headphones,
     items: [
       {
-        name: "자료 검색",
-        description: "다양한 플레이리스트를 확인해보세요",
-        to: "/books",
+        name: "플레이리스트 보기",
+        description: "책과 어울리는 플레이리스트를 즐겨보세요",
+        to: "/playlists",
+      },
+      {
+        name: "플레이리스트 등록",
+        description: "직접 만든 플레이리스트를 공유해보세요",
+        to: "/playlists/submit",
       },
     ],
   },
+
   {
     name: "Community",
     to: "/community",
-    icon: Youtube,
+    icon: Rocket,
     items: [
       {
-        name: "상세",
-        description: "다양한 플레이리스트를 확인해보세요",
+        name: "둘러보기",
+        description: "다른 사람들과 책과 음악을 나눠보세요",
         to: "/community",
       },
     ],

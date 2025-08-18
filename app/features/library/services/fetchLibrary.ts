@@ -19,24 +19,28 @@
  *   }>
  * }
  */
-export const fetchLibSrchByBook = async ({ isbn13, region, dtl_region }) => {
-  const libListURL = new URL("http://data4library.kr/api/libSrchByBook");
-  libListURL.searchParams.set(
-    "authKey",
-    "293f332879b7b18d01da31d31c726e5f0dac36685b6607a94d5e3a249094ddcf",
-  );
 
-  libListURL.searchParams.set("isbn", isbn13);
-  libListURL.searchParams.set("region", region);
-  if (dtl_region && dtl_region !== "전체") {
-    libListURL.searchParams.set("dtl_region", dtl_region);
+type Lib = { libCode: string; libName: string; address?: string | null };
+type Query = { isbn: string; region: string; dtl_region?: string | null };
+
+export const fetchLibSrchByBook = async ({
+  isbn,
+  region,
+  dtl_region,
+}: Query): Promise<Lib[]> => {
+  const url = new URL(`${process.env.NEXT_PUBLIC_DATA4LIB_BASE}/libSrchByBook`);
+  url.searchParams.set("authKey", `${process.env.NEXT_PUBLIC_DATA4LIB_KEY}`);
+  url.searchParams.set("isbn", isbn);
+  url.searchParams.set("region", region);
+  if (dtl_region === "전체") {
+    url.searchParams.delete("dtl_region");
+  } else {
+    url.searchParams.set("dtl_region", dtl_region);
   }
-  libListURL.searchParams.set("format", "json");
-
-  const libsRes = await fetch(libListURL.toString());
-  if (!libsRes.ok) return new Response("libSrchByBook 실패", { status: 502 });
+  url.searchParams.set("format", "json");
+  const libsRes = await fetch(url.toString());
+  if (!libsRes.ok) return [];
   const libsJson = await libsRes.json();
-
   const rows = libsJson?.response?.libs ?? libsJson?.libs ?? [];
   const libs = rows
     .map((it: any) => {
@@ -59,7 +63,7 @@ export const fetchLibSrchByBook = async ({ isbn13, region, dtl_region }) => {
  *
  * @param authKey 인증키 (필수, string)
  * @param libCode 도서관 코드 (필수, string)
- * @param isbn13  13자리 ISBN (필수, string | number)
+ * @param isbn  13자리 ISBN (필수, string | number)
  * @param format 응답 유형 (선택, 'xml' | 'json', 기본 xml)
  *
  * @returns {
@@ -68,25 +72,33 @@ export const fetchLibSrchByBook = async ({ isbn13, region, dtl_region }) => {
  *   loanAvailable: 'Y' | 'N';
  * }
  */
-export const fetchBookExist = async ({ libs, isbn13 }) => {
+export const fetchBookExists = async ({
+  libCode,
+  isbn,
+}: {
+  libCode: Lib[];
+  isbn: string;
+}): Promise<{ hasBook: boolean; loanAvailable: boolean }[]> => {
   const limit = pLimit(6);
   const items = await Promise.all(
-    libs.map((lib: any) =>
+    libCode.map((lib: any) =>
       limit(async () => {
-        const url = new URL("http://data4library.kr/api/bookExist");
+        const url = new URL(
+          `${process.env.NEXT_PUBLIC_DATA4LIB_BASE}/bookExist`,
+        );
         url.searchParams.set(
           "authKey",
-          "293f332879b7b18d01da31d31c726e5f0dac36685b6607a94d5e3a249094ddcf",
+          `${process.env.NEXT_PUBLIC_DATA4LIB_KEY}`,
         );
         url.searchParams.set("libCode", lib.libCode);
-        url.searchParams.set("isbn13", isbn13); // ← 여기서는 isbn13
+        url.searchParams.set("isbn13", isbn);
         url.searchParams.set("format", "json");
 
-        const r = await fetch(url.toString());
-        const txt = await r.text();
-        if (txt.includes("<error>") || txt.includes('"error"')) {
+        const result = await fetch(url.toString());
+        const txt = await result.text();
+        if (!result.ok)
           return { ...lib, hasBook: false, loanAvailable: false, _error: true };
-        }
+
         let data: any;
         try {
           data = JSON.parse(txt);
@@ -109,6 +121,7 @@ export const fetchBookExist = async ({ libs, isbn13 }) => {
     if (aScore !== bScore) return aScore - bScore;
     return a.libName.localeCompare(b.libName, "ko");
   });
+  return items;
 };
 
 function pLimit(max: number) {

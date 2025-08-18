@@ -1,4 +1,4 @@
-import { atom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
 export type bookAtomType = {
   cover: string;
@@ -8,7 +8,7 @@ export type bookAtomType = {
   itemId: string;
 };
 
-const bookState = atom<bookAtomType>({
+const bookState = atomWithStorage<bookAtomType>("bookState", {
   cover: "",
   title: "",
   author: "",
