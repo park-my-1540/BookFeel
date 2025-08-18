@@ -1,15 +1,15 @@
-import { useState } from "react";
-import type { Route } from "./+types/settings-page";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { z } from "zod";
+import { useState } from "react";
 import { Form } from "react-router";
-import { Button } from "~/components/ui/button";
+import { z } from "zod";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
+import { Button } from "~/components/ui/button";
 import InputPair from "~/components/ui/input-pair";
-import { Small, Heading1 } from "~/components/ui/Typography";
+import { Heading1, Small } from "~/components/ui/Typography";
 import { makeSSRClient } from "~/supa-client";
-import { getLoggedInUserId, getUserProfileById } from "../queries";
 import { updateUser, updateUserAvatar } from "../mutations";
+import { getLoggedInUserId, getUserProfileById } from "../queries";
+import type { Route } from "./+types/settings-page";
 
 export const meta: Route.MetaFunction = () => [{ title: "Settings" }];
 
@@ -57,7 +57,7 @@ const processInfo = async ({
   formData,
 }: ProcessBase & { formData: FormData }): Promise<ProcessResult> => {
   const { success, error, data } = formSchema.safeParse(
-    Object.fromEntries(formData)
+    Object.fromEntries(formData),
   );
   if (!success) {
     return { ok: false, formErrors: error.flatten().fieldErrors };
@@ -113,11 +113,11 @@ export default function SettingsPage({
     }
   };
   return (
-    <div className='container mx-auto py-lg'>
-      <div className='grid grid-cols-6 gap-5 lg:gap-40'>
-        <div className='col-span-4 flex flex-col gap-10'>
+    <div className="w-full px-lg">
+      <div className="grid grid-cols-6 gap-5 lg:gap-40">
+        <div className="col-span-4 flex flex-col gap-10">
           <Heading1>Edit profile</Heading1>
-          <Form className='flex flex-col w-2/3 gap-5' method='post'>
+          <Form className="flex flex-col w-2/3 gap-5" method="post">
             {actionData?.ok ? (
               <Alert>
                 <AlertTitle>Success</AlertTitle>
@@ -127,44 +127,44 @@ export default function SettingsPage({
               </Alert>
             ) : null}
             <InputPair
-              label='Display Name'
+              label="Display Name"
               required
-              id='username'
-              name='username'
-              placeholder='사용하실 이름을 입력해주세요'
+              id="username"
+              name="username"
+              placeholder="사용하실 이름을 입력해주세요"
               defaultValue={loaderData.user.username ?? ""}
             />
             <InputPair
-              label='Bio'
-              description='공개 소개글 - 프로플 페이지에 표시됩니다.'
+              label="Bio"
+              description="공개 소개글 - 프로플 페이지에 표시됩니다."
               required
-              id='bio'
-              name='bio'
-              placeholder='John Doe'
+              id="bio"
+              name="bio"
+              placeholder="John Doe"
               defaultValue={loaderData.user.bio ?? ""}
               textArea
             />
-            <Button className='w-full'>프로필 수정하기</Button>
+            <Button className="w-full">프로필 수정하기</Button>
           </Form>
         </div>
         <Form
-          className='col-span-2 p-6 rounded-lg border border-borderGray'
-          method='post'
-          encType='multipart/form-data'
+          className="col-span-2 p-6 rounded-lg border border-borderGray"
+          method="post"
+          encType="multipart/form-data"
         >
-          <label className='flex flex-col gap-1 mb-4'>프로필 이미지</label>
-          <div className='space-y-5'>
-            <div className='size-40 rounded-full shadow-xl overflow-hidden '>
+          <label className="flex flex-col gap-1 mb-4">프로필 이미지</label>
+          <div className="space-y-5">
+            <div className="size-40 rounded-full shadow-xl overflow-hidden ">
               {avatar ? (
-                <img src={avatar} className='object-cover w-full h-full' />
+                <img src={avatar} className="object-cover w-full h-full" />
               ) : null}
             </div>
             <input
-              type='file'
-              className='w-full'
+              type="file"
+              className="w-full"
               onChange={onChange}
               required
-              name='avatar'
+              name="avatar"
             />
             {actionData?.formErrors && "avatar" in actionData?.formErrors ? (
               <Alert>
@@ -174,12 +174,12 @@ export default function SettingsPage({
                 </AlertDescription>
               </Alert>
             ) : null}
-            <div className='flex flex-col text-xs'>
+            <div className="flex flex-col text-xs">
               <Small>Recommended size: 128x128px</Small>
               <Small>Allowed formats: PNG, JPEG</Small>
               <Small>Max file size: 1MB</Small>
             </div>
-            <Button className='w-full'>프로필 이미지 수정하기</Button>
+            <Button className="w-full">프로필 이미지 수정하기</Button>
           </div>
         </Form>
       </div>

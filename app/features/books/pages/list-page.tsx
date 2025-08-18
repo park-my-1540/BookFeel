@@ -2,7 +2,7 @@ import BookListPanel from "@book/components/BookListPanel";
 import BookSearch from "@search/components/SearchBarContainer";
 import { useEffect } from "react";
 import { useNavigation } from "react-router";
-import { Title2 } from "~/components/ui/Typography";
+import { Heading2 } from "~/components/ui/Typography";
 import { useSearchHistory } from "~/features/search/hooks/useSearchHistory";
 import { useSearchOpen } from "~/features/search/hooks/useSearchOpen";
 import { fetchBooks } from "../services/fetchBooks";
@@ -39,9 +39,11 @@ export default function ListPage({ loaderData }: Route.ComponentProps) {
   }, [loaderData.keyword, addToHistory]);
 
   return (
-    <div className="pt-10 max-w-5xl mx-auto">
-      <Title2>도서 검색</Title2>
-      <BookSearch />
+    <div className="w-full px-lg pb-md">
+      <Heading2>도서 검색</Heading2>
+      <div className="w-2/3">
+        <BookSearch />
+      </div>
       <BookListPanel
         subtitle="도서 검색 결과"
         books={loaderData.books}

@@ -1,12 +1,11 @@
 import { Link, NavLink, Outlet, useOutletContext } from "react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { Badge } from "~/components/ui/badge";
 import { Button, buttonVariants } from "~/components/ui/button";
+import { Caption, Title1 } from "~/components/ui/Typography";
 import { cn } from "~/lib/utils";
-import type { Route } from "./+types/profile-layout";
 import { makeSSRClient } from "~/supa-client";
 import { getUserProfile } from "../queries";
-import { Caption, Title1 } from "~/components/ui/Typography";
+import type { Route } from "./+types/profile-layout";
 
 export const loader = async ({
   request,
@@ -29,33 +28,33 @@ export default function ProfileLayout({
   }>();
 
   return (
-    <div className='container mx-auto py-lg'>
-      <div className='flex items-center gap-6'>
-        <Avatar className='size-40'>
+    <div className="w-full px-lg">
+      <div className="flex items-center gap-6">
+        <Avatar className="size-40">
           {loaderData.user.avatar ? (
             <AvatarImage src={loaderData.user.avatar} />
           ) : (
-            <AvatarFallback className='text-2xl'>
+            <AvatarFallback className="text-2xl">
               {loaderData.user.name.charAt(0)}
             </AvatarFallback>
           )}
         </Avatar>
-        <div className='space-y-3'>
-          <div className='flex gap-4 items-center'>
+        <div className="space-y-3">
+          <div className="flex gap-4 items-center">
             <Title1>{loaderData.user.name}</Title1>
 
             {isLoggedIn && username == params.username ? (
-              <Button variant='outline' asChild>
-                <Link to='/my/settings'>프로필 편집하기</Link>
+              <Button variant="outline" asChild>
+                <Link to="/my/settings">프로필 편집하기</Link>
               </Button>
             ) : null}
           </div>
-          <div className='flex gap-2 items-center'>
+          <div className="flex gap-2 items-center">
             <Caption>@{loaderData.user.username}</Caption>
           </div>
         </div>
       </div>
-      <div className='flex gap-5 my-8'>
+      <div className="flex gap-5 my-8">
         {[
           { label: "About", to: `/users/${loaderData.user.username}` },
           {
@@ -70,7 +69,7 @@ export default function ProfileLayout({
               cn(
                 buttonVariants({ variant: "outline" }),
                 isActive &&
-                  "text-white bg-main hover:text-white hover:bg-main/90 "
+                  "text-white bg-main hover:text-white hover:bg-main/90 ",
               )
             }
             to={item.to}
@@ -79,7 +78,7 @@ export default function ProfileLayout({
           </NavLink>
         ))}
       </div>
-      <div className='w-full'>
+      <div className="w-full">
         <Outlet
           context={{
             isLoggedIn,

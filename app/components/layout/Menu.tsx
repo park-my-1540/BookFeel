@@ -6,6 +6,7 @@ import {
   Search,
   type LucideProps,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
 import {
   NavigationMenu,
@@ -92,13 +93,27 @@ const menus: menuType[] = [
   },
 ];
 
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    setMatches(media.matches);
+    const listener = () => setMatches(media.matches);
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, [query]);
+
+  return matches;
+}
 export default function Menu() {
+  const isMobile = useMediaQuery("(max-width: 760px)");
   return (
-    <div className="flex justify-start items-center py-3 px-lg border-t shadow-sm border-borderGray">
-      <NavigationMenu>
+    <div className="py-3 px-lg border-t shadow-sm border-borderGray w-full">
+      <NavigationMenu viewport={isMobile}>
         <NavigationMenuList>
           {menus.map((menu) => (
-            <NavigationMenuItem key={menu.name} className="w-40">
+            <NavigationMenuItem key={menu.name} className="w-1/5 z-10">
               {menu.items ? (
                 <>
                   <LinkMenu menu={menu} trigger={true} />
@@ -144,9 +159,9 @@ const LinkMenu = ({
   const Icon = menu.icon;
 
   const content = (
-    <span className="flex gap-2 items-center text-lg font-medium leading-none py-2 hover:text-main">
+    <span className="flex gap-2 items-center text-base font-medium leading-none py-3 hover:text-main">
       {Icon && <Icon size={18} />}
-      {menu.name}
+      <span className="hidden md:inline">{menu.name}</span>
     </span>
   );
   return (

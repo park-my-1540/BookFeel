@@ -60,7 +60,10 @@ export const Heading1 = ({ children, className }: TextProps) => (
 );
 export const Heading2 = ({ children, className }: TextProps) => (
   <h2
-    className={clsx("text-4xl font-MontBold text-textPrimary py-md", className)}
+    className={clsx(
+      "text-4xl font-MontBold text-textPrimary pt-md py-sm",
+      className,
+    )}
   >
     {children}
   </h2>

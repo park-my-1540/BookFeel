@@ -216,16 +216,16 @@ body {
 
 @media (min-width: 768px) {
   :root {
-    --gap-sm:1rem;
-    --gap-md:2rem;
-    --gap-lg:3.5rem;
+    --gap-sm:2rem;
+    --gap-md:5rem;
+    --gap-lg:8rem;
   }
 }
 @media (max-width: 768px) {
   :root {
     --gap-sm:1rem;
     --gap-md:2rem;
-    --gap-lg:1rem;
+    --gap-lg:2rem;
   }
 }
 

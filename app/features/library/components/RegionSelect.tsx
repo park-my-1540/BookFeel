@@ -29,9 +29,9 @@ export default function RegionSelect() {
 
   const book = useAtomValue(bookState);
   return (
-    <div className="flex gap-2 w-full md:w-1/3 border">
+    <div className="flex gap-2 w-full md:w-2/3">
       <SelectBox
-        className="w-1/3"
+        className="w-1/3 bg-gray"
         name="region"
         value={region}
         options={REGION_CODES.map((o) => ({ key: o.value, ...o }))}
@@ -39,7 +39,7 @@ export default function RegionSelect() {
       />
       <SelectBox
         name="dtl_region"
-        className="w-2/3"
+        className="w-2/3 bg-gray"
         value={dtlRegion}
         options={dtlOptions}
         onChange={handleDtlRegion}

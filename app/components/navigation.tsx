@@ -34,13 +34,13 @@ export default function Navigation({
   const { pathname } = useLocation();
   return (
     <div className="border-b">
-      <div className="px-lg w-full flex justify-between items-center">
+      <div className="px-lg w-full flex justify-between items-center h-20">
         <Link to="/">
           <Heading1>BookFeel</Heading1>
         </Link>
 
         {pathname === "/" ? (
-          <div className="relative w-3/6">
+          <div className="relative w-3/6 z-50">
             <BookSearch />
           </div>
         ) : null}

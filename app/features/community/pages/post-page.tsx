@@ -95,7 +95,7 @@ export default function PostPage({
   }, [actionData?.ok]);
 
   return (
-    <div className="container mx-auto py-lg">
+    <div className="w-full px-lg">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>

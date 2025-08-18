@@ -14,7 +14,6 @@ export default [
     route("/success", "features/payment/pages/payment-success-page.tsx"),
     route("/failure", "features/payment/pages/payment-failure-page.tsx"),
   ]),
-  route("/wishlist", "features/wishlist/pages/wishlist-page.tsx"),
   ...prefix("playlists", [
     index("features/playlists/pages/playlist-page.tsx"),
     route("/submit", "features/playlists/pages/submit-playlist-page.tsx"),
