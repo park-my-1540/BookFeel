@@ -6,15 +6,14 @@ export type FetchBooksParams = {
 
 // 전체 API 응답 타입
 export type BookItemResponse = {
-  id: string;
+  itemId: string;
   url: string;
   title: string;
   author: string;
   publisher: string;
   cover: string;
-  price: number;
-  sale_price: number;
-  contents?: string;
+  priceStandard: number;
+  priceSales: number;
   description?: string;
   datetime: Date;
   isbn: string;
@@ -35,9 +34,15 @@ export type BookItem = BookSummary | BookDetail;
 
 export type BookSummary = Pick<
   BookItemResponse,
-  "id" | "title" | "author" | "price" | "sale_price" | "cover" | "isbn"
+  | "itemId"
+  | "title"
+  | "author"
+  | "priceStandard"
+  | "priceSales"
+  | "cover"
+  | "isbn"
 >;
-export type BookDetail = BookSummary & Pick<BookItemResponse, "contents">;
+export type BookDetail = BookSummary & Pick<BookItemResponse, "description">;
 
 /**
  * BestSeller
@@ -53,5 +58,5 @@ export type BookCardItem = {
   author: string;
   priceSales?: number;
   priceStandard?: number;
-  contents?: string;
+  description?: string;
 };

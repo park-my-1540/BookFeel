@@ -29,12 +29,12 @@ export const fetchBooks = async ({
   try {
     const { data } = await axios.get(
       "https://www.aladin.co.kr/ttb/api/ItemSearch.aspx",
-      { params },
+      { params }
     );
 
     // data.item 배열 안에 책 리스트 있음
     const books = (data.item ?? []).map((book: any) => ({
-      id: generateId(book),
+      itemId: generateId(book),
       title: book.title,
       author: book.author,
       publisher: book.publisher,
@@ -42,9 +42,9 @@ export const fetchBooks = async ({
       isbn: book.isbn13,
       cover: book.cover,
       description: book.description,
-      link: book.link,
+      priceSales: book.priceSales,
+      priceStandard: book.priceStandard,
     }));
-
     return { ...data, documents: books };
   } catch (error) {
     console.error("fetchBooks error:", error);
@@ -72,7 +72,7 @@ export const rankedBooks = async (): Promise<BookCardItem[]> => {
   try {
     const { data } = await axios.get<BookRankingResponse>(
       "https://www.aladin.co.kr/ttb/api/ItemList.aspx?",
-      { params },
+      { params }
     );
     return data.item ?? [];
   } catch (error) {
@@ -101,7 +101,7 @@ export const choicesBooks = async (): Promise<BookCardItem[]> => {
   try {
     const { data } = await axios.get<BookRankingResponse>(
       "https://www.aladin.co.kr/ttb/api/ItemList.aspx?",
-      { params },
+      { params }
     );
     return data.item ?? [];
   } catch (error) {
@@ -121,7 +121,7 @@ export type Book = {
 
 export const booksByKeyword = async (
   keywords: string[],
-  limit: number = 10,
+  limit: number = 10
 ): Promise<Book[]> => {
   const allBooks: Book[] = [];
 
@@ -141,7 +141,7 @@ export const booksByKeyword = async (
           Cover: "Big",
           CategoryId: "1",
         },
-      },
+      }
     );
 
     const books = data.item.map((book: any) => ({

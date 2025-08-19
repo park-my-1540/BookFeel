@@ -17,7 +17,10 @@ export default function BookThumbnail({
   size = "sm",
 }: BookThumbnailProps) {
   return (
-    <div className="relative" style={{ maxWidth: width, maxHeight: height }}>
+    <div
+      className="relative overflow-hidden"
+      style={{ maxWidth: width, maxHeight: height }}
+    >
       <img
         width={width}
         height={height}

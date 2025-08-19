@@ -34,11 +34,10 @@ export default function LoanExplorerPage({ loaderData }: Route.ComponentProps) {
   const [books, setBooks] = useAtom(bookState);
 
   useEffect(() => {
-    console.log(isbnParam);
-    console.log(books.isbn);
     if (!isbnParam && books.isbn !== "") {
-      // setBooks(EMPTY);
-      console.log(books);
+      setBooks(EMPTY);
+    }
+    if (isbnParam && books.isbn !== "") {
     }
   }, [isbnParam, books.isbn, setBooks]);
 
@@ -71,6 +70,9 @@ export default function LoanExplorerPage({ loaderData }: Route.ComponentProps) {
                     <Link to="/books">다른 책으로 조회 &rarr;</Link>
                   </Button>
                 </div>
+                {isbnParam && books.isbn === "" ? (
+                  <p className="text-red mt-10">다시 도서를 조회해주세요.</p>
+                ) : null}
                 <BookCard
                   direction="row"
                   key={book.itemId}

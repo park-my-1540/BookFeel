@@ -1,6 +1,5 @@
-import { ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Caption } from "./Typography";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "./button";
 
 type Props = {
@@ -16,15 +15,14 @@ export default function DetailToggleButton({
 }: Props) {
   return (
     <Button
-      variant='outline'
+      variant="outline"
       onClick={onClick}
-      className={cn("flex justify-center items-center gap-1 w-full", className)}
+      className={cn("bg-white", className)}
     >
-      <Caption>상세보기</Caption>
       {isExpanded ? (
-        <ChevronUp size={22} className='text-uiGray' />
+        <ChevronUp size={25} className="text-textPrimary" />
       ) : (
-        <ChevronDown size={22} className='text-uiGray' />
+        <ChevronDown size={25} className="text-textPrimary" />
       )}
     </Button>
   );

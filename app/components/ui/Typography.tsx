@@ -26,6 +26,11 @@ export const Title3 = ({ children, className }: TextProps) => (
     {children}
   </h3>
 );
+export const Title4 = ({ children, className }: TextProps) => (
+  <h4 className={clsx("text-xl font-mangoBold text-textPrimary", className)}>
+    {children}
+  </h4>
+);
 
 export const Body1 = ({ children, className }: TextProps) => (
   <p className={clsx("text-md font-medium text-textPrimary", className)}>
@@ -50,7 +55,7 @@ export const Caption = ({ children, className }: TextProps) => (
 );
 
 export const Small = ({ children, className }: TextProps) => (
-  <p className={clsx("text-xs text-textSecondary", className)}>{children}</p>
+  <p className={clsx("text-sm text-textSecondary", className)}>{children}</p>
 );
 
 export const Heading1 = ({ children, className }: TextProps) => (
@@ -62,7 +67,7 @@ export const Heading2 = ({ children, className }: TextProps) => (
   <h2
     className={clsx(
       "text-4xl font-MontBold text-textPrimary pt-md py-sm",
-      className,
+      className
     )}
   >
     {children}
