@@ -49,7 +49,6 @@ export function useShoppingCart({ _isLoggedIn }: Options = {}) {
       setError(null);
       try {
         await repo.add(book);
-        window.dispatchEvent(new Event("cart:changed"));
         await reload();
       } catch (e) {
         if (e instanceof Error) {
@@ -67,7 +66,6 @@ export function useShoppingCart({ _isLoggedIn }: Options = {}) {
       setError(null);
       try {
         await repo.remove(itemId);
-        window.dispatchEvent(new Event("cart:changed"));
         await reload();
       } catch (e) {
         if (e instanceof Error) {
@@ -84,7 +82,6 @@ export function useShoppingCart({ _isLoggedIn }: Options = {}) {
     setError(null);
     try {
       await repo.clear();
-      window.dispatchEvent(new Event("cart:changed"));
       await reload();
     } catch (e) {
       if (e instanceof Error) {
@@ -94,10 +91,6 @@ export function useShoppingCart({ _isLoggedIn }: Options = {}) {
       throw e;
     }
   }, [repo, reload]);
-
-  useEffect(() => {
-    reload();
-  }, [reload]);
 
   useEffect(() => {
     //  다른 탭이나 창에서 변경됐을 때 현재 탭도 동기화
