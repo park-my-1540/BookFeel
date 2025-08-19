@@ -47,7 +47,7 @@ export default function GeminiBooksSection({
             variant={"outline"}
             className={cn(
               selectedKeyword === keyword &&
-                "bg-accent bg-main text-white hover:bg-main/90 hover:text-white",
+                "bg-accent bg-main text-white hover:bg-main/90 hover:text-white"
             )}
           >
             <Link
@@ -103,7 +103,7 @@ export default function GeminiBooksSection({
       <div className="min-h-[400px] pt-3">
         {isSubmitting ? (
           <div className="flex items-center justify-center w-full min-h-[500px]">
-            <Loader2 className="mr-2 h-10 w-10 animate-spin text-primary" />
+            <Loader2 className="mr-2 h-10 w-10 animate-spin text-main" />
           </div>
         ) : (
           <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 min-h-[500px]">

@@ -1,4 +1,4 @@
-import { Loader } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
 import { useMemo } from "react";
 import { useNavigation, useOutletContext } from "react-router";
 import { Button } from "~/components/ui/button";
@@ -33,6 +33,7 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
     items: cart,
     removeFromCart,
     clearCart,
+    loading,
   } = useShoppingCart({ _isLoggedIn: isLoggedIn });
   const navigation = useNavigation();
   const isLoading =
@@ -83,10 +84,14 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
     <div className="grid grid-cols-1 lg:grid-cols-5 h-[var(--header-h)]">
       <div className="lg:col-span-3 px-md pb-md">
         <Heading2>My Shopping Cart</Heading2>
-        <Button onClick={handleClearCart}>전체 비우기</Button>
-        {isLoading ? (
-          <div>
-            <Loader />
+        <div className="text-end">
+          <Button variant={"link"} onClick={handleClearCart}>
+            전체삭제 <Trash2 size={20} />
+          </Button>
+        </div>
+        {loading ? (
+          <div className="flex items-center justify-center w-full min-h-[500px]">
+            <Loader2 className="mr-2 h-10 w-10 animate-spin text-main" />
           </div>
         ) : !cart.length ? (
           <BookNoResult message="장바구니가 비었습니다." />
