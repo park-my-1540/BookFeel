@@ -1,12 +1,12 @@
+export const shouldRevalidate = () => false;
 import type { BookCardItem } from "~/features/books/type";
-import type { Route } from "../pages/+types/shoppingcart-page";
+import { getUserId } from "~/features/users/queries";
 import { makeSSRClient } from "~/supa-client";
 import { clearItem, deleteItem, insertItem } from "../mutaions";
+import type { Route } from "../pages/+types/shoppingcart-page";
 import { getShoppingCart } from "../queries";
-import { getUserId } from "~/features/users/queries";
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  // 첫 페이지 진입 시 기본 데이터 불러오기
   const { client } = makeSSRClient(request);
   const userId = await getUserId(client);
 
@@ -47,7 +47,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
       await deleteItem(client, itemId, userId);
     }
     if (intent === "clear") {
-      await clearItem(client);
+      await clearItem(client, userId);
     }
   } catch (err: any) {
     if (err.code === "23505") {

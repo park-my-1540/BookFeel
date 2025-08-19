@@ -1,9 +1,11 @@
-import { z } from "zod";
-import { Link, redirect } from "react-router";
 import { CheckCircle } from "lucide-react";
-import { Body1, Title1 } from "~/components/ui/Typography";
-import type { Route } from "./+types/payment-success-page";
+import { useEffect } from "react";
+import { Link, redirect, useOutletContext } from "react-router";
+import { z } from "zod";
 import { Button } from "~/components/ui/button";
+import { Body1, Title1 } from "~/components/ui/Typography";
+import { useShoppingCart } from "~/features/shoppingcart/hooks/useShoppingCart";
+import type { Route } from "./+types/payment-success-page";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "구매 완료" }];
@@ -16,7 +18,7 @@ const paramsSchema = z.object({
   amount: z.coerce.number(),
 });
 
-const TOSS_SECRET_KEY = process.env.TOSS_SECRET_KEY;
+const TOSS_SECRET_KEY = process.env.NEXT_PUBLIC_TOSS_SECRET_KEY;
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
@@ -72,16 +74,21 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 export default function PromoteSuccessPage({
   loaderData,
 }: Route.ComponentProps) {
+  const { isLoggedIn } = useOutletContext<{ isLoggedIn: boolean }>();
+  const { clearCart } = useShoppingCart({ _isLoggedIn: isLoggedIn });
+  useEffect(() => {
+    clearCart();
+  }, []);
   return (
-    <div className='flex flex-col items-center justify-center h-screen text-center p-4'>
-      <CheckCircle className='text-green-500 mb-4' size={72} />
-      <Title1>결제가 완료되었습니다!</Title1>
-      <Body1 className='mt-2 text-textSubtitle'>
+    <div className="flex flex-col items-center justify-center h-[var(--header-h)] text-center p-4">
+      <CheckCircle className="text-green-500 mb-4" size={72} />
+      <Title1 className="my-5">결제가 완료되었습니다!</Title1>
+      <Body1 className="mb-5 text-textSubtitle">
         주문해주셔서 감사합니다. 주문 내역은 이메일로 발송됩니다.
       </Body1>
 
-      <Button asChild size={"lg"} className='py-6'>
-        <Link to='/'>홈으로 돌아가기</Link>
+      <Button asChild size={"lg"} className="py-6">
+        <Link to="/">홈으로 돌아가기</Link>
       </Button>
     </div>
   );

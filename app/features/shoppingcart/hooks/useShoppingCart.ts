@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useOutletContext } from "react-router";
 import type { BookCardItem } from "~/features/books/type";
 import type { CartRepository } from "../services/cart-repo";
-import { getCartLS, clearCartLS } from "../services/cartStorage";
+import { clearCartLS, getCartLS } from "../services/cartStorage";
 import { LocalCartRepo } from "../services/local-cart-repo";
 import { SupabaseCartRepo } from "../services/supabase-cart-repo";
-import { useOutletContext } from "react-router";
 
 type Options = {
   _isLoggedIn?: boolean | null; // 로그인 시 전달
@@ -84,6 +84,7 @@ export function useShoppingCart({ _isLoggedIn }: Options = {}) {
     setError(null);
     try {
       await repo.clear();
+      window.dispatchEvent(new Event("cart:changed"));
       await reload();
     } catch (e) {
       if (e instanceof Error) {

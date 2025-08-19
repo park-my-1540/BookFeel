@@ -1,11 +1,11 @@
+import type { Database } from "database.types";
 import type { BookCardItem } from "~/features/books/type";
 import type { CartRepository } from "./cart-repo";
-import type { Database } from "database.types";
 
 type Cart = Database["public"]["Tables"]["shopping_cart"]["Row"];
 export class SupabaseCartRepo implements CartRepository {
   async list(): Promise<BookCardItem[]> {
-    const res = await fetch("shoppingcart/api");
+    const res = await fetch("/shoppingcart/api");
     if (!res.ok) throw new Error("Failed to fetch cart");
     const data = await res.json();
     return data.items?.map((item: Cart) => ({
@@ -20,7 +20,7 @@ export class SupabaseCartRepo implements CartRepository {
   }
 
   async add(book: BookCardItem) {
-    const res = await fetch("shoppingcart/api", {
+    const res = await fetch("/shoppingcart/api", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ intent: "add", book }),
@@ -30,7 +30,7 @@ export class SupabaseCartRepo implements CartRepository {
     }
   }
   async remove(itemId: string) {
-    const res = await fetch("shoppingcart/api", {
+    await fetch("/shoppingcart/api", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ intent: "remove", itemId }),
@@ -38,7 +38,7 @@ export class SupabaseCartRepo implements CartRepository {
   }
 
   async clear() {
-    const res = await fetch("shoppingcart/api", {
+    await fetch("/shoppingcart/api", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ intent: "clear" }),

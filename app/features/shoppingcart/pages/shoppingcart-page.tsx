@@ -1,13 +1,16 @@
-import type { Route } from "./+types/shoppingcart-page";
+import { Loader } from "lucide-react";
 import { useMemo } from "react";
-import { makeSSRClient } from "~/supa-client";
-import { getUserProfileById } from "~/features/users/queries";
-import { useShoppingCart } from "../hooks/useShoppingCart";
-import { useTossPayment } from "../hooks/useTossPayment";
-import PaymentSection from "../components/PaymentSection";
-import CartList from "../components/CartList";
+import { useNavigation, useOutletContext } from "react-router";
+import { Button } from "~/components/ui/button";
 import { Heading2 } from "~/components/ui/Typography";
 import BookNoResult from "~/features/books/components/BookNoResult";
+import { getUserProfileById } from "~/features/users/queries";
+import { makeSSRClient } from "~/supa-client";
+import CartList from "../components/CartList";
+import PaymentSection from "../components/PaymentSection";
+import { useShoppingCart } from "../hooks/useShoppingCart";
+import { useTossPayment } from "../hooks/useTossPayment";
+import type { Route } from "./+types/shoppingcart-page";
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { client } = makeSSRClient(request);
@@ -25,8 +28,15 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 };
 
 export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
-  const { items: cart, removeFromCart } = useShoppingCart();
-
+  const { isLoggedIn } = useOutletContext<{ isLoggedIn: boolean }>();
+  const {
+    items: cart,
+    removeFromCart,
+    clearCart,
+  } = useShoppingCart({ _isLoggedIn: isLoggedIn });
+  const navigation = useNavigation();
+  const isLoading =
+    navigation.state === "loading" || navigation.state === "submitting";
   const total = useMemo(
     () => cart && cart.reduce((sum, item) => sum + (item.priceSales ?? 0), 0),
     [cart]
@@ -36,6 +46,10 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
     userId: loaderData.userId,
     total,
   });
+
+  const handleClearCart = () => {
+    clearCart();
+  };
 
   const handleRemove = (id: string) => {
     removeFromCart(id);
@@ -66,11 +80,17 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
   };
 
   return (
-    <div className='grid grid-cols-1 lg:grid-cols-5 gap-8'>
-      <div className='lg:col-span-3 p-lg'>
+    <div className="grid grid-cols-1 lg:grid-cols-5 h-[var(--header-h)]">
+      <div className="lg:col-span-3 px-md pb-md">
         <Heading2>My Shopping Cart</Heading2>
-
-        {cart.length > 0 ? (
+        <Button onClick={handleClearCart}>전체 비우기</Button>
+        {isLoading ? (
+          <div>
+            <Loader />
+          </div>
+        ) : !cart.length ? (
+          <BookNoResult message="장바구니가 비었습니다." />
+        ) : (
           <>
             {cart?.map((item) => (
               <CartList
@@ -80,8 +100,6 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
               />
             ))}
           </>
-        ) : (
-          <BookNoResult message='장바구니가 비었습니다.' />
         )}
       </div>
       <PaymentSection cart={cart} handleSubmit={handleSubmit} total={total} />

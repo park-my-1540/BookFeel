@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useRef, useCallback } from "react";
 import {
   loadTossPayments,
   type TossPaymentsWidgets,
 } from "@tosspayments/tosspayments-sdk";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 
 type Options = {
   userId: string | null; // 로그인 사용자의 id (없으면 게스트)
@@ -17,10 +17,25 @@ function sessionCustomerKey() {
   return n;
 }
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
-export function useTossPayment({ userId, total }: Options) {
-  const widgetsRef = useRef<TossPaymentsWidgets | null>(null);
-  const customerKey = useMemo(() => userId ?? sessionCustomerKey(), [userId]);
 
+export function useTossPayment({ userId, total }: Options) {
+  const totalRef = useRef(0);
+
+  const widgetsRef = useRef<TossPaymentsWidgets | null>(null);
+  const customerKey = useMemo(
+    () =>
+      userId ?? (typeof window === "undefined" ? null : sessionCustomerKey()),
+    [userId]
+  );
+  useEffect(() => {
+    totalRef.current = Math.max(0, Math.round(Number(total || 0)));
+    if (widgetsRef.current) {
+      widgetsRef.current.setAmount({
+        value: totalRef.current,
+        currency: "KRW",
+      });
+    }
+  }, [total]);
   useEffect(() => {
     let cancelled = false;
 
@@ -30,7 +45,7 @@ export function useTossPayment({ userId, total }: Options) {
 
       const widgets = toss.widgets({ customerKey });
       widgetsRef.current = widgets;
-      await widgets.setAmount({ value: total, currency: "KRW" });
+      await widgets.setAmount({ value: totalRef.current, currency: "KRW" });
       await widgets.renderPaymentMethods({ selector: "#toss-payment-methods" });
       await widgets.renderAgreement({ selector: "#toss-payment-agreement" });
     })();
@@ -63,7 +78,11 @@ export function useTossPayment({ userId, total }: Options) {
         failUrl,
         metadata,
       } = args;
-      await widgetsRef.current.setAmount({ value: total, currency: "KRW" });
+
+      await widgetsRef.current.setAmount({
+        value: totalRef.current,
+        currency: "KRW",
+      });
       await widgetsRef.current.requestPayment({
         orderId,
         orderName,
