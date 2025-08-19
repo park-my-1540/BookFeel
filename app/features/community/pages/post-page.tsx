@@ -1,4 +1,5 @@
 import { ChevronUpIcon, DotIcon } from "lucide-react";
+import { DateTime } from "luxon";
 import { useEffect, useRef } from "react";
 import {
   Form,
@@ -7,6 +8,9 @@ import {
   useNavigation,
   useOutletContext,
 } from "react-router";
+import { z } from "zod";
+import AvatarUser from "~/components/common/AvatarUser";
+import { LoadingButton } from "~/components/common/LoadingButton";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,18 +21,12 @@ import {
 import { Button } from "~/components/ui/button";
 import { Body1, Caption } from "~/components/ui/Typography";
 import { Reply } from "~/features/community/components/reply";
-import { makeSSRClient } from "~/supa-client";
-import type { Route } from "./+types/post-page";
-// import { getPostById, getReplies } from "../queries";
-import { DateTime } from "luxon";
-import { z } from "zod";
-import AvatarUser from "~/components/common/AvatarUser";
-import { LoadingButton } from "~/components/common/LoadingButton";
 import { getLoggedInUserId } from "~/features/users/queries";
+import { makeSSRClient } from "~/supa-client";
 import AsideInfo from "../components/AsideInfo";
 import { createReply } from "../mutations";
 import { getPostById, getReplies } from "../queries";
-// import { createReply } from "~/features/teams/mutations";
+import type { Route } from "./+types/post-page";
 
 export const meta: Route.MetaFunction = ({ params }) => [
   { title: `title: ${params.postId}` },
@@ -44,7 +42,7 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
   const userId = await getLoggedInUserId(client);
   const formData = await request.formData();
   const { success, error, data } = formSchema.safeParse(
-    Object.fromEntries(formData),
+    Object.fromEntries(formData)
   );
   if (!success) {
     return {
@@ -93,9 +91,8 @@ export default function PostPage({
   useEffect(() => {
     formRef.current?.reset();
   }, [actionData?.ok]);
-
   return (
-    <div className="w-full px-lg">
+    <div className="w-full px-lg py-sm">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>

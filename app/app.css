@@ -214,23 +214,30 @@ body {
 .b { grid-area: b;}
 .c { grid-area: c;}
 
+/* 기본(모바일) */
+:root {
+  --gap-sm: 1rem;
+  --gap-md: 2rem;
+  --gap-lg: 2rem;
+}
 
+/* 태블릿 이상 */
 @media (min-width: 768px) {
   :root {
-    --gap-sm:2rem;
-    --gap-md:5rem;
-    --gap-lg:8rem;
+    --gap-sm: 2rem;
+    --gap-md: 5rem;
+    --gap-lg: 4rem;
   }
 }
 
-@media (max-width: 768px) {
+/* 데스크톱 이상 */
+@media (min-width: 1280px) {
   :root {
-    --gap-sm:1rem;
-    --gap-md:2rem;
-    --gap-lg:2rem;
+    --gap-sm: 2rem;
+    --gap-md: 5rem;
+    --gap-lg: 8rem;
   }
 }
-
 .thumb {
   display: block;
   overflow: hidden;

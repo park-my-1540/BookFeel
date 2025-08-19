@@ -113,7 +113,11 @@ function CommentItem({
 
         <Body1>{content}</Body1>
         {isLoggedIn && (
-          <Button variant="ghost" className="self-end" onClick={toggleReplying}>
+          <Button
+            variant="ghost"
+            className="self-end border border-borderGray"
+            onClick={toggleReplying}
+          >
             답글
           </Button>
         )}
