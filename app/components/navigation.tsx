@@ -6,8 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import { useShoppingCart } from "~/features/shoppingcart/hooks/useShoppingCart";
-import AvatarUser from "./common/AvatarUser";
 import Menu from "./layout/Menu";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -59,7 +59,13 @@ export default function Navigation({
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <AvatarUser avatar={avatar} fallback={name[0]} />
+                <Avatar className="cursor-pointer">
+                  {avatar ? (
+                    <AvatarImage src={avatar} />
+                  ) : (
+                    <AvatarFallback>{name?.charAt(0)}</AvatarFallback>
+                  )}
+                </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel className="flex flex-col">

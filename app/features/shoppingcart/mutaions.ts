@@ -13,7 +13,6 @@ export const insertItem = async (
     thumbnail: books.cover,
     price: books.priceStandard,
     sale_price: books.priceSales,
-    contents: books.contents,
     profile_id,
   });
   if (error) {
@@ -35,8 +34,11 @@ export const deleteItem = async (
     throw error;
   }
 };
-export const clearItem = async (client: SupabaseClient) => {
-  const { error } = await client.from("shopping_cart").delete();
+export const clearItem = async (client: SupabaseClient, userId: string) => {
+  const { error } = await client
+    .from("shopping_cart")
+    .delete()
+    .eq("profile_id", userId);
   if (error) {
     throw error;
   }

@@ -22,7 +22,7 @@ export default function BookCard({ book }: { book: BookSummary | BookDetail }) {
   const onSubmit = useCallback(
     async (book: BookCardItem) => {
       try {
-        await addToCart(book); // 성공 시에만 실행
+        await addToCart(book);
         alert("장바구니에 추가되었습니다.");
       } catch (error) {
         alert(error instanceof Error ? error.message : String(error));

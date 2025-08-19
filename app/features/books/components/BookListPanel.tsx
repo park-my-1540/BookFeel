@@ -15,7 +15,7 @@ export default function BookListPanel({ subtitle, books, isFetching }: Props) {
         {subtitle} 총 <span className="text-primary">{books?.length}</span>건
       </div>
 
-      {false ? (
+      {isFetching ? (
         <div>로딩중입니다...</div>
       ) : !books?.length ? (
         <BookNoResult message="검색된 결과가 없습니다." />
