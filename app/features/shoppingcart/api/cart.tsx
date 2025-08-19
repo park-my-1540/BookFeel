@@ -5,7 +5,6 @@ import { makeSSRClient } from "~/supa-client";
 import { clearItem, deleteItem, insertItem } from "../mutaions";
 import type { Route } from "../pages/+types/shoppingcart-page";
 import { getShoppingCart } from "../queries";
-
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { client } = makeSSRClient(request);
   const userId = await getUserId(client);
@@ -24,14 +23,16 @@ export const action = async ({ request }: Route.ActionArgs) => {
   const { client, headers } = makeSSRClient(request);
   const userId = await getUserId(client);
   if (!userId) {
-    return new Response(JSON.stringify({ ok: false }), {
-      status: 401,
-      headers,
-    });
+    return Response.json(
+      { ok: false },
+      {
+        status: 401,
+        headers,
+      }
+    );
   }
 
   const { intent, book, itemId } = await request.json();
-
   try {
     if (intent === "add") {
       await insertItem(
@@ -49,13 +50,14 @@ export const action = async ({ request }: Route.ActionArgs) => {
     if (intent === "clear") {
       await clearItem(client, userId);
     }
+    return Response.json({ ok: true }, { headers });
   } catch (err: any) {
     if (err.code === "23505") {
-      return new Response(
-        JSON.stringify({
+      return Response.json(
+        {
           ok: false,
           message: "이미 장바구니에 있는 상품입니다.",
-        }),
+        },
         { status: 409, headers }
       );
     }
