@@ -2,14 +2,13 @@ import BookSearch from "@/features/search/components/SearchBarContainer";
 import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useAtom, useAtomValue } from "jotai";
 import { useEffect } from "react";
 import { Form, Link, useNavigation, useSearchParams } from "react-router";
 import { LoadingButton } from "~/components/common/LoadingButton";
 import { Button } from "~/components/ui/button";
 import { Body1, Heading2, Title1, Title3 } from "~/components/ui/Typography";
 import { BookCard } from "~/features/books/components/BestPreviewCard/BookCard";
-import bookState from "~/jotai/bookAtom";
+import { useBookStore } from "~/store/bookStore";
 import type { Route } from "../../books/pages/+types/list-page";
 import RegionSelect from "../components/RegionSelect";
 import { fetchBookExists, fetchLibSrchByBook } from "../services/fetchLibrary";
@@ -27,23 +26,20 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export default function LoanExplorerPage({ loaderData }: Route.ComponentProps) {
   const navigation = useNavigation();
-
-  const [searchParams] = useSearchParams(); // 쿼리
+  const [searchParams] = useSearchParams();
   const isbnParam = searchParams.get("isbn") ?? "";
-  const EMPTY = { cover: "", title: "", author: "", isbn: "", itemId: "" };
-  const [books, setBooks] = useAtom(bookState);
-
+  const book = useBookStore((s) => s.book);
+  const resetBook = useBookStore((s) => s.resetBook);
   useEffect(() => {
-    if (!isbnParam && books.isbn !== "") {
-      setBooks(EMPTY);
+    if (!isbnParam && book.isbn !== "") {
+      resetBook();
     }
-    if (isbnParam && books.isbn !== "") {
+    if (isbnParam && book.isbn !== "") {
     }
-  }, [isbnParam, books.isbn, setBooks]);
+  }, [isbnParam, book.isbn]);
 
   const isSubmitting =
     navigation.state === "submitting" || navigation.state === "loading";
-  const book = useAtomValue(bookState);
   return (
     <div className="w-full px-lg pb-md">
       <Heading2>대출 가능한 도서관 찾기</Heading2>
@@ -70,7 +66,7 @@ export default function LoanExplorerPage({ loaderData }: Route.ComponentProps) {
                     <Link to="/books">다른 책으로 조회 &rarr;</Link>
                   </Button>
                 </div>
-                {isbnParam && books.isbn === "" ? (
+                {isbnParam && book.isbn === "" ? (
                   <p className="text-red mt-10">다시 도서를 조회해주세요.</p>
                 ) : null}
                 <BookCard

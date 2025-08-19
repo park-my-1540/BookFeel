@@ -1,4 +1,4 @@
-import type { bookAtomType } from "~/jotai/bookAtom";
+import type { BookState } from "~/store/bookStore";
 import type { BookCardItem, BookDetail, BookSummary } from "../../type";
 
 export type SummaryCardProps = {
@@ -6,7 +6,7 @@ export type SummaryCardProps = {
   onToggle: () => void;
   onSubmit: (book: BookCardItem) => void;
   isExpanded: boolean;
-  checkLibrary: (book: bookAtomType) => void;
+  checkLibrary: (book: BookState) => void;
 };
 
 export type DetailCardProps = {
@@ -14,5 +14,5 @@ export type DetailCardProps = {
   onToggle: () => void;
   onSubmit: (book: BookCardItem) => void;
   isExpanded: boolean;
-  checkLibrary: (book: bookAtomType) => void;
+  checkLibrary: (book: BookState) => void;
 };

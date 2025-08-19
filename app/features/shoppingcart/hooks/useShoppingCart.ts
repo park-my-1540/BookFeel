@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useOutletContext } from "react-router";
 import type { BookCardItem } from "~/features/books/type";
+import { useCartCount } from "~/store/countStore";
 import type { CartRepository } from "../services/cart-repo";
 import { clearCartLS, getCartLS } from "../services/cartStorage";
 import { LocalCartRepo } from "../services/local-cart-repo";
@@ -20,9 +21,13 @@ export function useShoppingCart({ _isLoggedIn }: Options = {}) {
   }, [isLoggedIn]);
 
   const [items, setItems] = useState<BookCardItem[]>();
-  const [count, setCount] = useState<number>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const setCount = useCartCount((s) => s.set);
+  const incCount = useCartCount((s) => s.inc);
+  const decCount = useCartCount((s) => s.dec);
+  const resetCount = useCartCount((s) => s.reset);
 
   const reload = useCallback(async () => {
     setLoading(true);
@@ -34,6 +39,13 @@ export function useShoppingCart({ _isLoggedIn }: Options = {}) {
       setLoading(false);
     }
   }, [repo]);
+
+  // 초기 1회 로드
+  useEffect(() => {
+    (async () => {
+      await reload();
+    })();
+  }, [reload]);
 
   useEffect(() => {
     const onCartChange = () => reload();
@@ -47,29 +59,33 @@ export function useShoppingCart({ _isLoggedIn }: Options = {}) {
   const addToCart = useCallback(
     async (book: BookCardItem) => {
       setError(null);
+      incCount(1);
       try {
         await repo.add(book);
         await reload();
       } catch (e) {
         if (e instanceof Error) {
           setError(e.message);
+          decCount(1);
           throw e;
         }
         throw e;
       }
     },
-    [repo, reload]
+    [repo, reload, incCount, decCount]
   );
 
   const removeFromCart = useCallback(
     async (itemId: string) => {
       setError(null);
+      decCount(1);
       try {
         await repo.remove(itemId);
         await reload();
       } catch (e) {
         if (e instanceof Error) {
           setError(e.message);
+          incCount(1);
           throw e;
         }
         throw e;
@@ -80,17 +96,20 @@ export function useShoppingCart({ _isLoggedIn }: Options = {}) {
 
   const clearCart = useCallback(async () => {
     setError(null);
+    const backup = useCartCount.getState().count;
+    resetCount();
     try {
       await repo.clear();
       await reload();
     } catch (e) {
       if (e instanceof Error) {
         setError(e.message);
+        useCartCount.getState().set(backup);
         throw e;
       }
       throw e;
     }
-  }, [repo, reload]);
+  }, [repo, reload, resetCount]);
 
   useEffect(() => {
     //  다른 탭이나 창에서 변경됐을 때 현재 탭도 동기화
@@ -129,7 +148,6 @@ export function useShoppingCart({ _isLoggedIn }: Options = {}) {
     })();
   }, [isLoggedIn, reload]);
   return {
-    count: count ?? 0,
     items: items ?? [],
     loading,
     addToCart,

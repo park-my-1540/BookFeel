@@ -1,8 +1,7 @@
-import { useAtomValue } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import SelectBox from "~/components/common/SelectBox";
 import { DTL_REGION_MAP, REGION_CODES } from "~/features/contants";
-import bookState from "~/jotai/bookAtom";
+import { useBookStore } from "~/store/bookStore";
 
 export default function RegionSelect() {
   const [region, setRegion] = useState("11");
@@ -27,7 +26,7 @@ export default function RegionSelect() {
     setDtlRegion(value);
   }, []);
 
-  const book = useAtomValue(bookState);
+  const book = useBookStore((s) => s.book);
   return (
     <div className="flex gap-2 w-full md:w-2/3">
       <SelectBox

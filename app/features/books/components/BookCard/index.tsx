@@ -1,8 +1,7 @@
-import { useSetAtom } from "jotai";
 import { useCallback, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router";
 import { useShoppingCart } from "~/features/shoppingcart/hooks/useShoppingCart";
-import bookState, { type bookAtomType } from "~/jotai/bookAtom";
+import { useBookStore, type BookState } from "~/store/bookStore";
 import type { BookCardItem, BookDetail, BookSummary } from "../../type";
 import DetailCard from "./DetailCard";
 import SummaryCard from "./SummaryCard";
@@ -12,11 +11,11 @@ export default function BookCard({ book }: { book: BookSummary | BookDetail }) {
   const { addToCart } = useShoppingCart({ _isLoggedIn: isLoggedIn });
   const [isExpanded, setIsExpanded] = useState(false);
   const navigate = useNavigate();
-  const setList = useSetAtom(bookState);
+  const { setBook } = useBookStore();
   const onToggle = () => setIsExpanded((prev) => !prev);
 
-  const checkLibrary = (book: bookAtomType) => {
-    setList(book);
+  const checkLibrary = (book: BookState) => {
+    setBook(book);
     navigate(`/library?isbn=${book.isbn}`);
   };
   const onSubmit = useCallback(

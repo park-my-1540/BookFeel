@@ -5,7 +5,7 @@ import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
 import { Link, useLocation } from "react-router";
-import { useShoppingCart } from "~/features/shoppingcart/hooks/useShoppingCart";
+import { useCartCount } from "~/store/countStore";
 import Menu from "./layout/Menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -30,7 +30,7 @@ export default function Navigation({
   avatar: string;
   name: string;
 }) {
-  const { count } = useShoppingCart({ _isLoggedIn: isLoggedIn });
+  const count = useCartCount((s) => s.count);
   const { pathname } = useLocation();
   return (
     <div className="border-b">
