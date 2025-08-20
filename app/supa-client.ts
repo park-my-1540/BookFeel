@@ -1,21 +1,24 @@
 import {
   createBrowserClient,
-  parseCookieHeader,
   createServerClient,
+  parseCookieHeader,
   serializeCookieHeader,
 } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 
 export const browserClient = createBrowserClient<any>(
-  "https://spmbavubrdyesqqcfeim.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwbWJhdnVicmR5ZXNxcWNmZWltIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1Mzg3Mzg4MCwiZXhwIjoyMDY5NDQ5ODgwfQ.c5_I9-WqlhZpz22PpPg1kX96OWYPhaad21Da8-5-2Uo"
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
+
+export const supabaseUrl = process.env.SUPABASE_URL!;
+export const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!; // 서비스 롤 키
 
 export const makeSSRClient = (request: Request) => {
   const headers = new Headers();
   const serverSideClient = createServerClient<any, "public">(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseServiceKey,
     {
       cookies: {
         getAll() {
@@ -45,9 +48,6 @@ export const makeSSRClient = (request: Request) => {
     headers,
   };
 };
-
-const supabaseUrl = process.env.SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!; // 서비스 롤 키
 
 export const adminClient = createClient(supabaseUrl, supabaseServiceKey, {
   auth: {
