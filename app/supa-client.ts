@@ -14,8 +14,8 @@ export const browserClient = createBrowserClient<any>(
 export const makeSSRClient = (request: Request) => {
   const headers = new Headers();
   const serverSideClient = createServerClient<any, "public">(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    "https://spmbavubrdyesqqcfeim.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwbWJhdnVicmR5ZXNxcWNmZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4NzM4ODAsImV4cCI6MjA2OTQ0OTg4MH0.pW1iPtRK3jB7sAkBwKULabcilxBZl96CmbyMrqStu0c",
     {
       cookies: {
         getAll() {
@@ -47,8 +47,8 @@ export const makeSSRClient = (request: Request) => {
 };
 
 export const adminClient = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!,
+  "https://spmbavubrdyesqqcfeim.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwbWJhdnVicmR5ZXNxcWNmZWltIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1Mzg3Mzg4MCwiZXhwIjoyMDY5NDQ5ODgwfQ.c5_I9-WqlhZpz22PpPg1kX96OWYPhaad21Da8-5-2Uo",
   {
     auth: {
       persistSession: false,
