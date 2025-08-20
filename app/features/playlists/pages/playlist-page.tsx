@@ -1,14 +1,7 @@
-import { ChevronDownIcon } from "lucide-react";
 import { Link, useSearchParams } from "react-router";
+import SortingDropMenu from "~/components/common/SortingMenu";
 import { Heading2 } from "~/components/ui/Typography";
 import { Button } from "~/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
-import { SORT_OPTIONS_MAP } from "~/features/contants";
 import { getLoggedInUserId } from "~/features/users/queries";
 import { makeSSRClient } from "~/supa-client";
 import { PlaylistCard } from "../components/PlaylistCard";
@@ -47,30 +40,7 @@ export default function PlaylistPage({ loaderData }: Route.ComponentProps) {
     <div className="w-full px-lg pb-md">
       <Heading2>Curated Vibes</Heading2>
       <div className="flex justify-between items-center mb-14">
-        <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center gap-2">
-            <span className="text-md capitalize">
-              {SORT_OPTIONS_MAP.get(sorting)}
-            </span>
-            <ChevronDownIcon className="w-4 h-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {[...SORT_OPTIONS_MAP.entries()].map(([key, value]) => (
-              <DropdownMenuCheckboxItem
-                className="capitalize cursor-pointer"
-                onCheckedChange={(checked: boolean) => {
-                  if (checked) {
-                    searchParams.set("sorting", key);
-                    setSearchParams(searchParams);
-                  }
-                }}
-                key={key}
-              >
-                {value}
-              </DropdownMenuCheckboxItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <SortingDropMenu />
         <Button asChild>
           <Link to="/playlists/submit">플레이리스트 생성하기</Link>
         </Button>

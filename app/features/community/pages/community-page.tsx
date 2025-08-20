@@ -1,16 +1,9 @@
-import { ChevronDownIcon } from "lucide-react";
-import { data, Form, Link, redirect, useSearchParams } from "react-router";
+import { data, Form, Link, redirect } from "react-router";
 import { z } from "zod";
+import SortingDropMenu from "~/components/common/SortingMenu";
 import { Button } from "~/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
 import { Heading2, Title2 } from "~/components/ui/Typography";
 import BookNoResult from "~/features/books/components/BookNoResult";
-import { SORT_OPTIONS_MAP } from "~/features/contants";
 import { getLoggedInUserId } from "~/features/users/queries";
 import { makeSSRClient } from "~/supa-client";
 import { PostCard } from "../components/post-card";
@@ -74,9 +67,6 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 export const meta: Route.MetaFunction = () => [{ title: "커뮤니티" }];
 
 export default function CommunityPage({ loaderData }: Route.ComponentProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const sorting = searchParams.get("sorting") || "newest";
-
   return (
     <div className="w-full px-lg pb-md">
       <Heading2>Community</Heading2>
@@ -84,32 +74,7 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
         <div className="col-span-4 space-y-10">
           <div className="flex justify-between">
             <div className="space-y-5 w-full">
-              <div className="flex items-center gap-5">
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center gap-2">
-                    <span className="text-sm capitalize">
-                      {SORT_OPTIONS_MAP.get(sorting)}
-                    </span>
-                    <ChevronDownIcon className="w-4 h-4" />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    {[...SORT_OPTIONS_MAP.entries()].map(([key, value]) => (
-                      <DropdownMenuCheckboxItem
-                        className="capitalize cursor-pointer"
-                        onCheckedChange={(checked: boolean) => {
-                          if (checked) {
-                            searchParams.set("sorting", key);
-                            setSearchParams(searchParams);
-                          }
-                        }}
-                        key={key}
-                      >
-                        {value}
-                      </DropdownMenuCheckboxItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
+              <SortingDropMenu />
               <Form className="w-2/3">
                 <input
                   type="text"
