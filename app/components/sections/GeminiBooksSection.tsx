@@ -4,7 +4,7 @@ import { Button } from "~/components/ui/button";
 import { BookCard } from "~/features/books/components/BestPreviewCard/BookCard";
 import type { BookCardItem } from "~/features/books/type";
 import { cn } from "~/lib/utils";
-import { Title1 } from "../ui/Typography";
+import { Title1, Title2 } from "../ui/Typography";
 
 interface GeminiBooksSectionProps {
   searchKeyword: { keyword: string; category_id: string }[];
@@ -106,17 +106,25 @@ export default function GeminiBooksSection({
             <Loader2 className="mr-2 h-10 w-10 animate-spin text-main" />
           </div>
         ) : (
-          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 min-h-[500px]">
-            {books?.map((book) => (
-              <BookCard
-                key={book.itemId}
-                itemId={book.itemId}
-                cover={book.cover}
-                author={book.author}
-                title={book.title}
-              />
-            ))}
-          </div>
+          <>
+            {books?.length > 0 ? (
+              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 min-h-[500px] border border-red">
+                {books.map((book) => (
+                  <BookCard
+                    key={book.itemId}
+                    itemId={book.itemId}
+                    cover={book.cover}
+                    author={book.author}
+                    title={book.title}
+                  />
+                ))}
+              </div>
+            ) : (
+              <Title2 className="mt-10">
+                로그인 하여 Gemini가 추천해주는 도서를 검색해보세요!
+              </Title2>
+            )}
+          </>
         )}
       </div>
     </section>

@@ -43,19 +43,19 @@ export default function LoanExplorerPage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="w-full px-lg pb-md">
       <Heading2>대출 가능한 도서관 찾기</Heading2>
-      <div className="grid row-span-1 lg:grid-cols-6 gap-5 lg:gap-16">
-        <div className="order-2 lg:order-1 lg:col-span-4 space-y-10">
-          <div className="space-y-5 flex gap-8 justify-start items-end">
-            <RegionSelect />
-            <div className="flex gap-2">
-              <LoadingButton isLoading={isSubmitting}>
-                도서관 조회
-              </LoadingButton>
+      <Form method="get">
+        <div className="grid row-span-1 lg:grid-cols-6 gap-5 lg:gap-16">
+          <div className="order-2 lg:order-1 lg:col-span-4 space-y-10">
+            <div className="flex gap-8 justify-start items-end">
+              <RegionSelect />
+              <div className="flex gap-2">
+                <LoadingButton isLoading={isSubmitting}>
+                  도서관 조회
+                </LoadingButton>
+              </div>
             </div>
           </div>
-        </div>
-        <aside className="order-1 lg:order-2 row-span-1 lg:col-span-2">
-          <Form method="get">
+          <aside className="order-1 lg:order-2 row-span-1 lg:col-span-2">
             {!isbnParam ? (
               <BookSearch />
             ) : (
@@ -79,9 +79,9 @@ export default function LoanExplorerPage({ loaderData }: Route.ComponentProps) {
                 />
               </div>
             )}
-          </Form>
-        </aside>
-      </div>
+          </aside>
+        </div>
+      </Form>
 
       <div className="w-full mt-8">
         {loaderData.items?.length < 0 ? (
@@ -104,12 +104,14 @@ export default function LoanExplorerPage({ loaderData }: Route.ComponentProps) {
                     {it._error ? (
                       <span className="text-red">조회 오류</span>
                     ) : it.loanAvailable ? (
-                      <span className="text-green-600">
+                      <span className="text-green-600 h-10">
                         대출 가능{" "}
-                        <FontAwesomeIcon
-                          icon={faCircleCheck as IconProp}
-                          size="lg"
-                        />
+                        <span className="min-h-7 text-green-600 inline-block">
+                          <FontAwesomeIcon
+                            icon={faCircleCheck as IconProp}
+                            size="lg"
+                          />
+                        </span>
                       </span>
                     ) : it.hasBook ? (
                       <span className="text-amber-600">소장(대출 불가)</span>

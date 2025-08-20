@@ -15,6 +15,7 @@ export const getGeminiBooks = async (
   keyword: string,
   userId: string
 ) => {
+  if (!userId) return [];
   const baseQuery = client
     .from("all_gemini_ideas")
     .select("*", { head: false, count: "exact" })

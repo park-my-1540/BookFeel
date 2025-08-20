@@ -50,7 +50,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
     const result = await submitKeywordToGemini(
       client,
       keyword as string,
-      userId,
+      userId
     );
     if (!result.success) {
       return {
@@ -66,7 +66,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   if (search) {
     return redirect(
-      `/books?q=${encodeURIComponent(search as string)}&target=${encodeURIComponent(target as string)}`,
+      `/books?q=${encodeURIComponent(search as string)}&target=${encodeURIComponent(target as string)}`
     );
   }
 };
@@ -87,7 +87,7 @@ export const loader = async ({
   const userId = await getUserId(client);
 
   const { data: parsedData } = searchParamsSchema.safeParse(
-    Object.fromEntries(url.searchParams),
+    Object.fromEntries(url.searchParams)
   );
   try {
     const [books, choices, geminiBooks, search_keyword, playlists] =
@@ -123,7 +123,7 @@ export default function HomePage({
 }: Route.ComponentProps) {
   const [searchParams] = useSearchParams(); // 쿼리 파라미터를 관리하는 훅
   const [toggle, setToggle] = useState(
-    searchParams.get("keyword") === "userCustom",
+    searchParams.get("keyword") === "userCustom"
   );
 
   const navigation = useNavigation();

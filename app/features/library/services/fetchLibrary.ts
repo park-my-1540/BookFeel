@@ -84,11 +84,11 @@ export const fetchBookExists = async ({
     libCode.map((lib: any) =>
       limit(async () => {
         const url = new URL(
-          `${process.env.NEXT_PUBLIC_DATA4LIB_BASE}/bookExist`,
+          `${process.env.NEXT_PUBLIC_DATA4LIB_BASE}/bookExist`
         );
         url.searchParams.set(
           "authKey",
-          `${process.env.NEXT_PUBLIC_DATA4LIB_KEY}`,
+          `${process.env.NEXT_PUBLIC_DATA4LIB_KEY}`
         );
         url.searchParams.set("libCode", lib.libCode);
         url.searchParams.set("isbn13", isbn);
@@ -110,8 +110,8 @@ export const fetchBookExists = async ({
         const loanAvailable =
           String(res.loanAvailable ?? "").toUpperCase() === "Y";
         return { ...lib, hasBook, loanAvailable };
-      }),
-    ),
+      })
+    )
   );
 
   // 3) 정렬: 대출 가능 우선 → 소장만 → 이름순
@@ -143,7 +143,7 @@ function pLimit(max: number) {
           (e) => {
             reject(e);
             next();
-          },
+          }
         );
       };
       if (active < max) run();
