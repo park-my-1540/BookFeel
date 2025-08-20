@@ -37,7 +37,7 @@ export const getGeminiBooks = async (
 export const canUseGemini = async (
   client: SupabaseClient,
   profileId: string,
-  dailyLimit = 2
+  dailyLimit = 15
 ): Promise<boolean> => {
   const { data, error } = await client
     .from("user_gemini_usage")

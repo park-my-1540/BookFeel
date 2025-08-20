@@ -108,7 +108,7 @@ export default function GeminiBooksSection({
         ) : (
           <>
             {books?.length > 0 ? (
-              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 min-h-[500px] border border-red">
+              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 min-h-[500px]">
                 {books.map((book) => (
                   <BookCard
                     key={book.itemId}
