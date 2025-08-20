@@ -2,6 +2,7 @@ import { ChevronUpIcon, DotIcon } from "lucide-react";
 import { DateTime } from "luxon";
 import { Link, useFetcher } from "react-router";
 import AvatarUser from "~/components/common/AvatarUser";
+import CardInDelete from "~/components/common/CardInDelete";
 import { Button } from "~/components/ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import { cn } from "~/lib/utils";
@@ -15,6 +16,7 @@ interface PostCardProps {
   expanded?: boolean;
   votesCount?: number;
   isUpvoted?: boolean;
+  isUsers?: boolean;
 }
 
 export function PostCard({
@@ -26,6 +28,7 @@ export function PostCard({
   postedAt,
   expanded = false,
   isUpvoted = false,
+  isUsers = false,
   votesCount = 0,
 }: PostCardProps) {
   const fetcher = useFetcher();
@@ -46,15 +49,20 @@ export function PostCard({
       action: `/community/${id}/upvote`,
     });
   };
+  const remove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
 
+    const formData = new FormData();
+    formData.append("postId", id.toString());
+
+    fetcher.submit(formData, {
+      method: "POST",
+      action: `/community`,
+    });
+  };
   return (
     <Link to={`/community/${id}`} className="block">
-      <Card
-        className={cn(
-          "bg-transparent hover:bg-gray transition-colors border-borderGray rounded-md px-sm",
-          expanded ? "flex flex-row items-center justify-between" : ""
-        )}
-      >
+      <Card className="relative flex flex-row items-center justify-between bg-transparent hover:bg-gray transition-colors border-borderGray rounded-md px-sm">
         <CardHeader className="flex flex-row gap-2 items-center">
           <AvatarUser avatar={authorAvatarUrl} fallback={author[0]} />
           <div className="space-y-2">
@@ -67,26 +75,21 @@ export function PostCard({
             </div>
           </div>
         </CardHeader>
-        {!expanded && (
-          <CardFooter className="flex justify-end">
-            <Button variant="link">Reply &rarr;</Button>
-          </CardFooter>
-        )}
-        {expanded && (
-          <CardFooter className="flex justify-end pt-0 pb-0">
-            <Button
-              onClick={absorbClick}
-              variant="outline"
-              className={cn(
-                "flex flex-col h-14",
-                optimisitcIsUpvoted ? "border-primary text-primary" : ""
-              )}
-            >
-              <ChevronUpIcon className="size-4 shrink-0" />
-              <span>{optimisitcVotesCount}</span>
-            </Button>
-          </CardFooter>
-        )}
+
+        <CardFooter className="flex justify-end pt-0 pb-0">
+          <Button
+            onClick={absorbClick}
+            variant="outline"
+            className={cn(
+              "flex flex-col h-14",
+              optimisitcIsUpvoted ? "border-primary text-primary" : ""
+            )}
+          >
+            <ChevronUpIcon className="size-4 shrink-0" />
+            <span>{optimisitcVotesCount}</span>
+          </Button>
+        </CardFooter>
+        <CardInDelete isUsers={isUsers} remove={remove} />
       </Card>
     </Link>
   );

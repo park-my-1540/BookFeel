@@ -1,14 +1,8 @@
-import { ChevronUpIcon, EllipsisVertical, Trash2 } from "lucide-react";
+import { ChevronUpIcon } from "lucide-react";
 import { useFetcher, useNavigate, useOutletContext } from "react-router";
+import CardInDelete from "~/components/common/CardInDelete";
 import { Caption, Title1 } from "~/components/ui/Typography";
 import { Button } from "~/components/ui/button";
-import { Card, CardContent } from "~/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
 import { cn } from "~/lib/utils";
 
 export interface PlaylistCardProps {
@@ -61,31 +55,9 @@ export function PlaylistCard({
   };
 
   return (
-    <Card>
-      <CardContent className="relative px-8">
-        {isUsers ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant={"ghost"}
-                size={"icon2"}
-                className="border-none text-textSubtitle absolute bottom-3 right-0"
-              >
-                <EllipsisVertical />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem asChild className="cursor-pointer">
-                <button type="button" onClick={remove}>
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  삭제
-                </button>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ) : null}
-
-        <div className="w-full relative pb-[56.25%]">
+    <div className="overflow-hidden bg-card text-card-foreground flex flex-col border shadow-sm pt-6">
+      <div className="px-8">
+        <div className="w-full relative pb-[56.25%] px-8">
           <iframe
             src={url}
             title={title}
@@ -95,25 +67,26 @@ export function PlaylistCard({
             className="absolute top-0 left-0 w-full h-full"
           ></iframe>
         </div>
-        <div className="pt-5 flex flex-row justify-between">
-          <div>
-            <Title1>{title}</Title1>
-            <Caption>{author}</Caption>
-          </div>
-          <Button
-            onClick={absorbClick}
-            variant="outline"
-            className={cn(
-              "flex flex-col h-14",
-              optimisitcIsUpvoted ? "border-primary text-primary" : ""
-            )}
-          >
-            <ChevronUpIcon className="size-4 shrink-0" />
-            <span>{optimisitcupvotes}</span>
-            <span>{optimisitcIsUpvoted}</span>
-          </Button>
+      </div>
+      <div className="px-8 py-6 flex flex-row justify-between relative">
+        <div>
+          <Title1>{title}</Title1>
+          <Caption>{author}</Caption>
         </div>
-      </CardContent>
-    </Card>
+        <Button
+          onClick={absorbClick}
+          variant="outline"
+          className={cn(
+            "flex flex-col h-14",
+            optimisitcIsUpvoted ? "border-primary text-primary" : ""
+          )}
+        >
+          <ChevronUpIcon className="size-4 shrink-0" />
+          <span>{optimisitcupvotes}</span>
+          <span>{optimisitcIsUpvoted}</span>
+        </Button>
+        <CardInDelete isUsers={isUsers} remove={remove} />
+      </div>
+    </div>
   );
 }

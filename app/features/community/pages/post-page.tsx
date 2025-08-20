@@ -92,7 +92,7 @@ export default function PostPage({
     formRef.current?.reset();
   }, [actionData?.ok]);
   return (
-    <div className="w-full px-lg py-sm">
+    <div className="w-full px-lg py-sm pb-lg">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>

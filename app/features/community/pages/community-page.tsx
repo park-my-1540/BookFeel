@@ -11,8 +11,10 @@ import {
 import { Heading2, Title2 } from "~/components/ui/Typography";
 import BookNoResult from "~/features/books/components/BookNoResult";
 import { SORT_OPTIONS_MAP } from "~/features/contants";
+import { getLoggedInUserId } from "~/features/users/queries";
 import { makeSSRClient } from "~/supa-client";
 import { PostCard } from "../components/post-card";
+import { deletePost } from "../mutations";
 import { getPosts, getTopics } from "../queries";
 import type { Route } from "./+types/community-page";
 
@@ -25,9 +27,22 @@ const searchParamsSchema = z.object({
   keyword: z.string().optional(),
   topic: z.string().optional(),
 });
+export const action = async ({ request }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request);
+  const userId = await getLoggedInUserId(client);
 
+  const formData = await request.formData();
+  const postId = formData.get("postId");
+
+  if (typeof postId !== "string") {
+    throw new Error("Invalid postId");
+  }
+  await deletePost(client, {
+    profile_id: userId,
+    post_id: postId,
+  });
+};
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  // await new Promise((resolve) => setTimeout(resolve, 10000));
   const url = new URL(request.url);
   const { success, data: parsedData } = searchParamsSchema.safeParse(
     Object.fromEntries(url.searchParams)
@@ -121,6 +136,7 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
                     postedAt={post.created_at}
                     votesCount={post.upvotes}
                     isUpvoted={post.is_upvoted}
+                    isUsers={post.is_users}
                     expanded={true}
                   />
                 ))}

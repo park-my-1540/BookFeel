@@ -84,3 +84,15 @@ export const togglePostpvote = async (
     }
   }
 };
+export const deletePost = async (
+  client: SupabaseClient,
+  { profile_id, post_id }: { profile_id: string; post_id: string }
+) => {
+  const { error } = await client
+    .from("posts")
+    .delete()
+    .eq("post_id", Number(post_id))
+    .eq("profile_id", profile_id)
+    .single();
+  if (error) throw error;
+};
