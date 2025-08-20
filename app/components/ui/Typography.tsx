@@ -43,6 +43,11 @@ export const Body2 = ({ children, className }: TextProps) => (
     {children}
   </p>
 );
+export const Body3 = ({ children, className }: TextProps) => (
+  <p className={clsx("text-lg font-medium text-textPrimary", className)}>
+    {children}
+  </p>
+);
 
 export const Body2Bold = ({ children, className }: TextProps) => (
   <p className={clsx("text-sm font-bold text-textPrimary", className)}>

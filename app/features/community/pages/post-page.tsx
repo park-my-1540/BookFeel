@@ -1,4 +1,4 @@
-import { ChevronUpIcon, DotIcon } from "lucide-react";
+import { DotIcon } from "lucide-react";
 import { DateTime } from "luxon";
 import { useEffect, useRef } from "react";
 import {
@@ -10,7 +10,9 @@ import {
 } from "react-router";
 import { z } from "zod";
 import AvatarUser from "~/components/common/AvatarUser";
+import CardInDelete from "~/components/common/CardInDelete";
 import { LoadingButton } from "~/components/common/LoadingButton";
+import UpvoteButton from "~/components/common/UpvoteButton";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -18,8 +20,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
-import { Button } from "~/components/ui/button";
-import { Body1, Caption } from "~/components/ui/Typography";
+import { Body1, Body3, Caption } from "~/components/ui/Typography";
 import { Reply } from "~/features/community/components/reply";
 import { getLoggedInUserId } from "~/features/users/queries";
 import { makeSSRClient } from "~/supa-client";
@@ -87,7 +88,27 @@ export default function PostPage({
   const navigation = useNavigation();
   const isSubmitting =
     navigation.state === "submitting" || navigation.state === "loading";
+
   const fetcher = useFetcher();
+
+  const remove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("postId", loaderData.post.post_id.toString());
+    fetcher.submit(formData, {
+      method: "POST",
+      action: `/community`,
+    });
+  };
+
+  const absorbClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    fetcher.submit(null, {
+      method: "POST",
+      action: `/community/${loaderData.post.post_id}/upvote`,
+    });
+  };
+
   useEffect(() => {
     formRef.current?.reset();
   }, [actionData?.ok]);
@@ -124,13 +145,15 @@ export default function PostPage({
               method="post"
               action={`/community/${loaderData.post.post_id}/upvote`}
             >
-              <Button variant="outline" className="flex flex-col h-14">
-                <ChevronUpIcon className="size-4 shrink-0" />
-                <Caption>{loaderData.post.upvotes}</Caption>
-              </Button>
+              <UpvoteButton
+                state={fetcher.state}
+                votesCount={loaderData.post.upvotes}
+                isUpvoted={loaderData.post.is_upvoted}
+                absorbClick={absorbClick}
+              />
             </fetcher.Form>
             <div className="space-y-20 w-full">
-              <div className="space-y-2">
+              <div className="space-y-2 relative">
                 <h2 className="text-3xl font-bold">{loaderData.post.title}</h2>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Caption>{loaderData.post.author_name}</Caption>
@@ -141,7 +164,13 @@ export default function PostPage({
                   <DotIcon className="size-4 shrink-0" />
                   <Caption>{loaderData.post.replies}개의 댓글</Caption>
                 </div>
-                <Body1>{loaderData.post.content}</Body1>
+                <div className="pt-4">
+                  <Body3>{loaderData.post.content}</Body3>
+                </div>
+                <CardInDelete
+                  isUsers={loaderData.post.is_users}
+                  remove={remove}
+                />
               </div>
 
               {isLoggedIn ? (

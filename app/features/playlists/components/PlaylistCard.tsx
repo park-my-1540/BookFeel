@@ -1,9 +1,7 @@
-import { ChevronUpIcon } from "lucide-react";
 import { useFetcher, useNavigate, useOutletContext } from "react-router";
 import CardInDelete from "~/components/common/CardInDelete";
+import UpvoteButton from "~/components/common/UpvoteButton";
 import { Caption, Title1 } from "~/components/ui/Typography";
-import { Button } from "~/components/ui/button";
-import { cn } from "~/lib/utils";
 
 export interface PlaylistCardProps {
   id: number;
@@ -73,18 +71,12 @@ export function PlaylistCard({
           <Title1>{title}</Title1>
           <Caption>{author}</Caption>
         </div>
-        <Button
-          onClick={absorbClick}
-          variant="outline"
-          className={cn(
-            "flex flex-col h-14",
-            optimisitcIsUpvoted ? "border-primary text-primary" : ""
-          )}
-        >
-          <ChevronUpIcon className="size-4 shrink-0" />
-          <span>{optimisitcupvotes}</span>
-          <span>{optimisitcIsUpvoted}</span>
-        </Button>
+        <UpvoteButton
+          absorbClick={absorbClick}
+          state={fetcher.state}
+          votesCount={upvotes}
+          isUpvoted={isUpvoted}
+        />
         <CardInDelete isUsers={isUsers} remove={remove} />
       </div>
     </div>

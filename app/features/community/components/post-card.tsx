@@ -1,11 +1,10 @@
-import { ChevronUpIcon, DotIcon } from "lucide-react";
+import { DotIcon } from "lucide-react";
 import { DateTime } from "luxon";
 import { Link, useFetcher } from "react-router";
 import AvatarUser from "~/components/common/AvatarUser";
 import CardInDelete from "~/components/common/CardInDelete";
-import { Button } from "~/components/ui/button";
+import UpvoteButton from "~/components/common/UpvoteButton";
 import { Card, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
-import { cn } from "~/lib/utils";
 interface PostCardProps {
   id: number;
   title: string;
@@ -32,15 +31,6 @@ export function PostCard({
   votesCount = 0,
 }: PostCardProps) {
   const fetcher = useFetcher();
-
-  const optimisitcVotesCount =
-    fetcher.state === "idle"
-      ? votesCount
-      : isUpvoted
-        ? votesCount - 1
-        : votesCount + 1;
-
-  const optimisitcIsUpvoted = fetcher.state === "idle" ? isUpvoted : !isUpvoted;
 
   const absorbClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -77,17 +67,12 @@ export function PostCard({
         </CardHeader>
 
         <CardFooter className="flex justify-end pt-0 pb-0">
-          <Button
-            onClick={absorbClick}
-            variant="outline"
-            className={cn(
-              "flex flex-col h-14",
-              optimisitcIsUpvoted ? "border-primary text-primary" : ""
-            )}
-          >
-            <ChevronUpIcon className="size-4 shrink-0" />
-            <span>{optimisitcVotesCount}</span>
-          </Button>
+          <UpvoteButton
+            absorbClick={absorbClick}
+            state={fetcher.state}
+            votesCount={votesCount}
+            isUpvoted={isUpvoted}
+          />
         </CardFooter>
         <CardInDelete isUsers={isUsers} remove={remove} />
       </Card>

@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from "lucide-react";
-import { data, Form, Link, useSearchParams } from "react-router";
+import { data, Form, Link, redirect, useSearchParams } from "react-router";
 import { z } from "zod";
 import { Button } from "~/components/ui/button";
 import {
@@ -41,6 +41,7 @@ export const action = async ({ request }: Route.LoaderArgs) => {
     profile_id: userId,
     post_id: postId,
   });
+  return redirect("/community");
 };
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
