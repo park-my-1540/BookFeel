@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Heading2, Title2 } from "~/components/ui/Typography";
+import BookNoResult from "~/features/books/components/BookNoResult";
 import { SORT_OPTIONS_MAP } from "~/features/contants";
 import { makeSSRClient } from "~/supa-client";
 import { PostCard } from "../components/post-card";
@@ -29,7 +30,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   // await new Promise((resolve) => setTimeout(resolve, 10000));
   const url = new URL(request.url);
   const { success, data: parsedData } = searchParamsSchema.safeParse(
-    Object.fromEntries(url.searchParams),
+    Object.fromEntries(url.searchParams)
   );
   if (!success) {
     throw data(
@@ -37,10 +38,11 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
         error_code: "invalid_search_params",
         message: "Invalid search params",
       },
-      { status: 400 },
+      { status: 400 }
     );
   }
   const { client, headers } = makeSSRClient(request);
+
   const [topics, posts] = await Promise.all([
     getTopics(client),
     getPosts(client, {
@@ -106,20 +108,26 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
             </Button>
           </div>
           <div className="space-y-5">
-            {loaderData.posts.map((post) => (
-              <PostCard
-                id={post.post_id}
-                key={post.post_id}
-                title={post.title}
-                author={post.author}
-                authorAvatarUrl={post.author_avatar}
-                category={post.topic}
-                postedAt={post.created_at}
-                votesCount={post.upvotes}
-                isUpvoted={post.is_upvoted}
-                expanded={true}
-              />
-            ))}
+            {loaderData.posts?.length > 0 ? (
+              <>
+                {loaderData.posts.map((post) => (
+                  <PostCard
+                    id={post.post_id}
+                    key={post.post_id}
+                    title={post.title}
+                    author={post.author}
+                    authorAvatarUrl={post.author_avatar}
+                    category={post.topic}
+                    postedAt={post.created_at}
+                    votesCount={post.upvotes}
+                    isUpvoted={post.is_upvoted}
+                    expanded={true}
+                  />
+                ))}
+              </>
+            ) : (
+              <BookNoResult message={"  작성된 포스트가 없습니다."} />
+            )}
           </div>
         </div>
         <aside className="col-span-2">

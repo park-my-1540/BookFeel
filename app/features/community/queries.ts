@@ -13,7 +13,7 @@ export const getPosts = async (
   }
 
   if (keyword) {
-    baseQuery.ilike("title", `%${keyword}`);
+    baseQuery.ilike("title", `%${keyword}%`);
   }
 
   if (topic) {
