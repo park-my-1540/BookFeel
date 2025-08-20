@@ -15,7 +15,7 @@ export const fetchBooks = async ({
   target: TargetParams;
 }) => {
   const params = {
-    TTBKey: process.env.NEXT_PUBLIC_ALADIN_API_KEY,
+    TTBKey: process.env.ALADIN_API_KEY,
     Query: query,
     QueryType: target,
     SearchTarget: "Book",
@@ -59,7 +59,7 @@ export const fetchBooks = async ({
  */
 export const rankedBooks = async (): Promise<BookCardItem[]> => {
   const params = {
-    ttbkey: process.env.NEXT_PUBLIC_ALADIN_API_KEY,
+    ttbkey: process.env.ALADIN_API_KEY,
     QueryType: "Bestseller",
     MaxResults: 10,
     start: 1,
@@ -88,7 +88,7 @@ export const rankedBooks = async (): Promise<BookCardItem[]> => {
  */
 export const choicesBooks = async (): Promise<BookCardItem[]> => {
   const params = {
-    ttbkey: process.env.NEXT_PUBLIC_ALADIN_API_KEY!,
+    ttbkey: process.env.ALADIN_API_KEY!,
     QueryType: "ItemNewSpecial",
     MaxResults: 10,
     Start: 1,
@@ -130,7 +130,7 @@ export const booksByKeyword = async (
       "https://www.aladin.co.kr/ttb/api/ItemSearch.aspx",
       {
         params: {
-          TTBKey: process.env.NEXT_PUBLIC_ALADIN_API_KEY!,
+          TTBKey: process.env.ALADIN_API_KEY!,
           Query: keyword,
           QueryType: "Keyword",
           SearchTarget: "Book",
