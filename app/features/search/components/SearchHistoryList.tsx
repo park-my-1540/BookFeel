@@ -1,6 +1,6 @@
-import React, { useCallback } from "react";
 import { Caption } from "@/components/ui/Typography";
 import { X } from "lucide-react";
+import React, { useCallback } from "react";
 import { useSubmit } from "react-router";
 
 type Props = {
@@ -25,12 +25,12 @@ const KeywordItem = React.memo(function KeywordItem({
   onRemove,
 }: ItemProps) {
   return (
-    <div className='flex items-center justify-between w-full'>
-      <a onClick={() => onClick(keyword)} className='cursor-pointer w-full'>
-        <Caption className='hover:text-textPrimary'>{keyword}</Caption>
+    <div className="flex items-center justify-between w-full">
+      <a onClick={() => onClick(keyword)} className="cursor-pointer w-full">
+        <Caption className="hover:text-textPrimary">{keyword}</Caption>
       </a>
-      <button onClick={() => onRemove(keyword)} className='p-1'>
-        <X className='w-5 h-5 text-black' />
+      <button onClick={() => onRemove(keyword)} className="p-1">
+        <X className="w-5 h-5 text-black" />
       </button>
     </div>
   );
@@ -60,9 +60,9 @@ function SearchHistoryList({ list, onRemove }: Props) {
   );
 
   return (
-    <div className='absolute top-[50px] rounded-b-3xl left-0 w-full py-5 pr-5 px-md space-y-2 dropdown-container bg-lightGray shadow-2xl'>
+    <div className="absolute top-[50px] rounded-b-3xl left-0 w-full py-5 px-sm space-y-2 dropdown-container bg-lightGray shadow-2xl">
       {list.map((keyword, index) => (
-        <div key={keyword} className='flex items-center justify-between'>
+        <div key={keyword} className="flex items-center justify-between">
           <KeywordItem
             key={`${keyword}-${index}`}
             keyword={keyword}

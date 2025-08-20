@@ -7,7 +7,7 @@ export const createPost = async (
     content,
     topic,
     profile_id,
-  }: { title: string; content: string; topic: string; profile_id: string },
+  }: { title: string; content: string; topic: string; profile_id: string }
 ) => {
   const { data: topics, error: topicError } = await client
     .from("topics")
@@ -46,7 +46,7 @@ export const createReply = async (
     reply,
     userId,
     topLevelId,
-  }: { postId: number; reply: string; userId: string; topLevelId?: number },
+  }: { postId: number; reply: string; userId: string; topLevelId?: number }
 ) => {
   const { data, error } = await client.from("post_replies").insert({
     ...(topLevelId ? { parent_id: topLevelId } : { post_id: Number(postId) }),
@@ -56,5 +56,31 @@ export const createReply = async (
 
   if (error) {
     throw error;
+  }
+};
+
+export const togglePostpvote = async (
+  client: SupabaseClient,
+  { postId, userId }: { postId: string; userId: string }
+) => {
+  const { count } = await client
+    .from("post_upvotes")
+    .select("*", { count: "exact", head: true })
+    .eq("post_id", postId)
+    .eq("profile_id", userId);
+
+  if (count === 0) {
+    await client
+      .from("post_upvotes")
+      .insert({ profile_id: userId, post_id: postId });
+  } else {
+    const { data, error } = await client
+      .from("post_upvotes")
+      .delete()
+      .eq("post_id", postId)
+      .eq("profile_id", userId);
+    if (error) {
+      throw error;
+    }
   }
 };

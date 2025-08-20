@@ -1,11 +1,10 @@
-import { cn } from "~/lib/utils";
 import { ChevronUpIcon, DotIcon } from "lucide-react";
+import { DateTime } from "luxon";
 import { Link, useFetcher } from "react-router";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import AvatarUser from "~/components/common/AvatarUser";
 import { Button } from "~/components/ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
-import { DateTime } from "luxon";
-import AvatarUser from "~/components/common/AvatarUser";
+import { cn } from "~/lib/utils";
 interface PostCardProps {
   id: number;
   title: string;
@@ -49,41 +48,41 @@ export function PostCard({
   };
 
   return (
-    <Link to={`/community/${id}`} className='block'>
+    <Link to={`/community/${id}`} className="block">
       <Card
         className={cn(
           "bg-transparent hover:bg-gray transition-colors border-borderGray rounded-md px-sm",
           expanded ? "flex flex-row items-center justify-between" : ""
         )}
       >
-        <CardHeader className='flex flex-row gap-2 items-center'>
+        <CardHeader className="flex flex-row gap-2 items-center">
           <AvatarUser avatar={authorAvatarUrl} fallback={author[0]} />
-          <div className='space-y-2'>
+          <div className="space-y-2">
             <CardTitle>{title}</CardTitle>
-            <div className='flex gap-2 text-xs leading-none text-muted-foreground'>
+            <div className="flex gap-2 text-xs leading-none text-muted-foreground">
               <span>{author} on</span>
               <span>{category}</span>
-              <DotIcon className='w-4 h-4' />
+              <DotIcon className="w-4 h-4" />
               <span>{DateTime.fromISO(postedAt).toRelative()}</span>
             </div>
           </div>
         </CardHeader>
         {!expanded && (
-          <CardFooter className='flex justify-end'>
-            <Button variant='link'>Reply &rarr;</Button>
+          <CardFooter className="flex justify-end">
+            <Button variant="link">Reply &rarr;</Button>
           </CardFooter>
         )}
         {expanded && (
-          <CardFooter className='flex justify-end pt-0 pb-0'>
+          <CardFooter className="flex justify-end pt-0 pb-0">
             <Button
               onClick={absorbClick}
-              variant='outline'
+              variant="outline"
               className={cn(
                 "flex flex-col h-14",
                 optimisitcIsUpvoted ? "border-primary text-primary" : ""
               )}
             >
-              <ChevronUpIcon className='size-4 shrink-0' />
+              <ChevronUpIcon className="size-4 shrink-0" />
               <span>{optimisitcVotesCount}</span>
             </Button>
           </CardFooter>

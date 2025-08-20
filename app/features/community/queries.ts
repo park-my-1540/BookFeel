@@ -2,7 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 export const getPosts = async (
   client: SupabaseClient,
-  { sorting, keyword, topic },
+  { sorting, keyword, topic }
 ) => {
   const baseQuery = client.from("community_post_list_view").select("*");
 
@@ -36,7 +36,7 @@ export const getTopics = async (client: SupabaseClient) => {
 
 export const getPostById = async (
   client: SupabaseClient,
-  { postId }: { postId: number },
+  { postId }: { postId: number }
 ) => {
   const { data, error } = await client
     .from("community_post_detail")
@@ -50,7 +50,7 @@ export const getPostById = async (
 
 export const getReplies = async (
   client: SupabaseClient,
-  { postId }: { postId: number },
+  { postId }: { postId: number }
 ) => {
   const replyQuery = `       
     post_reply_id,
@@ -67,7 +67,7 @@ export const getReplies = async (
     .select(
       `
       ${replyQuery},
-      post_replies(${replyQuery})`,
+      post_replies(${replyQuery})`
     )
     .eq("post_id", postId)
     .order("created_at", { ascending: false });
