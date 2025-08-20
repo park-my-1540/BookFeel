@@ -49,4 +49,5 @@ export default [
       route("/playlist", "features/users/pages/profile-playlist-page.tsx"),
     ]),
   ]),
+  route("/api/resetUsed", "features/ideas/api/resetUsed.tsx"),
 ];

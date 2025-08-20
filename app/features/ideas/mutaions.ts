@@ -1,6 +1,4 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { desc } from "drizzle-orm";
-
 interface booksWithKeyword {
   title: string;
   author: string;
@@ -54,6 +52,16 @@ export const insertIdeas = async (
   );
   if (error) {
     console.error(error);
+    throw error;
+  }
+};
+
+export const resetUsedGemini = async (client: SupabaseClient) => {
+  const { data, error } = await client
+    .from("user_gemini_usage")
+    .update({ used_count: 0 })
+    .not("used_count", "is", null);
+  if (error) {
     throw error;
   }
 };
