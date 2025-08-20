@@ -41,8 +41,7 @@ export function useTossPayment({ userId, total }: Options) {
 
     (async () => {
       const toss = await loadTossPayments(clientKey);
-      if (cancelled) return;
-
+      if (cancelled || !customerKey) return;
       const widgets = toss.widgets({ customerKey });
       widgetsRef.current = widgets;
       await widgets.setAmount({ value: totalRef.current, currency: "KRW" });

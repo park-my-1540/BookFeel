@@ -1,4 +1,5 @@
 import { EllipsisVertical, Trash2 } from "lucide-react";
+import type { MouseEventHandler } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,7 +7,13 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
-export default function CardInDelete({ isUsers, remove }) {
+export default function CardInDelete({
+  isUsers,
+  remove,
+}: {
+  isUsers: boolean;
+  remove: MouseEventHandler<HTMLButtonElement>;
+}) {
   return (
     <>
       {isUsers ? (

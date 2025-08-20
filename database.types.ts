@@ -492,6 +492,7 @@ export type Database = {
           content: string | null
           created_at: string | null
           is_upvoted: boolean | null
+          is_users: boolean | null
           post_id: number | null
           replies: number | null
           title: string | null
@@ -509,6 +510,7 @@ export type Database = {
           author_username: string | null
           created_at: string | null
           is_upvoted: boolean | null
+          is_users: boolean | null
           post_id: number | null
           title: string | null
           topic: string | null
@@ -522,6 +524,7 @@ export type Database = {
           author: string | null
           created_at: string | null
           is_upvoted: boolean | null
+          is_users: boolean | null
           playlist_id: number | null
           profile_id: string | null
           title: string | null
@@ -532,6 +535,7 @@ export type Database = {
           author?: string | null
           created_at?: string | null
           is_upvoted?: never
+          is_users?: never
           playlist_id?: number | null
           profile_id?: string | null
           title?: string | null
@@ -542,6 +546,7 @@ export type Database = {
           author?: string | null
           created_at?: string | null
           is_upvoted?: never
+          is_users?: never
           playlist_id?: number | null
           profile_id?: string | null
           title?: string | null
@@ -563,6 +568,10 @@ export type Database = {
       increment_used_count: {
         Args: { uid: string }
         Returns: undefined
+      }
+      upsert_and_increment_usage: {
+        Args: { uid: string }
+        Returns: number
       }
     }
     Enums: {

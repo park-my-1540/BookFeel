@@ -24,7 +24,7 @@ type ProcessBase = {
 };
 
 type ProcessResult = {
-  ok: boolean;
+  ok?: boolean;
   formErrors?: Record<string, string[]>;
 };
 
@@ -57,7 +57,7 @@ const processInfo = async ({
   formData,
 }: ProcessBase & { formData: FormData }): Promise<ProcessResult> => {
   const { success, error, data } = formSchema.safeParse(
-    Object.fromEntries(formData),
+    Object.fromEntries(formData)
   );
   if (!success) {
     return { ok: false, formErrors: error.flatten().fieldErrors };
@@ -105,7 +105,7 @@ export default function SettingsPage({
   loaderData,
   actionData,
 }: Route.ComponentProps) {
-  const [avatar, setAvatar] = useState<string | null>(loaderData.user.avatar);
+  const [avatar, setAvatar] = useState<string>(loaderData.user.avatar);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {

@@ -101,7 +101,7 @@ function CommentItem({
 }: CommentItem & { isLoggedIn: boolean; toggleReplying: () => void }) {
   return (
     <div className="flex items-start gap-5 w-3/4">
-      <AvatarUser avatar={avatarUrl} fallback={name[0]} />
+      <AvatarUser avatar={avatarUrl ?? ""} fallback={name[0]} />
       <div className="flex flex-col gap-2 items-start w-full">
         <div className="flex items-center gap-2">
           <Link to={`/users/@${username}`}>
@@ -140,7 +140,7 @@ function ReplyInput({
   return (
     <Form className="flex items-start gap-5 w-3/4" method="post">
       <input type="hidden" name="topLevelId" value={topLevelId} />
-      <AvatarUser avatar={avatar} fallback={loggedInName[0]} />
+      <AvatarUser avatar={avatar ?? ""} fallback={loggedInName[0]} />
       <div className="w-full flex flex-col gap-5 items-end">
         <textarea
           name="reply"

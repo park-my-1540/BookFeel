@@ -179,7 +179,10 @@ export default function PostPage({
                   className="flex items-start gap-5 w-3/4"
                   method="post"
                 >
-                  <AvatarUser avatar={avatar} fallback={name?.[0]} />
+                  <AvatarUser
+                    avatar={avatar ?? ""}
+                    fallback={name?.charAt(0) ?? ""}
+                  />
 
                   <div className="w-full flex flex-col gap-5 items-end">
                     <textarea
@@ -200,7 +203,7 @@ export default function PostPage({
               <div className="space-y-10">
                 <Body1>{loaderData.post.replies}개의 댓글</Body1>
                 <div className="flex flex-col gap-5">
-                  {loaderData.replies.map((reply, index) => (
+                  {loaderData.replies.map((reply: any, index) => (
                     <Reply
                       key={index}
                       name={reply.user.name}

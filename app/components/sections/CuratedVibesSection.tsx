@@ -35,6 +35,7 @@ export default function CuratedVibesSection({
                     id={playlist.playlist_id ?? 0}
                     url={playlist.url ?? ""}
                     isUpvoted={playlist.is_upvoted ?? false}
+                    isUsers={playlist.is_users ?? false}
                     upvotes={playlist.upvotes ?? 0}
                     title={playlist.title ?? ""}
                     author={playlist.author ?? ""}

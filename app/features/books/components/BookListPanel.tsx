@@ -22,7 +22,7 @@ export default function BookListPanel({ subtitle, books, isFetching }: Props) {
       ) : (
         <>
           {books.map((book) => (
-            <BookCard key={book.id} book={book} />
+            <BookCard key={book.itemId} book={book} />
           ))}
         </>
       )}

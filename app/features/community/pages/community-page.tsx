@@ -13,10 +13,6 @@ import type { Route } from "./+types/community-page";
 
 const searchParamsSchema = z.object({
   sorting: z.enum(["newest", "popular"]).optional().default("newest"),
-  period: z
-    .enum(["all", "today", "week", "month", "year"])
-    .optional()
-    .default("all"),
   keyword: z.string().optional(),
   topic: z.string().optional(),
 });
@@ -50,14 +46,14 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       { status: 400 }
     );
   }
-  const { client, headers } = makeSSRClient(request);
+  const { client } = makeSSRClient(request);
 
   const [topics, posts] = await Promise.all([
     getTopics(client),
     getPosts(client, {
       sorting: parsedData.sorting,
-      keyword: parsedData.keyword,
       topic: parsedData.topic,
+      keyword: parsedData.keyword,
     }),
   ]);
 
@@ -108,7 +104,7 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
                 ))}
               </>
             ) : (
-              <BookNoResult message={"  작성된 포스트가 없습니다."} />
+              <BookNoResult message={"작성된 포스트가 없습니다."} />
             )}
           </div>
         </div>

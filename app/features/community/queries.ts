@@ -2,7 +2,11 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 export const getPosts = async (
   client: SupabaseClient,
-  { sorting, keyword, topic }
+  {
+    sorting,
+    keyword,
+    topic,
+  }: { sorting: "newest" | "popular"; keyword?: string; topic?: string }
 ) => {
   const baseQuery = client.from("community_post_list_view").select("*");
 

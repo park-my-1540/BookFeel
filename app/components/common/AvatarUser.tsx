@@ -1,8 +1,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
-export default function AvatarUser({ avatar, fallback }) {
+export default function AvatarUser({
+  avatar,
+  fallback,
+}: {
+  avatar: string;
+  fallback: string;
+}) {
   return (
-    <Avatar className='cursor-pointer'>
+    <Avatar className="cursor-pointer">
       {avatar ? (
         <AvatarImage src={avatar} />
       ) : (

@@ -9,7 +9,7 @@ export interface PlaylistCardProps {
   title: string;
   author: string;
   isUpvoted: boolean;
-  isUsers?: boolean;
+  isUsers: boolean;
   upvotes: number;
 }
 
@@ -25,10 +25,6 @@ export function PlaylistCard({
   const fetcher = useFetcher();
   const navigate = useNavigate();
   const { isLoggedIn } = useOutletContext<{ isLoggedIn: boolean }>();
-  const optimisitcupvotes =
-    fetcher.state === "idle" ? upvotes : isUpvoted ? upvotes - 1 : upvotes + 1;
-
-  const optimisitcIsUpvoted = fetcher.state === "idle" ? isUpvoted : !isUpvoted;
   const absorbClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!isLoggedIn) {

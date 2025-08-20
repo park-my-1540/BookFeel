@@ -94,7 +94,7 @@ export const loader = async ({
       await Promise.all([
         rankedBooks(),
         choicesBooks(),
-        getGeminiBooks(client, parsedData?.keyword ?? "장마", userId),
+        getGeminiBooks(client, parsedData?.keyword ?? "장마", userId ?? ""),
         getCategories(client),
         getPlaylists(client, { sorting: "popular" }),
       ]);

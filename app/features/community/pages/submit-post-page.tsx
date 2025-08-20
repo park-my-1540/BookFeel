@@ -9,7 +9,7 @@ import { getLoggedInUserId } from "~/features/users/queries";
 import { makeSSRClient } from "~/supa-client";
 import { createPost } from "../mutations";
 import { getTopics } from "../queries";
-import type { Route } from "./+types/post-page";
+import type { Route } from "./+types/submit-post-page";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -20,6 +20,7 @@ export const meta: Route.MetaFunction = () => {
 
 const formSchema = z.object({
   title: z.string().min(1).max(40),
+  author: z.string().min(1).max(40),
   topic: z.string().min(1).max(100),
   content: z.string().min(1).max(1000),
 });
@@ -38,7 +39,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   const userId = await getLoggedInUserId(client);
   const formData = await request.formData();
   const { success, data, error } = formSchema.safeParse(
-    Object.fromEntries(formData),
+    Object.fromEntries(formData)
   );
 
   if (!success) {
@@ -56,7 +57,10 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   return redirect(`/community/${post_id}`);
 };
-
+type topicsProps = {
+  name: string;
+  slug: string;
+};
 export default function SubmitPage({
   actionData,
   loaderData,
@@ -78,7 +82,7 @@ export default function SubmitPage({
             label="카테고리"
             name="topic"
             placeholder="토픽을 선택하세요"
-            options={loaderData.topics.map((topic) => ({
+            options={loaderData.topics.map((topic: topicsProps) => ({
               label: topic.name,
               value: topic.slug,
             }))}
@@ -93,7 +97,7 @@ export default function SubmitPage({
           />
           {actionData &&
             "formErrors" in actionData &&
-            actionData.formErrors.title && (
+            actionData.formErrors?.title && (
               <p className="text-red">{actionData.formErrors.title}</p>
             )}
           <InputPair

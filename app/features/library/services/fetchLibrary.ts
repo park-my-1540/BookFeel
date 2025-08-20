@@ -35,7 +35,7 @@ export const fetchLibSrchByBook = async ({
   if (dtl_region === "전체") {
     url.searchParams.delete("dtl_region");
   } else {
-    url.searchParams.set("dtl_region", dtl_region);
+    url.searchParams.set("dtl_region", dtl_region!);
   }
   url.searchParams.set("format", "json");
   const libsRes = await fetch(url.toString());

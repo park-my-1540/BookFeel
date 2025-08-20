@@ -12,7 +12,8 @@ export default function SummaryCard({
   isExpanded,
   checkLibrary,
 }: SummaryCardProps) {
-  const { title, author, priceStandard, priceSales, cover, isbn, id } = book;
+  const { title, author, priceStandard, priceSales, cover, isbn, itemId } =
+    book;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr_320px] gap-4 md:gap-8 items-center justify-between py-3 pl-5 border-b  ">
@@ -35,7 +36,7 @@ export default function SummaryCard({
           className="flex-1"
           onClick={() =>
             checkLibrary({
-              itemId: id,
+              itemId,
               author,
               title,
               cover,

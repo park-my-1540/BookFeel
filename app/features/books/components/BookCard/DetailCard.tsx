@@ -27,7 +27,7 @@ export default function DetailCard({
     priceSales,
     cover,
     isbn,
-    id,
+    itemId,
   } = book;
 
   return (
@@ -58,7 +58,7 @@ export default function DetailCard({
               className="flex-1"
               onClick={() =>
                 checkLibrary({
-                  itemId: id,
+                  itemId,
                   author,
                   title,
                   cover,

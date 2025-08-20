@@ -9,9 +9,18 @@ import { Button } from "~/components/ui/button";
 import { Body1, Heading2, Title1, Title3 } from "~/components/ui/Typography";
 import { BookCard } from "~/features/books/components/BestPreviewCard/BookCard";
 import { useBookStore } from "~/store/bookStore";
-import type { Route } from "../../books/pages/+types/list-page";
 import RegionSelect from "../components/RegionSelect";
 import { fetchBookExists, fetchLibSrchByBook } from "../services/fetchLibrary";
+import type { Route } from "./+types/library-page";
+
+type LibraryItem = {
+  libCode: string;
+  libName: string;
+  address: string;
+  _error?: boolean;
+  loanAvailable?: boolean;
+  hasBook?: boolean;
+};
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
@@ -40,6 +49,7 @@ export default function LoanExplorerPage({ loaderData }: Route.ComponentProps) {
 
   const isSubmitting =
     navigation.state === "submitting" || navigation.state === "loading";
+  const items = (loaderData.items ?? []) as unknown as LibraryItem[];
   return (
     <div className="w-full px-lg pb-md">
       <Heading2>대출 가능한 도서관 찾기</Heading2>
@@ -84,13 +94,13 @@ export default function LoanExplorerPage({ loaderData }: Route.ComponentProps) {
       </Form>
 
       <div className="w-full mt-8">
-        {loaderData.items?.length < 0 ? (
+        {items.length === 0 ? (
           <p className="text-textSubtitle text-lg">
             해당 조건의 소장 도서관이 없어요.
           </p>
         ) : (
           <ul className="space-y-5">
-            {loaderData?.items?.map((it) => {
+            {items.map((it) => {
               return (
                 <li
                   key={it.libCode}

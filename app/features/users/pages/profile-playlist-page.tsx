@@ -1,8 +1,8 @@
-import { makeSSRClient } from "~/supa-client";
-import type { Route } from "./+types/profile-playlist-page";
-import { getUserPlaylists } from "~/features/playlists/queries";
 import { PlaylistCard } from "~/features/playlists/components/PlaylistCard";
+import { getUserPlaylists } from "~/features/playlists/queries";
+import { makeSSRClient } from "~/supa-client";
 import { getUserId } from "../queries";
+import type { Route } from "./+types/profile-playlist-page";
 
 export const meta: Route.MetaFunction = ({ params }) => [
   { title: `Posts - ${params.username}` },
@@ -22,13 +22,14 @@ export default function ProfilePlaylistPage({
   loaderData,
 }: Route.ComponentProps) {
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {loaderData?.playlists.map((playlist) => (
         <PlaylistCard
           id={playlist.playlist_id}
           key={playlist.playlist_id}
           url={playlist.url}
           isUpvoted={playlist.is_upvoted}
+          isUsers={playlist.is_users}
           upvotes={playlist.upvotes}
           title={playlist.title}
           author={playlist.author}
