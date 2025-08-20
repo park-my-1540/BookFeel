@@ -1,7 +1,7 @@
-import type { Route } from "./+types/social-start-page";
-import { z } from "zod";
 import { redirect } from "react-router";
+import { z } from "zod";
 import { makeSSRClient } from "~/supa-client";
+import type { Route } from "./+types/social-start-page";
 
 const paramsSchema = z.object({
   provider: z.enum(["google", "kakao"]),
@@ -19,7 +19,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     return redirect("/auth/login");
   }
   const { provider } = data;
-  const baseRedirectUrl = import.meta.env.VITE_REDIRECT_URL;
+  const baseRedirectUrl = "https://book-feel.vercel.app";
   const redirectTo = `${baseRedirectUrl}/auth/social/${provider}/complete`;
 
   const { client, headers } = makeSSRClient(request);
