@@ -26,13 +26,14 @@ const buttonVariants = cva(
         lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
         xl: "rounded-3xl px-16 h-[40px] font-MontBold",
         icon: "size-9",
+        icon2: "border p-4 size-6 [&_svg:not([class*='size-'])]:size-6",
       },
     },
     defaultVariants: {
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 function Button({

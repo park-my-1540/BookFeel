@@ -9,9 +9,10 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { SORT_OPTIONS_MAP } from "~/features/contants";
+import { getLoggedInUserId } from "~/features/users/queries";
 import { makeSSRClient } from "~/supa-client";
 import { PlaylistCard } from "../components/PlaylistCard";
-import { getPlaylists } from "../queries";
+import { deletePlaylist, getPlaylists } from "../queries";
 import type { Route } from "./+types/playlist-page";
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
@@ -23,6 +24,21 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     sorting,
   });
   return { playlists };
+};
+export const action = async ({ request }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request);
+  const userId = await getLoggedInUserId(client);
+
+  const formData = await request.formData();
+  const playlistId = formData.get("playlistId");
+
+  if (typeof playlistId !== "string") {
+    throw new Error("Invalid playlistId");
+  }
+  await deletePlaylist(client, {
+    profile_id: userId,
+    playlist_id: playlistId,
+  });
 };
 export default function PlaylistPage({ loaderData }: Route.ComponentProps) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -69,6 +85,7 @@ export default function PlaylistPage({ loaderData }: Route.ComponentProps) {
             upvotes={playlist.upvotes}
             title={playlist.title}
             author={playlist.author}
+            isUsers={playlist.is_users}
           />
         ))}
       </div>

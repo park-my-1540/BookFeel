@@ -75,3 +75,16 @@ export const togglePlaylistUpvote = async (
       .eq("profile_id", userId);
   }
 };
+
+export const deletePlaylist = async (
+  client: SupabaseClient,
+  { profile_id, playlist_id }: { profile_id: string; playlist_id: string }
+) => {
+  const { data, error } = await client
+    .from("playlist_list_view")
+    .delete()
+    .eq("playlist_id", Number(playlist_id))
+    .eq("profile_id", profile_id);
+  if (error) throw error;
+  return data;
+};

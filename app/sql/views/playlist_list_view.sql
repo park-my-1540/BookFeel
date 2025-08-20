@@ -4,6 +4,7 @@ SELECT
     name,
     stats->>'upvotes' as upvotes,
     (SELECT EXISTS (SELECT 1 FROM public.upvotes WHERE upvotes.playlist_id = playlists.playlist_id AND upvotes.profile_id = auth.uid())) AS is_upvoted,
+    (playlists.profile_id = auth.uid()) AS is_users,
     created_at,
     stats
 FROM playlists;
