@@ -12,17 +12,17 @@
 1. **도서 구매 및 찜하기**
    - 장바구니 및 결제 페이지
    - 유저 후기 작성
-   - TossPayments 연동 (또는 가상 결제)
+   - TossPayments 연동
 
 2. **도서 리스트 및 인기 순위**
    - 전체 도서 목록, 필터/정렬
    - 주간 인기 리스트, 태그 기반 검색
 
-3. **🎵 감성 플레이리스트**
+3. **🎵같이 듣기 좋은 플레이리스트**
    - 유저가 직접 등록한 유튜브 플레이리스트
    - 도서와 어울리는 배경 음악 함께 감상
 
-4. **🧠 GPT 추천**
+4. **🧠 Gemini 추천**
    - 현재 기분 선택 → GPT가 감정 기반 도서 추천
 
 ---
@@ -32,8 +32,8 @@
 - **Next.js (App Router)**
 - **TailwindCSS + shadcn/ui**
 - **TypeScript**
-- **OpenAI GPT API**
-- **(선택) TossPayments 결제 연동**
+- **OpenAI Gemini API**
+- **TossPayments 결제 연동**
 
 ---
 
