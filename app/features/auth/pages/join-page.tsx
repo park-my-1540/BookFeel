@@ -1,15 +1,13 @@
-import { Button } from "~/components/ui/button";
-import type { Route } from "./+types/join-page";
-import { redirect, useNavigation } from "react-router";
-import { Form } from "react-router";
+import { Loader2 } from "lucide-react";
+import { Form, redirect, useNavigation } from "react-router";
 import { z } from "zod";
-import { makeSSRClient } from "~/supa-client";
-import { checkUsernameExists } from "../queries";
-import AuthButtons from "../components/auth-buttons";
-import { Alert, AlertTitle } from "~/components/ui/alert";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { Button } from "~/components/ui/button";
 import InputPair from "~/components/ui/input-pair";
 import { HeadingXL } from "~/components/ui/Typography";
+import { makeSSRClient } from "~/supa-client";
+import AuthButtons from "../components/auth-buttons";
+import { checkUsernameExists } from "../queries";
+import type { Route } from "./+types/join-page";
 
 export const meta: Route.MetaFunction = () => [
   { title: "회원가입" },
@@ -74,90 +72,88 @@ export default function JoinPage({ actionData }: Route.ComponentProps) {
     navigation.state === "submitting" || navigation.state === "loading";
 
   return (
-    <div className='lef-0 w-[50%]'>
-      <div className='flex items-center flex-col justify-center w-full gap-5  p-lg'>
+    <div className="lef-0 w-[50%]">
+      <div className="flex items-center flex-col justify-center w-full gap-5 pt-md p-lg">
         <HeadingXL>Join</HeadingXL>
         <AuthButtons />
-        <p className='text-sm text-muted-foreground font-medium'>
+        <p className="text-sm text-muted-foreground font-medium">
           or use your email for registration
         </p>
-        <Form className='w-full' method='post'>
-          <div className='space-y-4'>
+        <Form className="w-full" method="post">
+          <div className="space-y-4">
             <InputPair
-              className='bg-lightGray p-3'
-              id='name'
-              label='Name'
-              name='name'
-              type='text'
-              placeholder='이름을 입력해주세요'
+              className="bg-lightGray p-3"
+              id="name"
+              label="Name"
+              value="sia"
+              name="name"
+              type="text"
+              placeholder="이름을 입력해주세요"
               required
             />
             {actionData && "formErrors" in actionData && (
-              <p className='text-red text-sm'>{actionData?.formErrors?.name}</p>
+              <p className="text-red text-sm">{actionData?.formErrors?.name}</p>
             )}
             <InputPair
-              className='bg-lightGray p-3'
-              id='username'
-              label='Display Name'
-              description='ex) Bookie 123'
-              name='username'
-              type='text'
-              placeholder='사용하실 이름을 입력해주세요'
+              className="bg-lightGray p-3"
+              id="username"
+              label="Display Name"
+              value="sia"
+              description="ex) Bookie 123"
+              name="username"
+              type="text"
+              placeholder="사용하실 이름을 입력해주세요"
               required
             />
             {actionData && "formErrors" in actionData && (
-              <p className='text-red text-sm'>
+              <p className="text-red text-sm">
                 {actionData?.formErrors?.username}
               </p>
             )}
             <InputPair
-              className='bg-lightGray p-3'
-              id='email'
-              label='Email'
-              name='email'
-              type='email'
-              placeholder='이메일을 입력해주세요'
+              className="bg-lightGray p-3"
+              id="email"
+              label="Email"
+              value="lelija6637@baxidy.com"
+              name="email"
+              type="email"
+              placeholder="이메일을 입력해주세요"
             />
             {actionData && "formErrors" in actionData && (
-              <p className='text-red text-sm'>
+              <p className="text-red text-sm">
                 {actionData?.formErrors?.email}
               </p>
             )}
             <InputPair
-              className='bg-lightGray p-3'
-              id='password'
-              label='Password'
-              name='password'
-              type='password'
-              placeholder='비밀번호를 입력해주세요'
+              className="bg-lightGray p-3"
+              id="password"
+              label="Password"
+              value="as951753"
+              name="password"
+              type="password"
+              placeholder="비밀번호를 입력해주세요"
               required
             />
             {actionData && "formErrors" in actionData && (
-              <p className='text-red text-sm'>
+              <p className="text-red text-sm">
                 {actionData?.formErrors?.password}
               </p>
             )}
           </div>
-          <div className='text-center mt-10'>
+          <div className="text-center mt-10">
             <Button
               variant={"sign"}
               size={"xl"}
-              type='submit'
+              type="submit"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
-                <Loader2 className='w-4 h-4 animate-spin' />
+                <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
                 "JOIN"
               )}
             </Button>
           </div>
-          {actionData && "signUpError" in actionData && (
-            <Alert variant='destructive'>
-              <AlertCircle className='h-4 w-4' />
-              <AlertTitle>{actionData.formErrors.username}</AlertTitle>
-            </Alert>
-          )}
         </Form>
       </div>
     </div>

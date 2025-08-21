@@ -1,7 +1,14 @@
 import { Loader2 } from "lucide-react";
-import { Form, redirect, useNavigation } from "react-router";
+import { Form, Link, redirect, useNavigation } from "react-router";
 import { z } from "zod";
 import SelectPair from "~/components/common/SelectPair";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "~/components/ui/breadcrumb";
 import { Button } from "~/components/ui/button";
 import InputPair from "~/components/ui/input-pair";
 import { Heading1 } from "~/components/ui/Typography";
@@ -10,7 +17,6 @@ import { makeSSRClient } from "~/supa-client";
 import { createPost } from "../mutations";
 import { getTopics } from "../queries";
 import type { Route } from "./+types/submit-post-page";
-
 export const meta: Route.MetaFunction = () => {
   return [
     { title: "Submit Product | WeMake" },
@@ -20,7 +26,6 @@ export const meta: Route.MetaFunction = () => {
 
 const formSchema = z.object({
   title: z.string().min(1).max(40),
-  author: z.string().min(1).max(40),
   topic: z.string().min(1).max(100),
   content: z.string().min(1).max(1000),
 });
@@ -70,7 +75,17 @@ export default function SubmitPage({
     navigation.state === "submitting" || navigation.state === "loading";
 
   return (
-    <div className="container">
+    <div className="w-full px-lg py-sm pb-lg">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to="/community">Community</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+        </BreadcrumbList>
+      </Breadcrumb>
       <Form
         className="mt-16 mx-auto w-[600px]"
         encType="multipart/form-data"
@@ -111,8 +126,8 @@ export default function SubmitPage({
           />
           {actionData &&
             "formErrors" in actionData &&
-            actionData?.formErrors?.author && (
-              <p className="text-red">{actionData.formErrors.author}</p>
+            actionData?.formErrors?.content && (
+              <p className="text-red">{actionData.formErrors.content}</p>
             )}
         </div>
         <div className="w-full flex justify-center mt-12">

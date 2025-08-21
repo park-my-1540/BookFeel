@@ -52,8 +52,8 @@ export function PostCard({
   };
   return (
     <Link to={`/community/${id}`} className="block">
-      <Card className="relative flex flex-row items-center justify-between bg-transparent hover:bg-gray transition-colors border-borderGray rounded-md px-sm">
-        <CardHeader className="flex flex-row gap-2 items-center">
+      <Card className="relative flex flex-row items-center justify-between bg-transparent hover:bg-gray transition-colors border-borderGray rounded-md px-10">
+        <CardHeader className="flex flex-row gap-4 items-center">
           <AvatarUser avatar={authorAvatarUrl} fallback={author[0]} />
           <div className="space-y-2">
             <CardTitle>{title}</CardTitle>

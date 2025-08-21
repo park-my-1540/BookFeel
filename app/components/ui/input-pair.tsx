@@ -12,15 +12,19 @@ export default function InputPair({
   textArea?: boolean;
 } & InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement>) {
   return (
-    <div className='space-y-2 flex flex-col'>
-      <label htmlFor={rest.id} className='flex flex-col gap-1'>
+    <div className="space-y-2 flex flex-col">
+      <label htmlFor={rest.id} className="flex flex-col gap-1">
         {label}
-        <small className='text-muted-foreground'>{description}</small>
+        <small className="text-muted-foreground">{description}</small>
       </label>
       {textArea ? (
-        <textarea rows={4} className='resize-none p-3' {...rest} />
+        <textarea
+          rows={4}
+          className="min-h-[240px] resize-none p-3"
+          {...rest}
+        />
       ) : (
-        <input className='p-3' {...rest} />
+        <input className="p-3" {...rest} />
       )}
     </div>
   );

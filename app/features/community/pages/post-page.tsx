@@ -155,7 +155,7 @@ export default function PostPage({
             <div className="space-y-20 w-full">
               <div className="space-y-2 relative">
                 <h2 className="text-3xl font-bold">{loaderData.post.title}</h2>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground relative">
                   <Caption>{loaderData.post.author_name}</Caption>
                   <DotIcon className="size-4 shrink-0" />
                   <Caption>
@@ -163,14 +163,14 @@ export default function PostPage({
                   </Caption>
                   <DotIcon className="size-4 shrink-0" />
                   <Caption>{loaderData.post.replies}개의 댓글</Caption>
+                  <CardInDelete
+                    isUsers={loaderData.post.is_users}
+                    remove={remove}
+                  />
                 </div>
                 <div className="pt-4">
                   <Body3>{loaderData.post.content}</Body3>
                 </div>
-                <CardInDelete
-                  isUsers={loaderData.post.is_users}
-                  remove={remove}
-                />
               </div>
 
               {isLoggedIn ? (

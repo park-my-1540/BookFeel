@@ -9,13 +9,23 @@ begin
     -- new 키워드는 어떤 데이터에 접근할수 잇음
     if new.raw_app_meta_data is not null then
       -- raw_app_meta_data칼럼을 가지고 있고 provider이 email이면 이메일로 계정이 생성되었을때
-        if new.raw_app_meta_data ? 'provider' AND new.raw_app_meta_data ->> 'provider' = 'email' then
-            if new.raw_user_meta_data ? 'name' and new.raw_user_meta_data ? 'username' then
-                insert into public.profiles (profile_id, name, username, email)
-                values (new.id, new.raw_user_meta_data ->> 'name', new.raw_user_meta_data ->> 'username');
-            else
-                insert into public.profiles (profile_id, name, username, email)
-                values (new.id, 'Anonymous', 'mr.' || substr(md5(random()::text), 1, 8));
+      if new.raw_app_meta_data ? 'provider' AND new.raw_app_meta_data ->> 'provider' = 'email' then
+        if new.raw_user_meta_data ? 'name' and new.raw_user_meta_data ? 'username' then
+            insert into public.profiles (profile_id, name, username, email)
+            values (
+                new.id,
+                new.raw_user_meta_data ->> 'name',
+                new.raw_user_meta_data ->> 'username',
+                new.email
+            );
+        else
+            insert into public.profiles (profile_id, name, username, email)
+            values (
+                new.id,
+                'Anonymous',
+                'mr.' || substr(md5(random()::text), 1, 8),
+                new.email
+            );
             end if;
         end if;
         -- 카카오

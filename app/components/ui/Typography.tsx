@@ -44,7 +44,12 @@ export const Body2 = ({ children, className }: TextProps) => (
   </p>
 );
 export const Body3 = ({ children, className }: TextProps) => (
-  <p className={clsx("text-lg font-medium text-textPrimary", className)}>
+  <p
+    className={clsx(
+      "text-lg font-medium text-textPrimary whitespace-break-spaces break-keep",
+      className
+    )}
+  >
     {children}
   </p>
 );
