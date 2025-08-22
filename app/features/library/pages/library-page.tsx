@@ -43,8 +43,6 @@ export default function LoanExplorerPage({ loaderData }: Route.ComponentProps) {
     if (!isbnParam && book.isbn !== "") {
       resetBook();
     }
-    if (isbnParam && book.isbn !== "") {
-    }
   }, [isbnParam, book.isbn]);
 
   const isSubmitting =
@@ -95,9 +93,7 @@ export default function LoanExplorerPage({ loaderData }: Route.ComponentProps) {
 
       <div className="w-full mt-8">
         {items.length === 0 ? (
-          <p className="text-textSubtitle text-lg">
-            해당 조건의 소장 도서관이 없어요.
-          </p>
+          <p className="text-textSubtitle text-lg">도서를 조회해주세요</p>
         ) : (
           <ul className="space-y-5">
             {items.map((it) => {

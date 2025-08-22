@@ -23,18 +23,26 @@ export default function ProfilePlaylistPage({
 }: Route.ComponentProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {loaderData?.playlists.map((playlist) => (
-        <PlaylistCard
-          id={playlist.playlist_id}
-          key={playlist.playlist_id}
-          url={playlist.url}
-          isUpvoted={playlist.is_upvoted}
-          isUsers={playlist.is_users}
-          upvotes={playlist.upvotes}
-          title={playlist.title}
-          author={playlist.author}
-        />
-      ))}
+      {loaderData?.playlists.length > 0 ? (
+        <>
+          {loaderData?.playlists.map((playlist) => (
+            <PlaylistCard
+              id={playlist.playlist_id}
+              key={playlist.playlist_id}
+              url={playlist.url}
+              isUpvoted={playlist.is_upvoted}
+              isUsers={playlist.is_users}
+              upvotes={playlist.upvotes}
+              title={playlist.title}
+              author={playlist.author}
+            />
+          ))}
+        </>
+      ) : (
+        <p className="text-textSecondary pt-10">
+          등록한 플레이리스트가 없습니다.
+        </p>
+      )}
     </div>
   );
 }

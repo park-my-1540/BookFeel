@@ -7,11 +7,11 @@ import {
   ScrollRestoration,
   useLocation,
 } from "react-router";
-import Navigation from "./components/navigation";
 import type { Route } from "./+types/root";
 import "./app.css";
-import { makeSSRClient } from "./supa-client";
+import Navigation from "./components/navigation";
 import { getUserProfileById } from "./features/users/queries";
+import { makeSSRClient } from "./supa-client";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -28,14 +28,14 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='ko'>
+    <html lang="ko">
       <head>
-        <meta charSet='utf-8' />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
       </head>
-      <body className='w-full bg-lightGray'>
+      <body className="w-full bg-lightGray">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -52,8 +52,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   if (user && user.id) {
     const profile = await getUserProfileById(client, { id: user.id });
     if (!profile) {
-      // 💡 프로필이 없음 = 탈퇴했거나 권한 없음
-      await client.auth.signOut(); // 로그아웃
+      await client.auth.signOut();
       return;
     }
     return { user, profile };
@@ -69,7 +68,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
   const isLoggedIn = loaderData?.user !== null;
 
   return (
-    <div className='h-screen w-full'>
+    <div className="h-screen w-full">
       {pathname.includes("/auth") ? null : (
         <Navigation
           username={loaderData?.profile?.username}
@@ -108,11 +107,11 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className='pt-16 p-4 container mx-auto'>
+    <main className="pt-16 p-4 container mx-auto">
       <h1>{message}</h1>
       <p>{details}</p>
       {stack && (
-        <pre className='w-full p-4 overflow-x-auto'>
+        <pre className="w-full p-4 overflow-x-auto">
           <code>{stack}</code>
         </pre>
       )}

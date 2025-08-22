@@ -113,7 +113,7 @@ export default function SettingsPage({
     }
   };
   return (
-    <div className="w-full px-lg">
+    <div className="w-full px-lg py-md pb-lg">
       <div className="grid grid-cols-6 gap-5 lg:gap-40">
         <div className="col-span-4 flex flex-col gap-10">
           <Heading1>Edit profile</Heading1>
@@ -136,11 +136,10 @@ export default function SettingsPage({
             />
             <InputPair
               label="Bio"
-              description="공개 소개글 - 프로플 페이지에 표시됩니다."
+              placeholder="공개 소개글 - 프로플 페이지에 표시됩니다."
               required
               id="bio"
               name="bio"
-              placeholder="John Doe"
               defaultValue={loaderData.user.bio ?? ""}
               textArea
             />

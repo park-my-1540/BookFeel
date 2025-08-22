@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router";
+import { Link } from "react-router";
 import SortingDropMenu from "~/components/common/SortingMenu";
 import { Heading2 } from "~/components/ui/Typography";
 import { Button } from "~/components/ui/button";
@@ -34,8 +34,6 @@ export const action = async ({ request }: Route.LoaderArgs) => {
   });
 };
 export default function PlaylistPage({ loaderData }: Route.ComponentProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const sorting = searchParams.get("sorting") || "newest";
   return (
     <div className="w-full px-lg pb-md">
       <Heading2>Curated Vibes</Heading2>
