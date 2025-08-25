@@ -121,7 +121,6 @@ export default function HomePage({
   loaderData,
   actionData,
 }: Route.ComponentProps) {
-  console.log(loaderData);
   const [searchParams] = useSearchParams(); // 쿼리 파라미터를 관리하는 훅
   const [toggle, setToggle] = useState(
     searchParams.get("keyword") === "userCustom"

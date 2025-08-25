@@ -19,19 +19,9 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   //   return new Response("Unauthorized", { status: 401 });
   // }
 
-  if (!GEMINI_API_KEY) {
-    // 프로덕션 키 누락 즉시 확인
-    return Response.json({ error: "GEMINI_API_KEY missing" }, { status: 500 });
-  }
-
   const url = new URL(request.url);
   const keyword = url.searchParams.get("keyword") ?? "";
   const userCustom = url.searchParams.get("target") ?? null;
-
-  if (!keyword) {
-    // 프로덕션 키 누락 즉시 확인
-    return Response.json({ error: "keyword missing" }, { status: 500 });
-  }
 
   const prompt = keywordPrompt(keyword);
   if (!prompt) {
