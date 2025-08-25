@@ -15,20 +15,13 @@ export const getGeminiBooks = async (
   keyword: string,
   userId: string
 ) => {
-  if (!userId) return [];
-  const baseQuery = client
-    .from("all_gemini_ideas")
+  const fromTable = !userId ? "gemini_ideas" : "all_gemini_ideas";
+
+  const { data, error } = await client
+    .from(`${fromTable}`)
     .select("*", { head: false, count: "exact" })
+    .eq("keyword", keyword)
     .limit(10);
-
-  if (keyword === "userCustom") {
-    baseQuery.eq("keyword", "userCustom");
-    baseQuery.eq("profile_id", userId);
-  } else {
-    baseQuery.eq("keyword", keyword);
-  }
-
-  const { data, error } = await baseQuery;
 
   if (error) throw new Error(error.message);
   return data;
