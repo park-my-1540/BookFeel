@@ -1,3 +1,4 @@
+import { Loader2 } from "lucide-react";
 import type { BookItem } from "../type";
 import BookCard from "./BookCard";
 import BookNoResult from "./BookNoResult";
@@ -16,7 +17,9 @@ export default function BookListPanel({ subtitle, books, isFetching }: Props) {
       </div>
 
       {isFetching ? (
-        <div>로딩중입니다...</div>
+        <div className="flex items-center justify-center w-full min-h-[500px]">
+          <Loader2 className="mr-2 h-10 w-10 animate-spin text-main" />
+        </div>
       ) : !books?.length ? (
         <BookNoResult message="검색된 결과가 없습니다." />
       ) : (
