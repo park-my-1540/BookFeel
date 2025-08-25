@@ -93,7 +93,9 @@ export default function LoanExplorerPage({ loaderData }: Route.ComponentProps) {
 
       <div className="w-full mt-8">
         {items.length === 0 ? (
-          <p className="text-textSubtitle text-lg">도서를 조회해주세요</p>
+          <p className="text-textSubtitle text-lg">
+            지역을 선택하여 도서를 조회해주세요
+          </p>
         ) : (
           <ul className="space-y-5">
             {items.map((it) => {
