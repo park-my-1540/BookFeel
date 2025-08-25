@@ -61,7 +61,14 @@ export const Body2Bold = ({ children, className }: TextProps) => (
 );
 
 export const Caption = ({ children, className }: TextProps) => (
-  <p className={clsx("text-base text-textSubtitle", className)}>{children}</p>
+  <p
+    className={clsx(
+      "text-base text-textSubtitle overflow-hidden text-ellipsis whitespace-nowrap",
+      className
+    )}
+  >
+    {children}
+  </p>
 );
 
 export const Small = ({ children, className }: TextProps) => (

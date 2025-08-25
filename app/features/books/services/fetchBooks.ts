@@ -124,7 +124,6 @@ export const booksByKeyword = async (
   limit: number = 10
 ): Promise<Book[]> => {
   const allBooks: Book[] = [];
-
   for (const keyword of keywords) {
     const { data } = await axios.get(
       "https://www.aladin.co.kr/ttb/api/ItemSearch.aspx",
@@ -132,7 +131,7 @@ export const booksByKeyword = async (
         params: {
           TTBKey: process.env.ALADIN_API_KEY!,
           Query: keyword,
-          QueryType: "Keyword",
+          QueryType: "Title",
           SearchTarget: "Book",
           MaxResults: 4,
           Start: 1,
@@ -140,6 +139,7 @@ export const booksByKeyword = async (
           Version: "20131101",
           Cover: "Big",
           CategoryId: "1",
+          Sort: "SalesPoint",
         },
       }
     );
