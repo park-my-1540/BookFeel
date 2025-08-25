@@ -57,6 +57,9 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
   const data = await res.json();
   const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!data) {
+    return Response.json({ error: data }, { status: 400 });
+  }
   if (!text) {
     return Response.json({ error: "No response from Gemini" }, { status: 400 });
   }
