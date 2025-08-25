@@ -28,7 +28,7 @@ export default function ProfileLayout({
   }>();
 
   return (
-    <div className="w-full px-lg">
+    <div className="w-full px-lg py-sm ">
       <div className="flex items-center gap-6">
         <Avatar className="size-40">
           {loaderData.user.avatar ? (
@@ -69,7 +69,7 @@ export default function ProfileLayout({
               cn(
                 buttonVariants({ variant: "outline" }),
                 isActive &&
-                  "text-white bg-main hover:text-white hover:bg-main/90 ",
+                  "text-white bg-main hover:text-white hover:bg-main/90 "
               )
             }
             to={item.to}

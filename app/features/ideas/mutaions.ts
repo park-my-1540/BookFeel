@@ -12,10 +12,10 @@ export const insertIdeasByUser = async (
   userId: string
 ) => {
   // 먼저 해당 유저의 userCustom 관련 데이터 삭제
+  console.log(userId);
   const { error: deleteError } = await client
     .from("user_custom_keywords")
     .delete()
-    .eq("keyword", "userCustom")
     .eq("profile_id", userId);
 
   if (deleteError) {
@@ -33,6 +33,8 @@ export const insertIdeasByUser = async (
         profile_id: userId,
       }))
     );
+  console.log(booksWithKeyword);
+  console.log(data);
   if (insertError) {
     console.error("삽입 실패:", insertError);
     throw insertError;
