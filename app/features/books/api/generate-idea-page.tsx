@@ -56,10 +56,13 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   );
 
   const data = await res.json();
-  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!data) {
-    return Response.json({ error: data }, { status: 400 });
+  if (!res.ok) {
+    return Response.json(
+      { googleError: data, status: res.status },
+      { status: res.status }
+    );
   }
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!text) {
     return Response.json({ error: "No response from Gemini" }, { status: 400 });
   }
