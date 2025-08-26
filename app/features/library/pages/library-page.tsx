@@ -37,6 +37,7 @@ export default function LoanExplorerPage({ loaderData }: Route.ComponentProps) {
   const navigation = useNavigation();
   const [searchParams] = useSearchParams();
   const isbnParam = searchParams.get("isbn") ?? "";
+  const regionParam = searchParams.get("region") ?? "";
   const book = useBookStore((s) => s.book);
   const resetBook = useBookStore((s) => s.resetBook);
   useEffect(() => {
@@ -48,6 +49,7 @@ export default function LoanExplorerPage({ loaderData }: Route.ComponentProps) {
   const isSubmitting =
     navigation.state === "submitting" || navigation.state === "loading";
   const items = (loaderData.items ?? []) as unknown as LibraryItem[];
+
   return (
     <div className="w-full px-lg pb-md">
       <Heading2>대출 가능한 도서관 찾기</Heading2>
@@ -92,10 +94,12 @@ export default function LoanExplorerPage({ loaderData }: Route.ComponentProps) {
       </Form>
 
       <div className="w-full mt-8">
-        {items.length === 0 ? (
+        {!regionParam ? (
           <p className="text-textSubtitle text-lg">
             지역을 선택하여 도서를 조회해주세요
           </p>
+        ) : items.length === 0 ? (
+          <p className="text-textSubtitle text-lg">조회된 도서관이 없습니다.</p>
         ) : (
           <ul className="space-y-5">
             {items.map((it) => {
