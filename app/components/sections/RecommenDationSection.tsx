@@ -14,9 +14,9 @@ export default function RecommenDationSection({
   books: BookCardItem[];
 }) {
   return (
-    <div className="flex flex-col items-center justify-center pb-md px-lg">
+    <div className="flex flex-col items-center justify-center pb-md">
       <Heading2>Our recommendations</Heading2>
-      <div>
+      <div className="w-full">
         <Carousel className="overflow-x-auto px-20">
           <CarouselContent className="flex px-10 gap-8">
             {books.map((book) => (

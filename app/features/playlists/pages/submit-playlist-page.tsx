@@ -1,12 +1,12 @@
-import { Form, redirect, useNavigation } from "react-router";
-import { Button } from "~/components/ui/button";
-import { makeSSRClient } from "~/supa-client";
-import { z } from "zod";
 import { Loader2 } from "lucide-react";
-import type { Route } from "./+types/submit-playlist-page";
-import { getLoggedInUserId } from "~/features/users/queries";
+import { Form, redirect, useNavigation } from "react-router";
+import { z } from "zod";
+import { Button } from "~/components/ui/button";
 import InputPair from "~/components/ui/input-pair";
+import { getLoggedInUserId } from "~/features/users/queries";
+import { makeSSRClient } from "~/supa-client";
 import { createPlaylist } from "../queries";
+import type { Route } from "./+types/submit-playlist-page";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -60,77 +60,77 @@ export default function SubmitPage({ actionData }: Route.ComponentProps) {
     navigation.state === "submitting" || navigation.state === "loading";
 
   return (
-    <div className='pb-32'>
+    <div className="pb-32">
       <Form
-        className='mt-16 mx-auto  w-[600px]'
-        encType='multipart/form-data'
-        method='post'
+        className="mt-16 mx-auto  w-[600px]"
+        encType="multipart/form-data"
+        method="post"
       >
-        <div className='space-y-5'>
+        <div className="space-y-5">
           <InputPair
-            label='도서명'
-            description='도서명을 입력해주세요.'
-            name='title'
-            type='text'
-            id='title'
+            label="도서명"
+            description="도서명을 입력해주세요."
+            name="title"
+            type="text"
+            id="title"
             required
-            placeholder='ex) 적산가옥의 유령'
+            placeholder="ex) 적산가옥의 유령"
           />
           {actionData &&
             "formErrors" in actionData &&
             actionData.formErrors.title && (
-              <p className='text-red'>{actionData.formErrors.title}</p>
+              <p className="text-red">{actionData.formErrors.title}</p>
             )}
           <InputPair
-            label='저자명'
-            description='저자를 입력해주세요.'
-            name='author'
-            type='text'
-            id='author'
+            label="저자명"
+            description="저자를 입력해주세요."
+            name="author"
+            type="text"
+            id="author"
             required
-            placeholder='ex) 조예은'
+            placeholder="ex) 조예은"
           />
           {actionData &&
             "formErrors" in actionData &&
             actionData?.formErrors?.author && (
-              <p className='text-red'>{actionData.formErrors.author}</p>
+              <p className="text-red">{actionData.formErrors.author}</p>
             )}
 
-          <img className='w-1/2' src='/public/img/desc.png' />
+          <img className="w-1/2" src="/img/desc.png" />
           <InputPair
-            label='URL'
-            description='공유 옵션 목록에서 동영상 퍼가기에 src를 붙여넣어주세요.'
-            name='url'
-            type='text'
-            id='url'
+            label="URL"
+            description="공유 옵션 목록에서 동영상 퍼가기에 src를 붙여넣어주세요."
+            name="url"
+            type="text"
+            id="url"
             required
-            placeholder='ex) https://example.com'
+            placeholder="ex) https://example.com"
           />
           {actionData &&
             "formErrors" in actionData &&
             actionData?.formErrors?.url && (
-              <p className='text-red'>{actionData.formErrors.url}</p>
+              <p className="text-red">{actionData.formErrors.url}</p>
             )}
           <InputPair
             textArea
-            label='상세설명'
-            description='플레이리스트를 선택한 이유를 적어주세요.'
-            name='description'
-            type='text'
-            id='description'
+            label="상세설명"
+            description="플레이리스트를 선택한 이유를 적어주세요."
+            name="description"
+            type="text"
+            id="description"
             required
-            placeholder='ex) 500자 이내에 입력해주세요..'
+            placeholder="ex) 500자 이내에 입력해주세요.."
           />
           {actionData &&
             "formErrors" in actionData &&
             actionData?.formErrors?.description && (
-              <p className='text-red'>{actionData.formErrors.description}</p>
+              <p className="text-red">{actionData.formErrors.description}</p>
             )}
         </div>
-        <div className='w-full flex justify-center mt-12'>
-          <Button className='w-full' type='submit' disabled={isSubmitting}>
+        <div className="w-full flex justify-center mt-12">
+          <Button className="w-full" type="submit" disabled={isSubmitting}>
             {isSubmitting ? (
-              <Loader2 className='w-4 h-4 animate-spin' />
+              <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
               "등록하기"
             )}
