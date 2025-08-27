@@ -1,6 +1,7 @@
 import { Loader2 } from "lucide-react";
 import { Form, redirect, useNavigation } from "react-router";
 import { z } from "zod";
+import BreadComp from "~/components/common/BreadComp";
 import { Button } from "~/components/ui/button";
 import InputPair from "~/components/ui/input-pair";
 import { getLoggedInUserId } from "~/features/users/queries";
@@ -60,9 +61,15 @@ export default function SubmitPage({ actionData }: Route.ComponentProps) {
     navigation.state === "submitting" || navigation.state === "loading";
 
   return (
-    <div className="pb-32">
+    <div className="w-full px-lg pt-sm pb-lg">
+      <BreadComp
+        link={[
+          { to: "/playlists", name: "Playlists" },
+          { to: "/playlists/submit", name: "플레이리스트 등록하기" },
+        ]}
+      />
       <Form
-        className="mt-16 mx-auto  w-[600px]"
+        className="mt-5 mx-auto  w-[600px]"
         encType="multipart/form-data"
         method="post"
       >

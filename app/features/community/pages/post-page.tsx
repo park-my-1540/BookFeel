@@ -3,23 +3,16 @@ import { DateTime } from "luxon";
 import { useEffect, useRef } from "react";
 import {
   Form,
-  Link,
   useFetcher,
   useNavigation,
   useOutletContext,
 } from "react-router";
 import { z } from "zod";
 import AvatarUser from "~/components/common/AvatarUser";
+import BreadComp from "~/components/common/BreadComp";
 import CardInDelete from "~/components/common/CardInDelete";
 import { LoadingButton } from "~/components/common/LoadingButton";
 import UpvoteButton from "~/components/common/UpvoteButton";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "~/components/ui/breadcrumb";
 import { Body1, Body3, Caption } from "~/components/ui/Typography";
 import { Reply } from "~/features/community/components/reply";
 import { getLoggedInUserId } from "~/features/users/queries";
@@ -114,29 +107,19 @@ export default function PostPage({
   }, [actionData?.ok]);
   return (
     <div className="w-full px-lg py-sm pb-lg">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/community">Community</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to={`/community?topic=${loaderData.post.topic_slug}`}>
-                {loaderData.post.topic_name}
-              </Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to={`/community/postId`}>{loaderData.post.title}</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <BreadComp
+        link={[
+          { to: "/community", name: "Community" },
+          {
+            to: `/community?topic=${loaderData.post.topic_slug}`,
+            name: loaderData.post.topic_name,
+          },
+          {
+            to: `/community/postId`,
+            name: loaderData.post.title,
+          },
+        ]}
+      />
 
       <div className="grid grid-cols-6 gap-40 items-start mt-10">
         <div className="col-span-4 space-y-10">

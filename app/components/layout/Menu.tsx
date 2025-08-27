@@ -59,6 +59,11 @@ const menus: menuType[] = [
         description: "책 소장 여부와 대출 가능 도서관을 확인해보세요",
         to: "/library",
       },
+      {
+        name: "인기 대출 도서 찾기",
+        description: "도서관에서 가장 많이 빌려본 책들을 확인해보세요",
+        to: "/library/top-borrowed",
+      },
     ],
   },
   {

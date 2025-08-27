@@ -29,7 +29,6 @@ export default function RecommenDationSection({
                   cover={book.cover}
                   author={book.author}
                   title={book.title}
-                  bestRank={book.bestRank}
                   priceSales={book.priceSales}
                   priceStandard={book.priceStandard}
                 />

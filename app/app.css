@@ -322,3 +322,8 @@ body {
 .container.right-panel-active .overlay-right {
 	transform: translateX(20%);
 }
+button[type="button"][data-state="checked"] ~ label {
+  background-color: #db6521d7 !important;
+  color: #fff;
+  border: none;
+}

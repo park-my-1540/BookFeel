@@ -19,7 +19,8 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     return redirect("/auth/login");
   }
   const { provider } = data;
-  const baseRedirectUrl = "https://book-feel.vercel.app";
+  // const baseRedirectUrl = "https://book-feel.vercel.app";
+  const baseRedirectUrl = import.meta.env.VITE_REDIRECT_URL;
   const redirectTo = `${baseRedirectUrl}/auth/social/${provider}/complete`;
 
   const { client, headers } = makeSSRClient(request);
