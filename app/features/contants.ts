@@ -23,6 +23,41 @@ export const REGION_CODES = [
   { value: "39", label: "제주" },
 ];
 
+export const OPTION_CODES = {
+  gender: [
+    { label: "전체", value: "gender-all" },
+    { label: "남자", value: "gender-0" },
+    { label: "여자", value: "gender-1" },
+  ],
+
+  age: [
+    { label: "전체", value: "age-all" },
+    { label: "영유아(0~5세)", value: "age-0" },
+    { label: "유아(6~7세)", value: "age-6" },
+    { label: "초등(8~13세)", value: "age-8" },
+    { label: "청소년(14~19세)", value: "age-14" },
+    { label: "20대", value: "age-20" },
+    { label: "30대", value: "age-30" },
+    { label: "40대", value: "age-40" },
+    { label: "50대", value: "age-50" },
+    { label: "60대 이상", value: "age-60" },
+  ],
+  region: [{ label: "전체", value: "all" }, ...REGION_CODES],
+  subject: [
+    { label: "전체", value: "subject-all" },
+    { label: "총류", value: "subject-0" },
+    { label: "철학", value: "subject-1" },
+    { label: "종교", value: "subject-2" },
+    { label: "사회과학", value: "subject-3" },
+    { label: "자연과학", value: "subject-4" },
+    { label: "기술과학", value: "subject-5" },
+    { label: "예술", value: "subject-6" },
+    { label: "언어", value: "subject-7" },
+    { label: "문학", value: "subject-8" },
+    { label: "역사", value: "subject-9" },
+  ],
+};
+
 type Dtl = { value: string; label: string };
 export const DTL_REGION_MAP: Record<string, Dtl[]> = {
   "11": [

@@ -23,3 +23,8 @@ export function generateId(book: BookItemResponse): string {
   const raw = `${book.title}-${book.author}-${book.publisher}`;
   return raw.replace(/\s+/g, "").toLowerCase();
 }
+
+export function getValue(v: FormDataEntryValue | null) {
+  if (typeof v !== "string") return undefined;
+  return v.split("-")[1]; // "age-all" → "all"
+}

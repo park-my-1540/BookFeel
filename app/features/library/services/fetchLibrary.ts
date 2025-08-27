@@ -151,3 +151,95 @@ function pLimit(max: number) {
     });
   };
 }
+
+/**
+ * 인기 대출 도서(베스트)를 조회합니다.
+ *
+ * @endpoint http://data4library.kr/api/loanItemSrch
+ *
+ * @param authKey   인증키 (필수, string)
+ * @param startDt   검색 시작일자(대출기간, 선택, yyyy-mm-dd)
+ * @param endDt     검색 종료일자(대출기간, 선택, yyyy-mm-dd)
+ * @param region    지역 코드 (선택, number | number[])
+ * @param gender    성별 코드 (선택, number | number[])
+ * @param age       연령 코드 (선택, number | number[])
+ * @param kdc       KDC 대주제 (선택, number | number[])
+ *
+ * @returns {
+ * libs: Array<{
+ *   title: string;
+ *   authors: string;
+ *   publisher: string;
+ *   pubYear: string;
+ *   isbn13: string;
+ *   loanCnt: number;
+ *   bookImageURL: string;
+ *   bookDtlUrl?: string;
+ * }>
+ * }
+ */
+
+export type LoanBook = {
+  itemId: string; // no
+  bestRank: number; // ranking
+  title: string; // bookname
+  author: string;
+  isbn: string;
+  cover: string; // bookImageURL
+  loanCount: number; // loan_count
+};
+
+type LoanParams = {
+  age?: string | undefined;
+  gender?: string | undefined;
+  subject?: string | undefined; // subject → kdc 로 변경
+  region?: string | undefined;
+  startDt?: string | undefined;
+  endDt?: string | undefined;
+};
+
+export const fetchBorrowItemSrch = async ({
+  age,
+  gender,
+  subject,
+  region,
+  startDt,
+  endDt,
+}: LoanParams) => {
+  const url = new URL(`${process.env.NEXT_PUBLIC_DATA4LIB_BASE}/loanItemSrch`);
+  url.searchParams.set("authKey", `${process.env.NEXT_PUBLIC_DATA4LIB_KEY}`);
+
+  startDt && url.searchParams.set("startDt", startDt);
+  endDt && url.searchParams.set("endDt", endDt);
+  gender && url.searchParams.set("gender", gender);
+  age && url.searchParams.set("age", age);
+  region && url.searchParams.set("region", region);
+  subject && url.searchParams.set("kdc", subject);
+
+  url.searchParams.set("pageSize", "45");
+  url.searchParams.set("format", "json");
+
+  const res = await fetch(url.toString());
+  if (!res.ok) return [];
+
+  const json = await res.json();
+  const rawDocs = json?.response?.docs ?? [];
+
+  return normalizeLoanItems(rawDocs);
+};
+
+function normalizeLoanItems(raw: any[]): LoanBook[] {
+  return raw.map((item) => {
+    const doc = item.doc ?? item;
+
+    return {
+      itemId: doc.no ?? "",
+      bestRank: Number(doc.ranking ?? 0),
+      title: String(doc.bookname ?? ""),
+      author: String(doc.authors ?? ""),
+      isbn: String(doc.isbn13 ?? ""),
+      cover: String(doc.bookImageURL ?? ""),
+      loanCount: Number(doc.loan_count ?? 0),
+    };
+  });
+}

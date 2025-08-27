@@ -54,7 +54,7 @@ export type BookCardItem = {
   itemId: string;
   cover: string;
   title: string;
-  bestRank?: string;
+  isbn?: string;
   author: string;
   priceSales?: number;
   priceStandard?: number;
