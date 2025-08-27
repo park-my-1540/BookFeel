@@ -99,37 +99,47 @@ export default function Filter() {
         </RadioGroup>
       </div>
       {/* 대출기간 */}
-      <div className="flex gap-3 mb-4 relative pl-20 items-center">
+      <div className="relative pl-20 w-full">
         <Body3 className="absolute left-0">대출기간</Body3>
-        <DatePickerField
-          name="startDate"
-          value={startDate}
-          onChange={setStartDate}
-        />{" "}
-        ~{" "}
-        <DatePickerField name="endDate" value={endDate} onChange={setEndDate} />
-        <RadioGroup
-          name="quickRange"
-          defaultValue={"week"}
-          className="flex gap-2 flex-wrap"
-          onValueChange={(val: "year" | "month" | "week") =>
-            handleQuickRange(val)
-          }
-        >
-          {[
-            { label: "금년", value: "year" },
-            { label: "금월", value: "month" },
-            { label: "금주", value: "week" },
-          ].map((opt) => (
-            <div key={opt.value} className="flex items-center">
-              <RadioGroupItem value={opt.value} id={opt.value} />
-              <Label htmlFor={opt.value}>{opt.label}</Label>
-            </div>
-          ))}
-        </RadioGroup>
+        <div className="flex flex-col lg:flex-row gap-4">
+          <div className="">
+            <DatePickerField
+              name="startDate"
+              value={startDate}
+              onChange={setStartDate}
+            />{" "}
+            ~{" "}
+            <DatePickerField
+              name="endDate"
+              value={endDate}
+              onChange={setEndDate}
+            />
+          </div>
+          <RadioGroup
+            name="quickRange"
+            defaultValue={"week"}
+            className="flex gap-2 flex-wrap"
+            onValueChange={(val: "year" | "month" | "week") =>
+              handleQuickRange(val)
+            }
+          >
+            {[
+              { label: "금년", value: "year" },
+              { label: "금월", value: "month" },
+              { label: "금주", value: "week" },
+            ].map((opt) => (
+              <div key={opt.value} className="flex items-center">
+                <RadioGroupItem value={opt.value} id={opt.value} />
+                <Label htmlFor={opt.value}>{opt.label}</Label>
+              </div>
+            ))}
+          </RadioGroup>
+        </div>
       </div>
       <div className="text-center">
-        <Button size="lg">검색</Button>
+        <Button size="lg" className="px-12 py-6 text-lg mt-5">
+          검색
+        </Button>
       </div>
     </Form>
   );

@@ -160,7 +160,7 @@ const LinkMenu = ({
   trigger?: boolean;
 }) => {
   const { pathname } = useLocation();
-  const isActive = pathname === menu.to;
+  const isActive = pathname.split("/").includes(menu.name.toLowerCase());
   const Icon = menu.icon;
 
   const content = (
