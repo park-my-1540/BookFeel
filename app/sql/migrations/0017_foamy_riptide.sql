@@ -1,0 +1,1 @@
+ALTER TABLE "orders" ADD COLUMN "method" text NOT NULL;--> statement-breakpoint

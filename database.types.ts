@@ -56,6 +56,97 @@ export type Database = {
         }
         Relationships: []
       }
+      order_items: {
+        Row: {
+          author: string
+          book_id: string
+          cover_url: string
+          created_at: string
+          id: number
+          method: string
+          order_id: number
+          price: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author: string
+          book_id: string
+          cover_url: string
+          created_at?: string
+          id?: never
+          method?: string
+          order_id: number
+          price?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author?: string
+          book_id?: string
+          cover_url?: string
+          created_at?: string
+          id?: never
+          method?: string
+          order_id?: number
+          price?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_orders_id_fk"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          cover_url: string
+          created_at: string
+          id: number
+          method: string
+          price: number
+          profile_id: string
+          title: string
+          total_price: number
+          updated_at: string
+        }
+        Insert: {
+          cover_url: string
+          created_at?: string
+          id?: never
+          method: string
+          price?: number
+          profile_id: string
+          title: string
+          total_price?: number
+          updated_at?: string
+        }
+        Update: {
+          cover_url?: string
+          created_at?: string
+          id?: never
+          method?: string
+          price?: number
+          profile_id?: string
+          title?: string
+          total_price?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_profile_id_profiles_profile_id_fk"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["profile_id"]
+          },
+        ]
+      }
       playlists: {
         Row: {
           author: string

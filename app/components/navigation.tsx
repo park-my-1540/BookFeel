@@ -3,7 +3,7 @@ import BookSearch from "@/features/search/components/SearchBarContainer";
 import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
+import { LogOutIcon, ReceiptText, SettingsIcon, UserIcon } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import { useCartCount } from "~/store/countStore";
 import Menu from "./layout/Menu";
@@ -76,6 +76,12 @@ export default function Navigation({
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link to="/my/order">
+                      <ReceiptText className="w-4 h-4 mr-2" />
+                      Orders
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem asChild className="cursor-pointer">
                     <Link to="/my/profile">
                       <UserIcon className="w-4 h-4 mr-2" />

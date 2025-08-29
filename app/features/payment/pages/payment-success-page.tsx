@@ -5,6 +5,9 @@ import { z } from "zod";
 import { Button } from "~/components/ui/button";
 import { Body1, Title1 } from "~/components/ui/Typography";
 import { useShoppingCart } from "~/features/shoppingcart/hooks/useShoppingCart";
+import { getUserId } from "~/features/users/queries";
+import { makeSSRClient } from "~/supa-client";
+import { createOrders } from "../mutations";
 import type { Route } from "./+types/payment-success-page";
 
 export const meta: Route.MetaFunction = () => {
@@ -33,6 +36,8 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   const encryptedSecretKey =
     "Basic " + Buffer.from(TOSS_SECRET_KEY + ":").toString("base64");
 
+  const { client } = makeSSRClient(request);
+  const userId = await getUserId(client);
   /**
    * secret key 값에 클론을 붙이고 그걸 base64문자열로 변환
    * 클라이언트, github등 외부에 노출되면 안되기 때문
@@ -56,6 +61,38 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   );
   const responseData = await response.json();
   const metadata = responseData.metadata;
+
+  let payMethod = "";
+  switch (responseData.method) {
+    case "CARD":
+      payMethod = `${responseData.card?.cardType ?? ""}카드`;
+      break;
+
+    case "EASY_PAY": // 카카오페이, 네이버페이, 토스페이, 페이코
+      payMethod = responseData.easyPay?.provider ?? "간편결제";
+      break;
+
+    case "TRANSFER":
+      payMethod = "계좌이체";
+      break;
+
+    case "MOBILE_PHONE":
+      payMethod = "휴대폰결제";
+      break;
+
+    default:
+      payMethod = responseData.method; // fallback
+  }
+
+  if (userId) {
+    await createOrders(client, {
+      userId,
+      total_price: metadata.total_price,
+      title: metadata.title,
+      cover_url: metadata.cover_url,
+      method: payMethod,
+    });
+  }
 
   if (!metadata) {
     return redirect(`/shoppingcart`);

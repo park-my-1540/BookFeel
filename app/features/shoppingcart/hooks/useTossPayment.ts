@@ -20,7 +20,6 @@ const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 
 export function useTossPayment({ userId, total }: Options) {
   const totalRef = useRef(0);
-
   const widgetsRef = useRef<TossPaymentsWidgets | null>(null);
   const customerKey = useMemo(
     () =>
@@ -78,19 +77,25 @@ export function useTossPayment({ userId, total }: Options) {
         metadata,
       } = args;
 
-      await widgetsRef.current.setAmount({
-        value: totalRef.current,
-        currency: "KRW",
-      });
-      await widgetsRef.current.requestPayment({
-        orderId,
-        orderName,
-        customerEmail,
-        customerName,
-        successUrl,
-        failUrl,
-        metadata,
-      });
+      try {
+        await widgetsRef.current.setAmount({
+          value: totalRef.current,
+          currency: "KRW",
+        });
+        await widgetsRef.current.requestPayment({
+          orderId,
+          orderName,
+          customerEmail,
+          customerName,
+          successUrl,
+          failUrl,
+          metadata,
+        });
+
+        return { data: { requested: true, orderId }, error: null };
+      } catch (error) {
+        return { data: null, error: error };
+      }
     },
     []
   );

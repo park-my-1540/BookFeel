@@ -74,8 +74,9 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
       successUrl: `${window.location.origin}/payment/success`,
       failUrl: `${window.location.origin}/payment/fail`,
       metadata: {
-        titles: cart.map((i) => i.title).join(", "),
-        totalPrice: total,
+        title: orderName,
+        total_price: total,
+        cover_url: cart[0].cover,
       },
     });
   };

@@ -45,11 +45,13 @@ export default [
   ...prefix("my", [
     route("/profile", "features/users/pages/my-profile-page.tsx"),
     route("/settings", "features/users/pages/settings-page.tsx"),
+    route("/order", "features/users/pages/my-order-page.tsx"),
   ]),
   ...prefix("users/:username", [
     layout("features/users/pages/profile-layout.tsx", [
       index("features/users/pages/profile-page.tsx"),
       route("/playlist", "features/users/pages/profile-playlist-page.tsx"),
+      route("/order", "features/users/pages/profile-order-page.tsx"),
     ]),
   ]),
   route("/api/resetUsed", "features/ideas/api/resetUsed.tsx"),

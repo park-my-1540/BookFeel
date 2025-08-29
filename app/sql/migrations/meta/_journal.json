@@ -113,6 +113,20 @@
       "when": 1755277010793,
       "tag": "0015_free_crystal",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1756467148279,
+      "tag": "0016_deep_slapstick.sql",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1756467271303,
+      "tag": "0017_foamy_riptide",
+      "breakpoints": true
     }
   ]
 }

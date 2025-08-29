@@ -61,6 +61,10 @@ export default function ProfileLayout({
             label: "Playlists",
             to: `/users/${loaderData.user.username}/playlist`,
           },
+          {
+            label: "Orders",
+            to: `/users/${loaderData.user.username}/order`,
+          },
         ].map((item, index) => (
           <NavLink
             end
