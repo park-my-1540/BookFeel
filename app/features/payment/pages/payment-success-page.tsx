@@ -62,24 +62,18 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   const responseData = await response.json();
   const metadata = responseData.metadata;
 
+  if (!metadata) {
+    return redirect(`/shoppingcart`);
+  }
+
   let payMethod = "";
   switch (responseData.method) {
-    case "CARD":
+    case "카드":
       payMethod = `${responseData.card?.cardType ?? ""}카드`;
       break;
-
-    case "EASY_PAY": // 카카오페이, 네이버페이, 토스페이, 페이코
+    case "간편결제": // 카카오페이, 네이버페이, 토스페이, 페이코
       payMethod = responseData.easyPay?.provider ?? "간편결제";
       break;
-
-    case "TRANSFER":
-      payMethod = "계좌이체";
-      break;
-
-    case "MOBILE_PHONE":
-      payMethod = "휴대폰결제";
-      break;
-
     default:
       payMethod = responseData.method; // fallback
   }
@@ -92,10 +86,6 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       cover_url: metadata.cover_url,
       method: payMethod,
     });
-  }
-
-  if (!metadata) {
-    return redirect(`/shoppingcart`);
   }
 
   return { ...metadata };
