@@ -86,23 +86,25 @@ function ColCard(
             <ShoppingCartButton book={props} onSubmit={onSubmit} />
           ) : null}
         </div>
-        <Button
-          variant="outline"
-          className="flex-1"
-          disabled={!isbn}
-          onClick={() =>
-            isbn &&
-            checkLibrary?.({
-              itemId,
-              author,
-              title,
-              cover,
-              isbn,
-            })
-          }
-        >
-          대출 가능 여부 확인
-        </Button>
+        {isbn ? (
+          <Button
+            variant="outline"
+            className="flex-1"
+            disabled={!isbn}
+            onClick={() =>
+              isbn &&
+              checkLibrary?.({
+                itemId,
+                author,
+                title,
+                cover,
+                isbn,
+              })
+            }
+          >
+            대출 가능 여부 확인
+          </Button>
+        ) : null}
       </div>
     </Card>
   );
