@@ -97,6 +97,7 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
                     category={post.topic}
                     postedAt={post.created_at}
                     votesCount={post.upvotes}
+                    replies={post.replies}
                     isUpvoted={post.is_upvoted}
                     isUsers={post.is_users}
                     expanded={true}
