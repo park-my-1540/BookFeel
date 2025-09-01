@@ -14,7 +14,7 @@ export default function CardInDelete({
 }: {
   isUsers: boolean;
   remove: MouseEventHandler<HTMLButtonElement>;
-  update: MouseEventHandler<HTMLButtonElement>;
+  update?: MouseEventHandler<HTMLButtonElement>;
 }) {
   return (
     <>
@@ -36,12 +36,14 @@ export default function CardInDelete({
                 삭제
               </button>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild className="cursor-pointer">
-              <button type="button" onClick={update}>
-                <Pencil className="w-4 h-4 mr-2" />
-                수정
-              </button>
-            </DropdownMenuItem>
+            {update ? (
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <button type="button" onClick={update}>
+                  <Pencil className="w-4 h-4 mr-2" />
+                  수정
+                </button>
+              </DropdownMenuItem>
+            ) : null}
           </DropdownMenuContent>
         </DropdownMenu>
       ) : null}

@@ -33,13 +33,23 @@ export const Title4 = ({ children, className }: TextProps) => (
 );
 
 export const Body1 = ({ children, className }: TextProps) => (
-  <p className={clsx("text-md font-medium text-textPrimary", className)}>
+  <p
+    className={clsx(
+      "text-md font-medium whitespace-break-spaces text-textPrimary",
+      className
+    )}
+  >
     {children}
   </p>
 );
 
 export const Body2 = ({ children, className }: TextProps) => (
-  <p className={clsx("text-sm font-medium text-textPrimary", className)}>
+  <p
+    className={clsx(
+      "text-sm font-medium text-textPrimary whitespace-break-spaces break-spaces",
+      className
+    )}
+  >
     {children}
   </p>
 );

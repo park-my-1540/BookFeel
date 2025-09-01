@@ -1,9 +1,17 @@
 import { DotIcon } from "lucide-react";
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
-import { Form, Link, useActionData, useOutletContext } from "react-router";
+import {
+  Form,
+  Link,
+  useActionData,
+  useFetcher,
+  useLoaderData,
+  useOutletContext,
+} from "react-router";
 import { z } from "zod";
 import AvatarUser from "~/components/common/AvatarUser";
+import CardInDelete from "~/components/common/CardInDelete";
 import { Button } from "~/components/ui/button";
 import { Body1, Caption } from "~/components/ui/Typography";
 import type { action } from "../pages/post-page";
@@ -14,11 +22,14 @@ interface CommentItem {
   avatarUrl: string | null;
   content: string;
   timestamp: string;
+  postId?: number;
 }
 interface ReplyProps extends CommentItem {
   topLevel: boolean;
   topLevelId: number;
+  nestReplyId?: number;
   replies?: repliesProps[];
+  isUsers: boolean;
 }
 interface repliesProps {
   post_reply_id: number;
@@ -26,6 +37,7 @@ interface repliesProps {
   created_at: string;
   topLevelId?: number;
   user: {
+    profile_id: any;
     name: string;
     avatar: string | null;
     username: string;
@@ -42,6 +54,9 @@ export function Reply({
   avatarUrl,
   content,
   timestamp,
+  isUsers,
+  postId,
+  nestReplyId,
   topLevelId,
   topLevel = false,
   replies,
@@ -60,22 +75,48 @@ export function Reply({
 
   // 가장 최근에 POST navigation form submit의 actionData를 반환.
   const actionData = useActionData<typeof action>();
+  const fetcher = useFetcher();
   useEffect(() => {
     if (actionData?.ok) {
       setReplying(false);
     }
   }, [actionData]);
+  const remove = () => {
+    if (topLevel && postId) {
+      fetcher.submit(
+        {
+          intent: "delete-reply",
+          postId: postId,
+          replyId: topLevelId,
+        },
+        { method: "post" }
+      );
+    } else if (!topLevel && nestReplyId) {
+      fetcher.submit(
+        {
+          intent: "delete-reply",
+          topLevelId: topLevelId,
+          replyId: nestReplyId,
+        },
+        { method: "post" }
+      );
+    }
+  };
   return (
     <div className="flex flex-col gap-2 w-full">
-      <CommentItem
-        avatarUrl={avatarUrl}
-        name={name}
-        username={username}
-        timestamp={timestamp}
-        content={content}
-        isLoggedIn={isLoggedIn}
-        toggleReplying={toggleReplying}
-      />
+      <div className="relative">
+        {isUsers}
+        <CardInDelete isUsers={isUsers} remove={remove} />
+        <CommentItem
+          avatarUrl={avatarUrl}
+          name={name}
+          username={username}
+          timestamp={timestamp}
+          content={content}
+          isLoggedIn={isLoggedIn}
+          toggleReplying={toggleReplying}
+        />
+      </div>
       {replying && (
         <ReplyInput
           avatar={avatar}
@@ -162,10 +203,12 @@ function NestedReply({
   replies: repliesProps[];
   topLevelId: number;
 }) {
+  const loaderData = useLoaderData();
   return (
     <div className="pl-20 w-full">
       {replies.map((reply, index) => (
         <Reply
+          isUsers={reply.user.profile_id === loaderData.userId}
           key={index}
           name={reply.user.name}
           username={reply.user.username}
@@ -174,6 +217,7 @@ function NestedReply({
           timestamp={reply.created_at}
           topLevel={false}
           topLevelId={topLevelId}
+          nestReplyId={reply.post_reply_id}
         />
       ))}
     </div>

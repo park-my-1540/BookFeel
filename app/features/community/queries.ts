@@ -63,7 +63,8 @@ export const getReplies = async (
     user:profiles(
     name,
     avatar,
-    username
+    username,
+    profile_id
   )
   `;
   const { data, error } = await client

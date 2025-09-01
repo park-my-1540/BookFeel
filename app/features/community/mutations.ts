@@ -100,6 +100,46 @@ export const createReply = async (
     throw error;
   }
 };
+export const updateReply = async (
+  client: SupabaseClient,
+  {
+    postId,
+    reply,
+    userId,
+    topLevelId,
+  }: { postId: number; reply: string; userId: string; topLevelId?: number }
+) => {
+  const { error } = await client.from("post_replies").insert({
+    ...(topLevelId ? { parent_id: topLevelId } : { post_id: Number(postId) }),
+    reply,
+    profile_id: userId,
+  });
+
+  if (error) {
+    throw error;
+  }
+};
+export const deleteReply = async (
+  client: SupabaseClient,
+  {
+    postId,
+    userId,
+    replyId,
+    topLevelId,
+  }: { postId: number; userId: string; replyId: string; topLevelId?: number }
+) => {
+  let query = client.from("post_replies").delete().eq("profile_id", userId);
+
+  if (topLevelId) {
+    query = query.eq("parent_id", topLevelId).eq("post_reply_id", replyId);
+  } else {
+    query = query.eq("post_id", postId).eq("post_reply_id", replyId);
+  }
+  const { error } = await query;
+  if (error) {
+    throw error;
+  }
+};
 
 export const togglePostpvote = async (
   client: SupabaseClient,

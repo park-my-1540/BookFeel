@@ -8,7 +8,7 @@ import {
   useNavigation,
   useOutletContext,
 } from "react-router";
-import { z } from "zod";
+import z from "zod";
 import AvatarUser from "~/components/common/AvatarUser";
 import BreadComp from "~/components/common/BreadComp";
 import CardInDelete from "~/components/common/CardInDelete";
@@ -16,10 +16,10 @@ import { LoadingButton } from "~/components/common/LoadingButton";
 import UpvoteButton from "~/components/common/UpvoteButton";
 import { Body1, Body3, Caption } from "~/components/ui/Typography";
 import { Reply } from "~/features/community/components/reply";
-import { getLoggedInUserId } from "~/features/users/queries";
+import { getLoggedInUserId, getUserId } from "~/features/users/queries";
 import { makeSSRClient } from "~/supa-client";
 import AsideInfo from "../components/AsideInfo";
-import { createReply } from "../mutations";
+import { createReply, deleteReply } from "../mutations";
 import { getPostById, getReplies } from "../queries";
 import type { Route } from "./+types/post-page";
 
@@ -36,36 +36,51 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
   const { client } = makeSSRClient(request);
   const userId = await getLoggedInUserId(client);
   const formData = await request.formData();
-  const { success, error, data } = formSchema.safeParse(
-    Object.fromEntries(formData)
-  );
-  if (!success) {
+
+  const intent = formData.get("intent");
+  if (intent === "delete-reply") {
+    const postId = formData.get("postId") as string;
+    const replyId = formData.get("replyId") as string;
+    const topLevelId = formData.get("topLevelId") as string;
+
+    await deleteReply(client, {
+      postId: Number(postId),
+      replyId: replyId,
+      userId,
+      topLevelId: Number(topLevelId),
+    });
+  } else {
+    const { success, error, data } = formSchema.safeParse(
+      Object.fromEntries(formData)
+    );
+    if (!success) {
+      return {
+        formErrors: error.flatten().fieldErrors,
+      };
+    }
+    const { reply, topLevelId } = data;
+    await createReply(client, {
+      postId: Number(params.postId),
+      reply,
+      userId,
+      topLevelId: Number(topLevelId),
+    });
     return {
-      formErrors: error.flatten().fieldErrors,
+      ok: true,
     };
   }
-
-  const { reply, topLevelId } = data;
-  await createReply(client, {
-    postId: Number(params.postId),
-    reply,
-    userId,
-    topLevelId: Number(topLevelId),
-  });
-  return {
-    ok: true,
-  };
 };
 
 export const loader = async ({ request, params }: Route.LoaderArgs) => {
   const { client } = makeSSRClient(request);
+  const userId = await getUserId(client);
 
   const [post, replies] = await Promise.all([
     getPostById(client, { postId: Number(params.postId) }),
     getReplies(client, { postId: Number(params.postId) }),
   ]);
 
-  return { post, replies };
+  return { post, replies, userId };
 };
 
 export default function PostPage({
@@ -114,6 +129,7 @@ export default function PostPage({
   useEffect(() => {
     formRef.current?.reset();
   }, [actionData?.ok]);
+
   return (
     <div className="w-full px-lg py-sm pb-lg">
       <BreadComp
@@ -180,7 +196,7 @@ export default function PostPage({
                   <div className="w-full flex flex-col gap-5 items-end">
                     <textarea
                       name="reply"
-                      placeholder="댓글을 입력하세요."
+                      placeholder="댓글을 입력하세요"
                       className="resize-none w-full p-3 bg-gray rounded-sm"
                       rows={5}
                     />
@@ -198,6 +214,7 @@ export default function PostPage({
                 <div className="flex flex-col gap-5">
                   {loaderData.replies.map((reply: any, index) => (
                     <Reply
+                      isUsers={reply.user.profile_id === loaderData.userId}
                       key={index}
                       name={reply.user.name}
                       username={reply.user.username}
@@ -205,6 +222,7 @@ export default function PostPage({
                       content={reply.reply}
                       timestamp={reply.created_at}
                       topLevel={true}
+                      postId={loaderData.post.post_id}
                       topLevelId={reply.post_reply_id}
                       replies={reply.post_replies}
                     />
