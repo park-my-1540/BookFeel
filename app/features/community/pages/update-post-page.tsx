@@ -1,26 +1,20 @@
 import { Loader2 } from "lucide-react";
-import { Form, Link, redirect, useNavigation } from "react-router";
+import { Form, redirect, useNavigation } from "react-router";
 import { z } from "zod";
+import BreadComp from "~/components/common/BreadComp";
 import SelectPair from "~/components/common/SelectPair";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "~/components/ui/breadcrumb";
 import { Button } from "~/components/ui/button";
 import InputPair from "~/components/ui/input-pair";
 import { Heading1 } from "~/components/ui/Typography";
 import { getLoggedInUserId } from "~/features/users/queries";
 import { makeSSRClient } from "~/supa-client";
-import { createPost } from "../mutations";
-import { getTopics } from "../queries";
-import type { Route } from "./+types/submit-post-page";
+import { updatePost } from "../mutations";
+import { getPostById, getTopics } from "../queries";
+import type { Route } from "./+types/update-post-page";
 export const meta: Route.MetaFunction = () => {
   return [
-    { title: "Submit Post | BookFeel" },
-    { name: "description", content: "Submit your post to BookFeel" },
+    { title: "Update Post | BookFeel" },
+    { name: "description", content: "Update your post to BookFeel" },
   ];
 };
 
@@ -30,16 +24,18 @@ const formSchema = z.object({
   content: z.string().min(1).max(1000),
 });
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const { client } = makeSSRClient(request);
-  await getLoggedInUserId(client);
+  const postId = params.postId;
+  if (!postId) {
+    throw new Error("Invalid postId");
+  }
+  const post = await getPostById(client, { postId: Number(postId) });
   const topics = await getTopics(client);
-  return {
-    topics,
-  };
+  return { post, topics };
 };
 
-export const action = async ({ request }: Route.ActionArgs) => {
+export const action = async ({ request, params }: Route.ActionArgs) => {
   const { client } = makeSSRClient(request);
   const userId = await getLoggedInUserId(client);
   const formData = await request.formData();
@@ -53,11 +49,12 @@ export const action = async ({ request }: Route.ActionArgs) => {
     };
   }
   const { title, content, topic } = data;
-  const { post_id } = await createPost(client, {
+  const { post_id } = await updatePost(client, {
     title,
     content,
     topic,
     profile_id: userId,
+    post_id: Number(params.postId),
   });
 
   return redirect(`/community/${post_id}`);
@@ -66,7 +63,7 @@ type topicsProps = {
   name: string;
   slug: string;
 };
-export default function SubmitPage({
+export default function UpdatePostPage({
   actionData,
   loaderData,
 }: Route.ComponentProps) {
@@ -76,31 +73,35 @@ export default function SubmitPage({
 
   return (
     <div className="w-full px-lg py-sm pb-lg">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/community">Community</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-        </BreadcrumbList>
-      </Breadcrumb>
+      <BreadComp
+        link={[
+          { to: "/community", name: "Community" },
+          {
+            to: `/community?topic=${loaderData?.post?.topic_slug}`,
+            name: loaderData?.post?.topic_name,
+          },
+          {
+            to: `/community/${loaderData?.post?.post_id}/update`,
+            name: loaderData?.post?.title,
+          },
+        ]}
+      />
       <Form
         className="mt-16 mx-auto w-[600px]"
         encType="multipart/form-data"
         method="post"
       >
-        <Heading1 className="mb-10">게시글 작성</Heading1>
+        <Heading1 className="mb-10">게시글 수정</Heading1>
         <div className="space-y-5">
           <SelectPair
             label="카테고리"
             name="topic"
             placeholder="토픽을 선택하세요"
-            options={loaderData.topics.map((topic: topicsProps) => ({
+            options={loaderData?.topics.map((topic: topicsProps) => ({
               label: topic.name,
               value: topic.slug,
             }))}
+            defaultValue={loaderData?.post?.topic_slug}
           />
           <InputPair
             label="제목"
@@ -108,6 +109,7 @@ export default function SubmitPage({
             name="title"
             type="text"
             id="title"
+            defaultValue={loaderData?.post.title}
             required
           />
           {actionData &&
@@ -121,6 +123,7 @@ export default function SubmitPage({
             name="content"
             type="text"
             id="content"
+            defaultValue={loaderData?.post.content}
             required
             textArea={true}
           />
@@ -135,7 +138,7 @@ export default function SubmitPage({
             {isSubmitting ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              "등록하기"
+              "수정하기"
             )}
           </Button>
         </div>

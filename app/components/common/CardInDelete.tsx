@@ -1,4 +1,4 @@
-import { EllipsisVertical, Trash2 } from "lucide-react";
+import { EllipsisVertical, Pencil, Trash2 } from "lucide-react";
 import type { MouseEventHandler } from "react";
 import {
   DropdownMenu,
@@ -10,9 +10,11 @@ import { Button } from "../ui/button";
 export default function CardInDelete({
   isUsers,
   remove,
+  update,
 }: {
   isUsers: boolean;
   remove: MouseEventHandler<HTMLButtonElement>;
+  update: MouseEventHandler<HTMLButtonElement>;
 }) {
   return (
     <>
@@ -32,6 +34,12 @@ export default function CardInDelete({
               <button type="button" onClick={remove}>
                 <Trash2 className="w-4 h-4 mr-2" />
                 삭제
+              </button>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild className="cursor-pointer">
+              <button type="button" onClick={update}>
+                <Pencil className="w-4 h-4 mr-2" />
+                수정
               </button>
             </DropdownMenuItem>
           </DropdownMenuContent>

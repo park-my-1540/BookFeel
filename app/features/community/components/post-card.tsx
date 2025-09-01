@@ -1,6 +1,6 @@
 import { DotIcon } from "lucide-react";
 import { DateTime } from "luxon";
-import { Link, useFetcher } from "react-router";
+import { Link, useFetcher, useNavigate } from "react-router";
 import AvatarUser from "~/components/common/AvatarUser";
 import CardInDelete from "~/components/common/CardInDelete";
 import UpvoteButton from "~/components/common/UpvoteButton";
@@ -31,7 +31,7 @@ export function PostCard({
   votesCount = 0,
 }: PostCardProps) {
   const fetcher = useFetcher();
-
+  const navigate = useNavigate();
   const absorbClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     fetcher.submit(null, {
@@ -50,6 +50,14 @@ export function PostCard({
       action: `/community`,
     });
   };
+  const update = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    navigate(`/community/${id}/update`, {
+      state: {
+        postId: id,
+      },
+    });
+  };
   return (
     <Link to={`/community/${id}`} className="block">
       <Card className="relative flex flex-row items-center justify-between bg-transparent hover:bg-gray transition-colors border-borderGray rounded-md px-10">
@@ -57,7 +65,7 @@ export function PostCard({
           <AvatarUser avatar={authorAvatarUrl} fallback={author[0]} />
           <div className="space-y-2">
             <CardTitle>{title}</CardTitle>
-            <div className="flex gap-2 text-xs leading-none text-muted-foreground">
+            <div className="flex gap-2 text-sm leading-none text-muted-foreground">
               <span>{author} on</span>
               <span>{category}</span>
               <DotIcon className="w-4 h-4" />
@@ -74,7 +82,7 @@ export function PostCard({
             isUpvoted={isUpvoted}
           />
         </CardFooter>
-        <CardInDelete isUsers={isUsers} remove={remove} />
+        <CardInDelete isUsers={isUsers} remove={remove} update={update} />
       </Card>
     </Link>
   );

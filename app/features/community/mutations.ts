@@ -34,6 +34,48 @@ export const createPost = async (
   return data;
 };
 
+export const updatePost = async (
+  client: SupabaseClient,
+  {
+    title,
+    content,
+    topic,
+    profile_id,
+    post_id,
+  }: {
+    title: string;
+    content: string;
+    topic: string;
+    profile_id: string;
+    post_id: number;
+  }
+) => {
+  const { data: topics, error: topicError } = await client
+    .from("topics")
+    .select("topic_id")
+    .eq("slug", topic)
+    .single();
+
+  if (topicError) {
+    throw topicError;
+  }
+
+  const { data, error } = await client
+    .from("posts")
+    .update({
+      title,
+      content,
+      topic_id: topics.topic_id,
+      profile_id,
+    })
+    .eq("post_id", post_id)
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+
 /**
  * topLevelId
  * o 대댓글 -> set parent_id === topLevelId

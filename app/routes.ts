@@ -26,6 +26,7 @@ export default [
     route("/:postId", "features/community/pages/post-page.tsx"),
     route("/:postId/upvote", "features/community/pages/upvote-post-page.tsx"),
     route("/create", "features/community/pages/submit-post-page.tsx"),
+    route("/:postId/update", "features/community/pages/update-post-page.tsx"),
   ]),
   ...prefix("library", [
     index("features/library/pages/library-page.tsx"),

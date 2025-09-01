@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import {
   Form,
   useFetcher,
+  useNavigate,
   useNavigation,
   useOutletContext,
 } from "react-router";
@@ -83,7 +84,7 @@ export default function PostPage({
     navigation.state === "submitting" || navigation.state === "loading";
 
   const fetcher = useFetcher();
-
+  const navigate = useNavigate();
   const remove = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const formData = new FormData();
@@ -91,6 +92,14 @@ export default function PostPage({
     fetcher.submit(formData, {
       method: "POST",
       action: `/community`,
+    });
+  };
+  const update = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    navigate(`/community/${loaderData.post.post_id}/update`, {
+      state: {
+        postId: loaderData.post.post_id,
+      },
     });
   };
 
@@ -149,6 +158,7 @@ export default function PostPage({
                   <CardInDelete
                     isUsers={loaderData.post.is_users}
                     remove={remove}
+                    update={update}
                   />
                 </div>
                 <div className="pt-4">
