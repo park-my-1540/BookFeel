@@ -7,11 +7,13 @@ import {
   useActionData,
   useFetcher,
   useLoaderData,
+  useNavigation,
   useOutletContext,
 } from "react-router";
 import { z } from "zod";
 import AvatarUser from "~/components/common/AvatarUser";
 import CardInDelete from "~/components/common/CardInDelete";
+import { LoadingButton } from "~/components/common/LoadingButton";
 import { Button } from "~/components/ui/button";
 import { Body1, Caption } from "~/components/ui/Typography";
 import type { action } from "../pages/post-page";
@@ -178,6 +180,8 @@ function ReplyInput({
   loggedInName,
   username,
 }: ReplyInputProps) {
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
   return (
     <Form className="flex items-start gap-5 w-3/4" method="post">
       <input type="hidden" name="topLevelId" value={topLevelId} />
@@ -190,7 +194,7 @@ function ReplyInput({
           defaultValue={`@${username} `}
           rows={5}
         />
-        <Button type="submit">댓글 작성</Button>
+        <LoadingButton isLoading={isSubmitting}>댓글 작성</LoadingButton>
       </div>
     </Form>
   );

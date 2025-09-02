@@ -12,11 +12,12 @@ import z from "zod";
 import AvatarUser from "~/components/common/AvatarUser";
 import BreadComp from "~/components/common/BreadComp";
 import CardInDelete from "~/components/common/CardInDelete";
-import { LoadingButton } from "~/components/common/LoadingButton";
 import UpvoteButton from "~/components/common/UpvoteButton";
+import { Button } from "~/components/ui/button";
 import { Body1, Body3, Caption } from "~/components/ui/Typography";
 import { Reply } from "~/features/community/components/reply";
 import { getLoggedInUserId, getUserId } from "~/features/users/queries";
+import { cn } from "~/lib/utils";
 import { makeSSRClient } from "~/supa-client";
 import AsideInfo from "../components/AsideInfo";
 import { createReply, deleteReply } from "../mutations";
@@ -131,7 +132,12 @@ export default function PostPage({
   }, [actionData?.ok]);
 
   return (
-    <div className="w-full px-lg py-sm pb-lg">
+    <div
+      className={cn(
+        "w-full px-lg py-sm pb-lg",
+        isSubmitting ? "animate-pulse transition-opacity" : ""
+      )}
+    >
       <BreadComp
         link={[
           { to: "/community", name: "Community" },
@@ -200,9 +206,7 @@ export default function PostPage({
                       className="resize-none w-full p-3 bg-gray rounded-sm"
                       rows={5}
                     />
-                    <LoadingButton isLoading={isSubmitting}>
-                      댓글 작성
-                    </LoadingButton>
+                    <Button>댓글 작성</Button>
                   </div>
                 </Form>
               ) : (

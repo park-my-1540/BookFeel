@@ -1,10 +1,11 @@
-import { data, Form, Link, redirect } from "react-router";
+import { data, Form, Link, redirect, useSearchParams } from "react-router";
 import { z } from "zod";
 import SortingDropMenu from "~/components/common/SortingMenu";
 import { Button } from "~/components/ui/button";
 import { Heading2, Title2 } from "~/components/ui/Typography";
 import BookNoResult from "~/features/books/components/BookNoResult";
 import { getLoggedInUserId } from "~/features/users/queries";
+import { cn } from "~/lib/utils";
 import { makeSSRClient } from "~/supa-client";
 import { PostCard } from "../components/post-card";
 import { deletePost } from "../mutations";
@@ -63,6 +64,8 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 export const meta: Route.MetaFunction = () => [{ title: "커뮤니티" }];
 
 export default function CommunityPage({ loaderData }: Route.ComponentProps) {
+  const [searchParams] = useSearchParams();
+  const currentTopic = searchParams.get("topic");
   return (
     <div className="w-full px-lg pb-md">
       <Heading2>Community</Heading2>
@@ -110,14 +113,19 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
           </div>
         </div>
         <aside className="col-span-2">
-          <Title2>Topics</Title2>
+          <Title2 className="hover:underline">
+            <Link to={`/community`}>Topics</Link>
+          </Title2>
           <div className="flex flex-col gap-4 items-start mt-5">
             {loaderData.topics.map((topic) => (
               <Button
                 asChild
                 variant={"link"}
                 key={topic.slug}
-                className="pl-0 text-md text-sub"
+                className={cn(
+                  "pl-0 text-md text-sub",
+                  currentTopic === topic.slug ? "underline" : ""
+                )}
               >
                 <Link to={`/community?topic=${topic.slug}`}>{topic.name}</Link>
               </Button>
