@@ -16,15 +16,20 @@ export default function SummaryCard({
     book;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[auto_minmax(0,1fr)_minmax(0,280px)] gap-4 md:gap-8 items-center justify-between py-3 px-1 border-b sm:px-4  ">
-      <Thumbnail book={book} width={58} height={78} />
-
-      <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_auto] items-center justify-between w-full gap-2 ">
-        <Title3 className="break-words">{title}</Title3>
-        <Body2 className="text-textSecondary break-words">{author}</Body2>
-        <Title3 className="text-end text-ellipsis">
-          {formatKrCurrency(priceSales > 0 ? priceSales : priceStandard)}
-        </Title3>
+    <div className="grid gap-3 rounded-xl border border-borderGray bg-white p-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+      <div className="flex min-w-0 items-start gap-3">
+        <div className="shrink-0">
+          <Thumbnail book={book} width={58} height={78} />
+        </div>
+        <div className="min-w-0">
+          <Title3 className="break-words">{title}</Title3>
+          <Body2 className="mt-1 break-words text-textSecondary">
+            {author}
+          </Body2>
+          <p className="mt-2 text-sm font-bold">
+            {formatKrCurrency(priceSales > 0 ? priceSales : priceStandard)}
+          </p>
+        </div>
       </div>
 
       <div className="flex w-full flex-wrap items-center gap-2">

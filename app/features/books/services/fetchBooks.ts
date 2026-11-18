@@ -32,8 +32,11 @@ export const fetchBooks = async ({
       { params }
     );
 
-    // data.item 배열 안에 책 리스트 있음
-    const books = (data.item ?? []).map((book: any) => ({
+    if (!Array.isArray(data?.item)) {
+      throw new Error("도서 검색 API에서 도서 목록을 반환하지 않았습니다.");
+    }
+
+    const books = data.item.map((book: any) => ({
       itemId: generateId(book),
       title: book.title,
       author: book.author,
@@ -47,7 +50,7 @@ export const fetchBooks = async ({
     }));
     return { ...data, documents: books };
   } catch (error) {
-    console.error("fetchBooks error:", error);
+    console.error("알라딘 도서 검색 요청 실패");
     throw error;
   }
 };

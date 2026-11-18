@@ -31,7 +31,7 @@ export default function DetailCard({
   } = book;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[auto_minmax(0,1fr)_minmax(0,280px)] gap-4 md:gap-8 py-5 px-1 border-b sm:px-4">
+    <div className="grid gap-4 rounded-xl border border-borderGray bg-white p-4 sm:grid-cols-[auto_minmax(0,1fr)] lg:grid-cols-[auto_minmax(0,1fr)_minmax(0,260px)]">
       <Thumbnail width={210} height={280} size="lg" book={book} />
 
       <div className="grid grid-rows w-full gap-2">
@@ -45,7 +45,7 @@ export default function DetailCard({
         </div>
       </div>
 
-      <div className="text-end flex flex-col gap-1 lg:gap-4 justify-between items-end">
+      <div className="flex flex-col items-end justify-between gap-3 text-end sm:col-span-2 lg:col-span-1">
         <DetailToggleButton isExpanded={isExpanded} onClick={onToggle} />
         <div className="w-full">
           <BookPrice priceStandard={priceStandard} priceSales={priceSales} />
