@@ -114,10 +114,10 @@ export default function SettingsPage({
   };
   return (
     <div className="w-full px-lg py-md pb-lg">
-      <div className="grid grid-cols-6 gap-5 lg:gap-40">
-        <div className="col-span-4 flex flex-col gap-10">
+      <div className="grid gap-5 lg:grid-cols-6 lg:gap-10">
+        <div className="flex min-w-0 flex-col gap-6 lg:col-span-4">
           <Heading1>Edit profile</Heading1>
-          <Form className="flex flex-col w-2/3 gap-5" method="post">
+          <Form className="flex w-full max-w-lg flex-col gap-5" method="post">
             {actionData?.ok ? (
               <Alert>
                 <AlertTitle>Success</AlertTitle>
@@ -147,7 +147,7 @@ export default function SettingsPage({
           </Form>
         </div>
         <Form
-          className="col-span-2 p-6 rounded-lg border border-borderGray"
+          className="min-w-0 rounded-xl border border-borderGray p-sm lg:col-span-2"
           method="post"
           encType="multipart/form-data"
         >

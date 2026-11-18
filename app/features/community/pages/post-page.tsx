@@ -152,9 +152,9 @@ export default function PostPage({
         ]}
       />
 
-      <div className="grid grid-cols-6 gap-40 items-start mt-10">
-        <div className="col-span-4 space-y-10">
-          <div className="flex w-full items-start gap-10">
+      <div className="mt-6 grid items-start gap-6 lg:grid-cols-6 lg:gap-10">
+        <div className="min-w-0 space-y-6 lg:col-span-4">
+          <div className="flex w-full items-start gap-3 sm:gap-6">
             <fetcher.Form
               method="post"
               action={`/community/${loaderData.post.post_id}/upvote`}
@@ -166,10 +166,10 @@ export default function PostPage({
                 absorbClick={absorbClick}
               />
             </fetcher.Form>
-            <div className="space-y-20 w-full">
+            <div className="min-w-0 flex-1 space-y-8 sm:space-y-12">
               <div className="space-y-2 relative">
-                <h2 className="text-3xl font-bold">{loaderData.post.title}</h2>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground relative">
+                <h2 className="break-words text-2xl font-bold sm:text-3xl">{loaderData.post.title}</h2>
+                <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground relative">
                   <Caption>{loaderData.post.author_name}</Caption>
                   <DotIcon className="size-4 shrink-0" />
                   <Caption>
@@ -191,7 +191,7 @@ export default function PostPage({
               {isLoggedIn ? (
                 <Form
                   ref={formRef}
-                  className="flex items-start gap-5 w-3/4"
+                  className="flex w-full items-start gap-2 sm:max-w-xl sm:gap-4"
                   method="post"
                 >
                   <AvatarUser

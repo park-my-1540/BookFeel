@@ -13,16 +13,18 @@ export default function RecommenDationSection({
 }: {
   books: BookCardItem[];
 }) {
+  if (books.length === 0) return null;
+
   return (
-    <div className="flex flex-col items-center justify-center pb-md">
+    <div className="mx-auto max-w-screen-2xl px-lg pb-sm">
       <Heading2>Our recommendations</Heading2>
       <div className="w-full">
-        <Carousel className="overflow-x-auto px-20">
-          <CarouselContent className="flex px-10 gap-8">
+        <Carousel className="px-1 sm:px-12">
+          <CarouselContent>
             {books.map((book) => (
               <CarouselItem
                 key={book.itemId}
-                className="basis-[25%] lg:basis-[14%]"
+                className="basis-1/2 sm:basis-1/3 lg:basis-1/5 xl:basis-1/6"
               >
                 <BookCard
                   itemId={book.itemId}
@@ -35,8 +37,8 @@ export default function RecommenDationSection({
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="absolute left-5 top-1/2 -translate-y-1/2 size-11 bg-dark text-primary-foreground" />
-          <CarouselNext className="absolute right-5 top-1/2 -translate-y-1/2 size-11 bg-dark text-primary-foreground" />
+          <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 size-11 bg-dark text-primary-foreground" />
+          <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 size-11 bg-dark text-primary-foreground" />
         </Carousel>
       </div>
     </div>

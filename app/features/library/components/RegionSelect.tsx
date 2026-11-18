@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import SelectBox from "~/components/common/SelectBox";
 import { DTL_REGION_MAP, REGION_CODES } from "~/features/contants";
-import { useBookStore } from "~/store/bookStore";
 
-export default function RegionSelect() {
+export default function RegionSelect({ isbn }: { isbn?: string }) {
   const [region, setRegion] = useState("11");
   const [dtlRegion, setDtlRegion] = useState("전체");
   const dtlOptions = useMemo(() => {
@@ -26,11 +25,10 @@ export default function RegionSelect() {
     setDtlRegion(value);
   }, []);
 
-  const book = useBookStore((s) => s.book);
   return (
-    <div className="flex gap-2 w-full md:w-2/3">
+    <div className="grid w-full grid-cols-2 gap-2 sm:w-auto sm:min-w-72">
       <SelectBox
-        className="w-1/3 bg-gray"
+        className="w-full min-w-0 bg-white"
         name="region"
         value={region}
         options={REGION_CODES.map((o) => ({ key: o.value, ...o }))}
@@ -38,12 +36,12 @@ export default function RegionSelect() {
       />
       <SelectBox
         name="dtl_region"
-        className="w-2/3 bg-gray"
+        className="w-full min-w-0 bg-white"
         value={dtlRegion}
         options={dtlOptions}
         onChange={handleDtlRegion}
       />
-      <input type="hidden" name="isbn" value={book.isbn} />
+      <input type="hidden" name="isbn" value={isbn ?? ""} />
     </div>
   );
 }

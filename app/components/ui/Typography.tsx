@@ -93,7 +93,7 @@ export const Heading1 = ({ children, className }: TextProps) => (
 export const Heading2 = ({ children, className }: TextProps) => (
   <h2
     className={clsx(
-      "text-4xl font-MontBold text-textPrimary pt-md py-sm",
+      "text-2xl font-MontBold text-textPrimary py-sm sm:text-3xl lg:text-4xl",
       className
     )}
   >

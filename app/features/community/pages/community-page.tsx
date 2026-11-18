@@ -69,12 +69,12 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="w-full px-lg pb-md">
       <Heading2>Community</Heading2>
-      <div className="grid grid-cols-6 gap-40">
-        <div className="col-span-4 space-y-10">
-          <div className="flex justify-between">
+      <div className="grid gap-6 lg:grid-cols-6 lg:gap-10">
+        <div className="order-2 min-w-0 space-y-6 lg:order-1 lg:col-span-4">
+          <div className="flex items-start justify-between gap-3">
             <div className="space-y-5 w-full">
               <SortingDropMenu />
-              <Form className="w-2/3">
+              <Form className="w-full max-w-lg">
                 <input
                   type="text"
                   className="p-3 w-full bg-gray rounded-md"
@@ -112,11 +112,11 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
             )}
           </div>
         </div>
-        <aside className="col-span-2">
+        <aside className="order-1 min-w-0 rounded-2xl border border-borderGray bg-white p-sm lg:order-2 lg:col-span-2">
           <Title2 className="hover:underline">
             <Link to={`/community`}>Topics</Link>
           </Title2>
-          <div className="flex flex-col gap-4 items-start mt-5">
+          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 lg:flex-col lg:items-start">
             {loaderData.topics.map((topic) => (
               <Button
                 asChild

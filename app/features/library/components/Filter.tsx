@@ -32,15 +32,15 @@ export default function Filter() {
     <Form
       method="post"
       action="/library/top-borrowed"
-      className="w-5/6 space-y-6"
+      className="w-full space-y-4 rounded-2xl border border-borderGray bg-white p-sm"
     >
       {/* 성별 */}
-      <div className="flex gap-3 mb-4 relative pl-20">
-        <Body3 className="absolute left-0">성별</Body3>
+      <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
+        <Body3 className="sm:w-20 sm:shrink-0">성별</Body3>
         <RadioGroup
           defaultValue={OPTION_CODES.gender[0].value}
           name="gender"
-          className="flex gap-2"
+          className="flex flex-wrap gap-2"
         >
           {OPTION_CODES.gender.map((opt) => (
             <div key={opt.value} className="flex items-center">
@@ -51,8 +51,8 @@ export default function Filter() {
         </RadioGroup>
       </div>
       {/* 연령대 */}
-      <div className="flex gap-3 mb-4 relative pl-20">
-        <Body3 className="absolute left-0">연령대</Body3>
+      <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
+        <Body3 className="sm:w-20 sm:shrink-0">연령대</Body3>
         <RadioGroup
           name="age"
           defaultValue={OPTION_CODES.age[0].value}
@@ -67,8 +67,8 @@ export default function Filter() {
         </RadioGroup>
       </div>
       {/* 주제 */}
-      <div className="flex gap-3 mb-4 relative pl-20">
-        <Body3 className="absolute left-0">주제</Body3>
+      <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
+        <Body3 className="sm:w-20 sm:shrink-0">주제</Body3>
         <RadioGroup
           name="subject"
           defaultValue={OPTION_CODES.subject[0].value}
@@ -83,8 +83,8 @@ export default function Filter() {
         </RadioGroup>
       </div>
       {/* 지역 */}
-      <div className="flex gap-3 mb-4 relative pl-20">
-        <Body3 className="absolute left-0">지역</Body3>
+      <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
+        <Body3 className="sm:w-20 sm:shrink-0">지역</Body3>
         <RadioGroup
           name="region"
           defaultValue={OPTION_CODES.region[0].value}
@@ -99,8 +99,8 @@ export default function Filter() {
         </RadioGroup>
       </div>
       {/* 대출기간 */}
-      <div className="relative pl-20 w-full">
-        <Body3 className="absolute left-0">대출기간</Body3>
+      <div className="flex w-full flex-col gap-2 sm:flex-row sm:gap-4">
+        <Body3 className="sm:w-20 sm:shrink-0">대출기간</Body3>
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="">
             <DatePickerField

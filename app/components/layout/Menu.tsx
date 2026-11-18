@@ -6,8 +6,7 @@ import {
   Search,
   type LucideProps,
 } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router";
+import { Link, NavLink, useLocation } from "react-router";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -98,87 +97,108 @@ const menus: menuType[] = [
   },
 ];
 
-function useMediaQuery(query: string) {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    setMatches(media.matches);
-    const listener = () => setMatches(media.matches);
-    media.addEventListener("change", listener);
-    return () => media.removeEventListener("change", listener);
-  }, [query]);
-
-  return matches;
-}
 export default function Menu() {
-  const isMobile = useMediaQuery("(max-width: 760px)");
+  const { pathname } = useLocation();
+  const currentMenu = menus.find(
+    ({ to }) => to !== "/" && (pathname === to || pathname.startsWith(to + "/"))
+  );
+
   return (
-    <div className="py-3 px-lg border-t shadow-sm border-borderGray w-full">
-      <NavigationMenu viewport={isMobile}>
-        <NavigationMenuList>
-          {menus.map((menu) => (
-            <NavigationMenuItem key={menu.name} className="w-1/5 z-10">
-              {menu.items ? (
-                <>
-                  <LinkMenu menu={menu} trigger={true} />
-                  <NavigationMenuContent>
-                    <ul className="grid w-[400px] font-light gap-3 p-4 grid-cols-2">
-                      {menu.items?.map((item) => (
-                        <NavigationMenuItem key={item.name}>
-                          <NavigationMenuLink asChild>
-                            <Link to={item.to}>
-                              <span className="text-md font-medium leading-none">
-                                {item.name}
-                              </span>
-                              <p className="text-md text-muted-foreground">
-                                {item.description}
-                              </p>
-                            </Link>
-                          </NavigationMenuLink>
-                        </NavigationMenuItem>
-                      ))}
-                    </ul>
-                  </NavigationMenuContent>
-                </>
-              ) : (
-                <LinkMenu menu={menu} />
-              )}
-            </NavigationMenuItem>
-          ))}
-        </NavigationMenuList>
-      </NavigationMenu>
+    <div className="border-t border-borderGray/60">
+      <div className="mx-auto max-w-screen-2xl px-lg">
+        <nav aria-label="주 메뉴" className="py-1 md:hidden">
+          <ul className="grid grid-cols-5 gap-1">
+            {menus.map(({ name, to, icon: Icon }) => (
+              <li key={to} className="min-w-0">
+                <NavLink
+                  to={to}
+                  end={to === "/"}
+                  className={({ isActive }) =>
+                    cn(
+                      "flex min-h-12 flex-col items-center justify-center gap-1 rounded-md text-[0.65rem] font-medium hover:bg-lightGray",
+                      isActive && "bg-lightGray font-bold text-main"
+                    )
+                  }
+                >
+                  <Icon size={17} aria-hidden="true" />
+                  {name}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+          {currentMenu?.items && currentMenu.items.length > 1 && (
+            <div className="mt-1 flex flex-wrap gap-x-4 border-t border-borderGray/60 pt-1">
+              {currentMenu.items.map(({ name, to }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  end
+                  className={({ isActive }) =>
+                    cn("py-2 text-sm", isActive && "font-bold text-main")
+                  }
+                >
+                  {name}
+                </NavLink>
+              ))}
+            </div>
+          )}
+        </nav>
+
+        <NavigationMenu
+          aria-label="주 메뉴"
+          viewport={false}
+          className="hidden py-2 md:block"
+        >
+          <NavigationMenuList>
+            {menus.map(({ name, to, icon: Icon, items }) => (
+              <NavigationMenuItem
+                key={to}
+                className="z-30 flex flex-1 items-center justify-center"
+              >
+                <NavigationMenuLink asChild>
+                  <NavLink
+                    to={to}
+                    end={to === "/"}
+                    className={({ isActive }) =>
+                      cn(
+                        "flex flex-row items-center gap-2",
+                        isActive && "font-bold text-main"
+                      )
+                    }
+                  >
+                    <Icon size={18} aria-hidden="true" />
+                    {name}
+                  </NavLink>
+                </NavigationMenuLink>
+                {items && items.length > 1 && (
+                  <>
+                    <NavigationMenuTrigger
+                      aria-label={name + " 하위 메뉴"}
+                      className="w-auto px-1"
+                    />
+                    <NavigationMenuContent>
+                      <ul className="grid w-72 gap-1">
+                        {items.map((item) => (
+                          <li key={item.to}>
+                            <NavigationMenuLink asChild>
+                              <Link to={item.to}>
+                                <span className="font-medium">{item.name}</span>
+                                <p className="text-sm text-muted-foreground">
+                                  {item.description}
+                                </p>
+                              </Link>
+                            </NavigationMenuLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </NavigationMenuContent>
+                  </>
+                )}
+              </NavigationMenuItem>
+            ))}
+          </NavigationMenuList>
+        </NavigationMenu>
+      </div>
     </div>
   );
 }
-
-const LinkMenu = ({
-  menu,
-  trigger = false,
-}: {
-  menu: menuType;
-  trigger?: boolean;
-}) => {
-  const { pathname } = useLocation();
-  const isActive = pathname.split("/").includes(menu.name.toLowerCase());
-  const Icon = menu.icon;
-
-  const content = (
-    <span className="flex gap-2 items-center text-base font-medium leading-none py-3 hover:text-main">
-      {Icon && <Icon size={18} />}
-      <span className="hidden md:inline">{menu.name}</span>
-    </span>
-  );
-  return (
-    <Link
-      to={menu.to}
-      className={cn(isActive ? "text-main font-mangoBold" : "")}
-    >
-      {trigger ? (
-        <NavigationMenuTrigger>{content}</NavigationMenuTrigger>
-      ) : (
-        content
-      )}
-    </Link>
-  );
-};

@@ -32,15 +32,16 @@ export const fetchLibSrchByBook = async ({
   url.searchParams.set("authKey", `${process.env.NEXT_PUBLIC_DATA4LIB_KEY}`);
   url.searchParams.set("isbn", isbn);
   url.searchParams.set("region", region);
-  if (dtl_region === "전체") {
-    url.searchParams.delete("dtl_region");
-  } else {
-    url.searchParams.set("dtl_region", dtl_region!);
+  if (dtl_region && dtl_region !== "전체") {
+    url.searchParams.set("dtl_region", dtl_region);
   }
   url.searchParams.set("format", "json");
-  const libsRes = await fetch(url.toString());
-  if (!libsRes.ok) return [];
+  const libsRes = await fetch(url, { signal: AbortSignal.timeout(8000) });
+  if (!libsRes.ok) throw new Error(`도서관 목록 조회 실패 (${libsRes.status})`);
   const libsJson = await libsRes.json();
+  if (libsJson?.response?.error || libsJson?.error) {
+    throw new Error("도서관 목록 API에서 오류를 반환했습니다.");
+  }
   const rows = libsJson?.response?.libs ?? libsJson?.libs ?? [];
   const libs = rows
     .map((it: any) => {

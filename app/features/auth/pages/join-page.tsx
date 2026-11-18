@@ -72,8 +72,8 @@ export default function JoinPage({ actionData }: Route.ComponentProps) {
     navigation.state === "submitting" || navigation.state === "loading";
 
   return (
-    <div className="lef-0 w-[50%]">
-      <div className="flex items-center flex-col justify-center w-full gap-5 pt-md p-lg">
+    <div className="w-full md:w-1/2">
+      <div className="flex items-center flex-col justify-center w-full gap-5 p-sm md:p-lg">
         <HeadingXL>Join</HeadingXL>
         <AuthButtons />
         <p className="text-sm text-muted-foreground font-medium">

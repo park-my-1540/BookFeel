@@ -17,11 +17,15 @@ export default function CuratedVibesSection({
   playlists: PlaylistsProps;
 }) {
   return (
-    <div className="bg-dark px-lg p-sm pb-md">
-      <div className="flex flex-col items-center justify-center h-full">
-        <div className="flex justify-between items-center w-full">
+    <div className="bg-dark px-lg py-sm">
+      <div className="mx-auto flex max-w-screen-2xl flex-col items-center">
+        <div className="flex w-full flex-wrap items-center justify-between gap-x-3">
           <Heading2 className="text-white">Curated Vibes</Heading2>
-          <Button variant="link" asChild className="text-lg p-0">
+          <Button
+            variant="link"
+            asChild
+            className="p-0 text-sm text-white underline-offset-4 sm:text-base"
+          >
             <Link to={"/playlists"}>더 보러가기 &rarr;</Link>
           </Button>
         </div>
@@ -29,9 +33,11 @@ export default function CuratedVibesSection({
           <Carousel className="pb-12">
             <CarouselContent>
               {playlists.map((playlist) => (
-                <CarouselItem className="basis-[100%] lg:basis-1/3">
+                <CarouselItem
+                  key={playlist.playlist_id}
+                  className="basis-full sm:basis-1/2 lg:basis-1/3"
+                >
                   <PlaylistCard
-                    key={playlist.playlist_id}
                     id={playlist.playlist_id ?? 0}
                     url={playlist.url ?? ""}
                     isUpvoted={playlist.is_upvoted ?? false}

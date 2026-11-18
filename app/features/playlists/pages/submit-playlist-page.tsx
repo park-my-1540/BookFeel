@@ -69,7 +69,7 @@ export default function SubmitPage({ actionData }: Route.ComponentProps) {
         ]}
       />
       <Form
-        className="mt-5 mx-auto  w-[600px]"
+        className="mt-5 mx-auto  w-full max-w-xl"
         encType="multipart/form-data"
         method="post"
       >

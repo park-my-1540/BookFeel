@@ -57,35 +57,6 @@ export const fetchBooks = async ({
  *
  * @returns API 응답 데이터에 key값 추가하여 반환
  */
-export const rankedBooks = async (): Promise<BookCardItem[]> => {
-  const params = {
-    ttbkey: process.env.ALADIN_API_KEY,
-    QueryType: "Bestseller",
-    MaxResults: 10,
-    start: 1,
-    SearchTarget: "Book",
-    output: "js",
-    Version: "20131101",
-    Cover: "Big",
-    CategoryId: 1,
-  };
-  try {
-    const { data } = await axios.get<BookRankingResponse>(
-      "https://www.aladin.co.kr/ttb/api/ItemList.aspx?",
-      { params }
-    );
-    return data.item ?? [];
-  } catch (error) {
-    console.error("fetchBooks error:", error);
-    throw error;
-  }
-};
-
-/**
- * 알라딘 Open API를 호출하여 도서 목록을 가져오는 함수
- *
- * @returns API 응답 데이터에 key값 추가하여 반환
- */
 export const choicesBooks = async (): Promise<BookCardItem[]> => {
   const params = {
     ttbkey: process.env.ALADIN_API_KEY!,

@@ -61,36 +61,41 @@ export function PostCard({
     });
   };
   return (
-    <Link to={`/community/${id}`} className="block">
-      <Card className="relative flex flex-row items-center justify-between bg-transparent hover:bg-gray transition-colors border-borderGray rounded-md px-10">
-        <CardHeader className="flex flex-row gap-4 items-center">
-          <AvatarUser avatar={authorAvatarUrl} fallback={author[0]} />
-          <div className="space-y-3">
-            <CardTitle>{title}</CardTitle>
-            <div className="flex gap-2 text-sm leading-none text-muted-foreground">
-              <span>{author} on</span>
-              <span>{category}</span>
-              <DotIcon className="w-4 h-4" />
-              <span>{DateTime.fromISO(postedAt).toRelative()}</span>
-              <DotIcon className="w-4 h-4" />
-              <span className="flex gap-1 items-center">
-                <MessageCircle className="w-4 h-4" />
-                {replies}
-              </span>
-            </div>
+    <Card className="relative flex min-w-0 flex-row items-center justify-between gap-2 rounded-xl border-borderGray bg-white px-3 py-4 transition-colors hover:bg-gray sm:gap-4 sm:px-5">
+      <CardHeader className="flex min-w-0 flex-1 flex-row items-center gap-2 sm:gap-4">
+        <AvatarUser avatar={authorAvatarUrl} fallback={author?.[0] ?? ""} />
+        <div className="min-w-0 space-y-2">
+          <CardTitle className="break-words leading-snug">
+            <Link
+              className="hover:underline focus-visible:underline"
+              to={`/community/${id}`}
+            >
+              {title}
+            </Link>
+          </CardTitle>
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 break-words text-xs text-muted-foreground sm:text-sm">
+            <span>{author} on</span>
+            <span>{category}</span>
+            <DotIcon className="w-4 h-4" />
+            <span>{DateTime.fromISO(postedAt).toRelative()}</span>
+            <DotIcon className="w-4 h-4" />
+            <span className="flex gap-1 items-center">
+              <MessageCircle className="w-4 h-4" />
+              {replies}
+            </span>
           </div>
-        </CardHeader>
+        </div>
+      </CardHeader>
 
-        <CardFooter className="flex justify-end pt-0 pb-0">
-          <UpvoteButton
-            absorbClick={absorbClick}
-            state={fetcher.state}
-            votesCount={votesCount}
-            isUpvoted={isUpvoted}
-          />
-        </CardFooter>
-        <CardInDelete isUsers={isUsers} remove={remove} update={update} />
-      </Card>
-    </Link>
+      <CardFooter className="flex shrink-0 justify-end p-0">
+        <UpvoteButton
+          absorbClick={absorbClick}
+          state={fetcher.state}
+          votesCount={votesCount}
+          isUpvoted={isUpvoted}
+        />
+      </CardFooter>
+      <CardInDelete isUsers={isUsers} remove={remove} update={update} />
+    </Card>
   );
 }

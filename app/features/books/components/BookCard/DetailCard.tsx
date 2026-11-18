@@ -31,17 +31,17 @@ export default function DetailCard({
   } = book;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr_320px] gap-4 md:gap-8 py-5 pl-5 border-b">
+    <div className="grid grid-cols-1 lg:grid-cols-[auto_minmax(0,1fr)_minmax(0,280px)] gap-4 md:gap-8 py-5 px-1 border-b sm:px-4">
       <Thumbnail width={210} height={280} size="lg" book={book} />
 
       <div className="grid grid-rows w-full gap-2">
-        <div className="inline-flex gap-2 items-center justify-between">
-          <Title3 className="break-keep">{title}</Title3>
-          <Body2 className="text-textSecondary break-keep">{author}</Body2>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <Title3 className="break-words">{title}</Title3>
+          <Body2 className="text-textSecondary break-words">{author}</Body2>
         </div>
         <div>
           <Caption className="mb-3">책소개</Caption>
-          <Body1 className="break-keep">{description}</Body1>
+          <Body1 className="break-words">{description}</Body1>
         </div>
       </div>
 
@@ -49,7 +49,7 @@ export default function DetailCard({
         <DetailToggleButton isExpanded={isExpanded} onClick={onToggle} />
         <div className="w-full">
           <BookPrice priceStandard={priceStandard} priceSales={priceSales} />
-          <div className="w-full flex gap-4">
+          <div className="flex w-full flex-wrap gap-2">
             <Button className="flex-1" onClick={() => onSubmit(book)}>
               장바구니 담기
             </Button>

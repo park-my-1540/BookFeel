@@ -41,7 +41,7 @@ export default function ListPage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="w-full px-lg pb-md">
       <Heading2>도서 검색</Heading2>
-      <div className="w-2/3">
+      <div className="mb-6 w-full max-w-2xl">
         <BookSearch />
       </div>
       <BookListPanel

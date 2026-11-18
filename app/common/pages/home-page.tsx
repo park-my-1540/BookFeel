@@ -8,10 +8,8 @@ import CuratedVibesSection, {
 import GeminiBooksSection from "~/components/sections/GeminiBooksSection";
 import MainSection from "~/components/sections/MainSection";
 import RecommenDationSection from "~/components/sections/RecommenDationSection";
-import {
-  choicesBooks,
-  rankedBooks,
-} from "~/features/books/services/fetchBooks";
+import { choicesBooks } from "~/features/books/services/fetchBooks";
+import { rankedBooks } from "~/features/books/services/rankedBooks.server";
 import type { BookCardItem } from "~/features/books/type";
 import { getCategories, getGeminiBooks } from "~/features/ideas/queries";
 import { getPlaylists } from "~/features/playlists/queries";
@@ -103,10 +101,14 @@ export const loader = async ({
   const { data: parsedData } = searchParamsSchema.safeParse(
     Object.fromEntries(url.searchParams)
   );
+  const bestsellers = rankedBooks().catch((error: unknown) => {
+    console.error("베스트셀러 조회 실패", error);
+    return [];
+  });
   try {
     const [books, choices, geminiBooks, search_keyword, playlists] =
       await Promise.all([
-        rankedBooks(),
+        bestsellers,
         choicesBooks(),
         getGeminiBooks(client, parsedData?.keyword ?? "장마", userId ?? ""),
         getCategories(client),
@@ -122,7 +124,7 @@ export const loader = async ({
   } catch (e) {
     console.error("서버에서 책 가져오기 실패", e);
     return {
-      books: [] as BookCardItem[],
+      books: await bestsellers,
       choices: [],
       search_keyword: [],
       geminiBooks: [],
@@ -148,7 +150,7 @@ export default function HomePage({
       <MainSection />
       <RecommenDationSection books={loaderData.choices} />
 
-      <div className="grid grid-layout gap-6 px-lg pb-lg">
+      <div className="grid-layout mx-auto max-w-screen-2xl gap-4 px-lg py-sm sm:gap-6">
         <GeminiBooksSection
           searchKeyword={loaderData.search_keyword}
           books={loaderData.geminiBooks ?? []}

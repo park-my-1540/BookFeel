@@ -87,7 +87,7 @@ export default function UpdatePostPage({
         ]}
       />
       <Form
-        className="mt-16 mx-auto w-[600px]"
+        className="mt-16 mx-auto w-full max-w-xl"
         encType="multipart/form-data"
         method="post"
       >

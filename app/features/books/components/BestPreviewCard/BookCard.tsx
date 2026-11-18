@@ -5,11 +5,13 @@ import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import ShoppingCartButton from "~/features/shoppingcart/components/ShoppingCartButton";
 import { useShoppingCart } from "~/features/shoppingcart/hooks/useShoppingCart";
+import { cn } from "~/lib/utils";
 import { useBookStore, type BookState } from "~/store/bookStore";
 import type { BookCardItem } from "../../type";
 
 export type BookSearchProps = BookCardItem & {
   direction?: "col" | "row";
+  compact?: boolean;
   bestRank?: number;
   loanCount?: number;
 };
@@ -59,13 +61,24 @@ function ColCard(
     isbn,
     bestRank,
     loanCount,
+    compact,
     onSubmit,
     checkLibrary,
   } = props;
   return (
-    <Card className="bg-transparent border-none shadow-none relative">
-      <div className="flex flex-col gap-4">
-        <div className="relative">
+    <Card
+      className={cn(
+        "relative border-none bg-transparent shadow-none",
+        compact && "py-0"
+      )}
+    >
+      <div className={cn("flex flex-col gap-4", compact && "gap-2")}>
+        <div
+          className={cn(
+            "relative",
+            compact && "mx-auto w-full max-w-32 [&_.thumb]:mb-0"
+          )}
+        >
           <div className="thumb">
             <img src={cover} alt={title} className="shadow-lg" />
             <SaleBadge priceSales={priceSales} priceStandard={priceStandard} />
@@ -74,14 +87,26 @@ function ColCard(
         </div>
 
         <div>
-          <Title3>{title}</Title3>
-          <Caption>{author}</Caption>
+          <Title3
+            className={cn(
+              "break-words leading-snug",
+              compact ? "text-sm" : "text-base sm:text-lg"
+            )}
+          >
+            {title}
+          </Title3>
+          <Caption className={compact ? "text-xs" : undefined}>
+            {author}
+          </Caption>
           {loanCount ? (
             <Caption className="pt-2">대출 건수 : {loanCount}</Caption>
           ) : null}
         </div>
-        <div className="flex justify-between">
-          <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
+        <div className="flex flex-wrap justify-between gap-2 empty:hidden">
+          {(typeof priceSales === "number" ||
+            typeof priceStandard === "number") && (
+            <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
+          )}
           {typeof priceStandard === "number" ? (
             <ShoppingCartButton book={props} onSubmit={onSubmit} />
           ) : null}
@@ -131,20 +156,22 @@ function RowCard(
     checkLibrary,
   } = props;
   return (
-    <Card className="bg-transparent border-none shadow-none py-2 relative w-full">
+    <Card className="bg-transparent border-none shadow-none py-2 relative w-full min-w-0">
       <div className="flex flex-row gap-4 items-center">
-        <div className="w-28 max-w-28 min-w-28 min-h-36 shadow relative">
+        <div className="relative w-16 shrink-0 overflow-hidden rounded-md shadow-sm sm:w-20">
           <img src={cover} alt={title} className="w-full h-auto" />
           {bestRank ? <RankBadge rank={bestRank} /> : null}
         </div>
-        <div className="w-full mt-4">
-          <Title3>{title}</Title3>
+        <div className="min-w-0 flex-1">
+          <Title3 className="break-words text-base leading-snug sm:text-lg">
+            {title}
+          </Title3>
           <Caption>{author}</Caption>
           {loanCount ? (
             <Caption className="pt-2">대출 건수 : {loanCount}</Caption>
           ) : null}
 
-          <div className="flex justify-between pt-2">
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-2">
             <PriceTag priceSales={priceSales} priceStandard={priceStandard} />
             {typeof priceStandard === "number" ? (
               <ShoppingCartButton book={props} onSubmit={onSubmit} />

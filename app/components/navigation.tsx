@@ -33,26 +33,27 @@ export default function Navigation({
   const count = useCartCount((s) => s.count);
   const { pathname } = useLocation();
   return (
-    <div className="border-b">
-      <div className="px-lg w-full flex justify-between items-center h-20">
-        <Link to="/">
-          <Heading1>BookFeel</Heading1>
+    <header className="border-b border-borderGray bg-white">
+      <div className="mx-auto flex w-full max-w-screen-2xl flex-wrap items-center justify-between gap-x-2 px-lg lg:gap-x-4 py-3 md:min-h-20 md:flex-nowrap">
+        <Link to="/" className="shrink-0">
+          <Heading1 className="text-xl sm:text-2xl">BookFeel</Heading1>
         </Link>
 
         {pathname === "/" ? (
-          <div className="relative w-3/6 z-50">
+          <div className="relative z-20 order-3 w-full pt-2 md:order-none md:w-auto md:max-w-xl md:flex-1 md:pt-0">
             <BookSearch />
           </div>
         ) : null}
 
         {isLoggedIn ? (
-          <div className="flex items-center gap-4">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-4">
             <Button
               asChild
               variant="outline"
+              size="sm"
               className="font-Mont bg-transparent border-main text-main text-md hover:bg-main hover:text-white"
             >
-              <Link to="/shoppingcart">
+              <Link to="/shoppingcart" aria-label={`장바구니 ${count}개`}>
                 <FontAwesomeIcon icon={faCartShopping as IconProp} size="lg" />
                 {count}
               </Link>
@@ -106,13 +107,13 @@ export default function Navigation({
             </DropdownMenu>
           </div>
         ) : (
-          <div className="flex items-center gap-2">
-            <Button asChild>
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+            <Button asChild size="sm">
               <Link to="/auth/login">
                 <span className="font-Mont">Login</span>
               </Link>
             </Button>
-            <Button asChild variant="outline">
+            <Button asChild size="sm" variant="outline">
               <Link to="/auth/join">
                 <span className="font-Mont">Join</span>
               </Link>
@@ -120,9 +121,10 @@ export default function Navigation({
             <Button
               asChild
               variant="outline"
+              size="sm"
               className="font-Mont bg-transparent border-main text-main text-md hover:bg-main hover:text-white"
             >
-              <Link to="/shoppingcart">
+              <Link to="/shoppingcart" aria-label={`장바구니 ${count}개`}>
                 <FontAwesomeIcon icon={faCartShopping as IconProp} size="lg" />
                 {count}
               </Link>
@@ -131,6 +133,6 @@ export default function Navigation({
         )}
       </div>
       <Menu />
-    </div>
+    </header>
   );
 }

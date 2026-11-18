@@ -82,8 +82,8 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-5 h-[var(--header-h)]">
-      <div className="lg:col-span-3 px-md pb-md">
+    <div className="mx-auto grid max-w-screen-2xl grid-cols-1 lg:grid-cols-5">
+      <div className="min-w-0 px-lg pb-md lg:col-span-3">
         <Heading2>My Shopping Cart</Heading2>
         <div className="text-end">
           <Button variant={"link"} onClick={handleClearCart}>

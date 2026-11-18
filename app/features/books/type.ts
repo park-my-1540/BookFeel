@@ -51,6 +51,7 @@ export type BookRankingResponse = {
   item?: BookCardItem[];
 };
 export type BookCardItem = {
+  bestRank?: number;
   itemId: string;
   cover: string;
   title: string;

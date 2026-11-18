@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import type { BookCardItem } from "~/features/books/type";
 
 export const getCategories = async (client: SupabaseClient) => {
   const { data, error } = await client
@@ -14,7 +15,7 @@ export const getGeminiBooks = async (
   client: SupabaseClient,
   keyword: string,
   userId: string
-) => {
+): Promise<BookCardItem[]> => {
   const fromTable = !userId ? "gemini_ideas" : "all_gemini_ideas";
 
   const { data, error } = await client
@@ -24,7 +25,17 @@ export const getGeminiBooks = async (
     .limit(10);
 
   if (error) throw new Error(error.message);
-  return data;
+  const books = new Map<string, BookCardItem>();
+  for (const row of data) {
+    const title = typeof row.title === "string" ? row.title.trim() : "";
+    if (!title) continue;
+
+    const author = typeof row.author === "string" ? row.author.trim() : "";
+    const cover = typeof row.cover === "string" ? row.cover.trim() : "";
+    const itemId = JSON.stringify([title, author, cover]);
+    books.set(itemId, { itemId, title, author, cover });
+  }
+  return [...books.values()];
 };
 
 export const canUseGemini = async (

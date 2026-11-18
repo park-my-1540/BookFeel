@@ -13,11 +13,11 @@ export default function PaymentSection({
   handleSubmit,
 }: PaymentSectionProps) {
   return (
-    <div className="col-span-2 px-md pb-md bg-gray">
+    <div className="min-w-0 bg-gray px-lg pb-md lg:col-span-2">
       <Heading2>My order</Heading2>
       <ul className="mb-4">
         {cart.map((item) => (
-          <li key={item.itemId} className="flex justify-between leading-9">
+          <li key={item.itemId} className="flex justify-between gap-3 py-2">
             <Body1>{item.title}</Body1>
             <Body1>{item.priceSales!.toLocaleString()}원</Body1>
           </li>

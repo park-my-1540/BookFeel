@@ -192,52 +192,23 @@ body {
 
 .grid-layout {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "a"
-    "b"
-    "c";
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
 }
 
 @media (min-width: 1024px) {
-  /* sm 이상일 때 layout 변경 */
   .grid-layout {
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-areas:
-      "a a c"
-      "b b c";
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   }
 }
-
-.a { grid-area: a;}
-.b { grid-area: b;}
-.c { grid-area: c;}
 
 /* 기본(모바일) */
 :root {
-  --gap-sm: 1rem;
-  --gap-md: 2rem;
-  --gap-lg: 2rem;
+  --gap-sm: clamp(1rem, 2.5vw, 2rem);
+  --gap-md: clamp(1.5rem, 4vw, 3.5rem);
+  --gap-lg: clamp(1rem, 4vw, 5rem);
 }
 
-/* 태블릿 이상 */
-@media (min-width: 768px) {
-  :root {
-    --gap-sm: 2rem;
-    --gap-md: 5rem;
-    --gap-lg: 4rem;
-  }
-}
-
-/* 데스크톱 이상 */
-@media (min-width: 1280px) {
-  :root {
-    --gap-sm: 2rem;
-    --gap-md: 5rem;
-    --gap-lg: 8rem;
-  }
-}
 .thumb {
   display: block;
   overflow: hidden;
@@ -259,12 +230,6 @@ body {
 }
 
 /* 로그인 폼 */
-.boxCenter {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-}
-
 .sign-in-container {
   transition: all 0.6s ease-in-out;
 }
@@ -326,4 +291,11 @@ button[type="button"][data-state="checked"] ~ label {
   background-color: #db6521d7 !important;
   color: #fff;
   border: none;
+}
+
+
+@media (max-width: 767px) {
+  .auth-panel.right-panel-active .sign-in-container {
+    transform: none;
+  }
 }

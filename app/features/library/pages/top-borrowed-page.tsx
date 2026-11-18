@@ -70,8 +70,8 @@ export default function LoanExplorerPage({
               <Loader2 className="mr-2 h-10 w-10 animate-spin text-main" />
             </div>
           ) : (
-            <div className="w-full space-y-2 pt-md px-md">
-              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-16 min-h-[500px]">
+            <div className="w-full space-y-2 pt-md">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4 xl:grid-cols-5">
                 {list.map((book) => (
                   <BookCard
                     key={book.itemId}

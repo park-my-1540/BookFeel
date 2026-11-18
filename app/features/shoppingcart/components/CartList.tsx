@@ -9,9 +9,9 @@ type CartListProps = {
 };
 export default function CartList({ item, handleRemove }: CartListProps) {
   return (
-    <div key={item.itemId} className="flex gap-8 py-4 border-b">
-      <img src={item.cover} alt={item.title} className="w-24 h-auto" />
-      <div className="flex-1">
+    <div key={item.itemId} className="flex items-start gap-3 border-b py-4 sm:gap-6">
+      <img src={item.cover} alt={item.title} className="h-auto w-14 shrink-0 rounded sm:w-24" />
+      <div className="min-w-0 flex-1 break-words">
         <Title3>{item.title}</Title3>
         <Caption>{item.author}</Caption>
       </div>

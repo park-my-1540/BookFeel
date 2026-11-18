@@ -54,7 +54,7 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
 
   return (
     <div className="form-container">
-      <div className="flex items-center flex-col justify-center w-[50%] gap-10 p-lg">
+      <div className="flex items-center flex-col justify-center w-full gap-5 p-sm md:w-1/2 md:p-lg">
         <HeadingXL>Login</HeadingXL>
         <AuthButtons />
         <p className="text-sm text-muted-foreground font-medium">
@@ -94,7 +94,7 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
                 </p>
               )}
           </div>
-          <div className="text-center mt-20">
+          <div className="mt-8 text-center">
             <Button
               variant={"sign"}
               size={"xl"}
