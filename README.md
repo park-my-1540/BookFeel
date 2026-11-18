@@ -1,8 +1,8 @@
-# 📚 Bookfeel
+# 📚 Page & Play
 
 **"오늘의 기분에 맞는 책, 지금 빌릴 수 있을까?"**  
-BookFeel은 **Gemini AI**로 감정 키워드를 분석해 책을 추천하고, **도서관 API**로 대출 가능 여부를 확인하며, **플레이리스트와 커뮤니티**로 독서 경험을 확장하는 감성 독서 플랫폼입니다.
-[Bookfeel 바로가기](https://book-feel.vercel.app/)
+Page & Play는 **Gemini AI**로 감정 키워드를 분석해 책을 추천하고, **도서관 API**로 대출 가능 여부를 확인하며, **플레이리스트와 커뮤니티**로 독서 경험을 확장하는 감성 독서 플랫폼입니다.
+[Page & Play 바로가기](https://book-feel.vercel.app/)
 
 ---
 
@@ -57,7 +57,7 @@ BookFeel은 **Gemini AI**로 감정 키워드를 분석해 책을 추천하고, 
 ## 로컬 실행 방법
 
 ```bash
-git clone https://github.com/your-username/bookfeel.git
-cd bookfeel
+git clone https://github.com/park-my-1540/BookFeel.git
+cd BookFeel
 npm install
 npm run dev

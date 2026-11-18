@@ -11,8 +11,8 @@ import type { Route } from "./+types/submit-playlist-page";
 
 export const meta: Route.MetaFunction = () => {
   return [
-    { title: "Submit Playlist | BookFeel" },
-    { name: "description", content: "Submit your playlist to BookFeel" },
+    { title: "Submit Playlist | Page & Play" },
+    { name: "description", content: "Submit your playlist to Page & Play" },
   ];
 };
 

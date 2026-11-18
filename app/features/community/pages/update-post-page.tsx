@@ -13,8 +13,8 @@ import { getPostById, getTopics } from "../queries";
 import type { Route } from "./+types/update-post-page";
 export const meta: Route.MetaFunction = () => {
   return [
-    { title: "Update Post | BookFeel" },
-    { name: "description", content: "Update your post to BookFeel" },
+    { title: "Update Post | Page & Play" },
+    { name: "description", content: "Update your post to Page & Play" },
   ];
 };
 

@@ -19,8 +19,8 @@ import { getTopics } from "../queries";
 import type { Route } from "./+types/submit-post-page";
 export const meta: Route.MetaFunction = () => {
   return [
-    { title: "Submit Post | BookFeel" },
-    { name: "description", content: "Submit your post to BookFeel" },
+    { title: "Submit Post | Page & Play" },
+    { name: "description", content: "Submit your post to Page & Play" },
   ];
 };
 

@@ -19,22 +19,22 @@ import { submitKeywordToGemini } from "../services/generateBooksByGemeni";
 import type { Route } from "./+types/home-page";
 
 export const meta: Route.MetaFunction = () => [
-  { title: "BookFeel" },
+  { title: "Page & Play" },
   {
     name: "description",
     content:
-      "오늘의 감정에 맞는 책을 찾고, 음악 플레이리스트와 함께 즐겨보세요. Bookfeel이 당신의 독서 경험을 더 특별하게 만듭니다",
+      "오늘의 감정에 맞는 책을 찾고, 음악 플레이리스트와 함께 즐겨보세요. Page & Play가 당신의 독서 경험을 더 특별하게 만듭니다",
   },
-  { property: "og:title", content: "BookFeel" },
+  { property: "og:title", content: "Page & Play" },
   {
     property: "og:description",
     content:
-      "오늘의 감정에 맞는 책을 찾고, 음악 플레이리스트와 함께 즐겨보세요. Bookfeel이 당신의 독서 경험을 더 특별하게 만듭니다",
+      "오늘의 감정에 맞는 책을 찾고, 음악 플레이리스트와 함께 즐겨보세요. Page & Play가 당신의 독서 경험을 더 특별하게 만듭니다",
   },
   { property: "og:url", content: "https://book-feel.vercel.app/" },
   {
     property: "og:image",
-    content: "https://book-feel.vercel.app/thumbnail.png",
+    content: "https://book-feel.vercel.app/page-and-play-share.png",
   },
   { property: "og:type", content: "website" },
 ];

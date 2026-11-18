@@ -36,7 +36,7 @@ export default function Navigation({
     <header className="border-b border-borderGray bg-white">
       <div className="mx-auto flex w-full max-w-screen-2xl flex-wrap items-center justify-between gap-x-2 px-lg lg:gap-x-4 py-3 md:min-h-20 md:flex-nowrap">
         <Link to="/" className="shrink-0">
-          <Heading1 className="text-xl sm:text-2xl">BookFeel</Heading1>
+          <Heading1 className="whitespace-nowrap text-base sm:text-2xl">Page & Play</Heading1>
         </Link>
 
         {pathname === "/" ? (

@@ -13,6 +13,8 @@ import Navigation from "./components/navigation";
 import { getUserProfileById } from "./features/users/queries";
 import { makeSSRClient } from "./supa-client";
 
+export const meta: Route.MetaFunction = () => [{ title: "Page & Play" }];
+
 export const links: Route.LinksFunction = () => [
   {
     rel: "icon",
